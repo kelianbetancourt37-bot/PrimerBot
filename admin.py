@@ -1,5 +1,7 @@
 import random
 
+def procesar_adminmenu():
+    return mostrar_Adminmenu()
 
 def procesar_ban(user):
     # Lógica para procesar el comando de ban
