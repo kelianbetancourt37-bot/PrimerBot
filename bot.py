@@ -57,6 +57,7 @@ except ImportError:
 
 # Variables de estado
 monedas_usuario = 500
+banco_usuario = 0
 racha_usuario = 0
 coleccion_museo = []
 
