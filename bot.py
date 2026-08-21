@@ -1,9 +1,13 @@
 import sys
+import os
 
-# Forzar salida en UTF-8 para evitar errores de caracteres y emojis
+# Forzar salida en UTF-8
 sys.stdout.reconfigure(encoding='utf-8')
 
-# 1. Importaciones directas (sin try/except para asegurar que carguen los comandos)
+# Añadir la carpeta actual al sistema de rutas de Python
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+# 1. Importaciones directas
 from menu import mostrar_menu
 from comandos.economia import procesar_trabajar, procesar_diario, procesar_cofre
 from comandos.museo import obtener_museo, comprar_reliquia
