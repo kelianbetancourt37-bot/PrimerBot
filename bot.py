@@ -57,6 +57,9 @@ def ejecutar_bot():
     if mensaje_recibido in [".menu", ".help"]:
         return mostrar_menu()
 
+    if mensaje_recibido == ".adminmenu":
+        return procesar_adminmenu()
+        
     # Economía
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, respuesta = procesar_trabajar(monedas_usuario)
