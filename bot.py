@@ -12,7 +12,7 @@ from menu import mostrar_menu
 from economia import procesar_trabajar, procesar_diario, procesar_cofre
 from museo import obtener_museo, comprar_reliquia
 from admin import procesar_admin_command
-from interaccion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
+from Interacion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
 from gestion import activar_desactivar_bienvenida, mostrar_reglas
 from descargar import (
     descargar_mediafire, descargar_mega, descargar, descargar_facebook,
