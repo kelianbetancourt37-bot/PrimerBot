@@ -1,30 +1,20 @@
 import sys
 
-# Forzar salida en UTF-8 para evitar errores de caracteres y emojis en Termux / Node.js
+# Forzar salida en UTF-8 para evitar errores de caracteres y emojis
 sys.stdout.reconfigure(encoding='utf-8')
 
-# 1. Importaciones del menú
-try:
-    from menu import mostrar_menu
-except ImportError:
-    def mostrar_menu():
-        return "📜 *MENÚ PRINCIPAL*\n.trabajar\n.daily\n.cofre\n.museo\n.reglas"
-
-# 2. Importaciones de economía, museo y administración
-try:
-    from comandos.economia import procesar_trabajar, procesar_diario, procesar_cofre
-    from comandos.museo import obtener_museo, comprar_reliquia
-    from comandos.admin import procesar_admin_command
-    from comandos.interaccion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
-    from comandos.gestion import activar_desactivar_bienvenida, mostrar_reglas
-    from comandos.descargar import (
-        descargar_mediafire, descargar_mega, descargar, descargar_facebook,
-        descargar_instagram, descargar_tiktok, descargar_youtube,
-        procesar_mp3, procesar_mp4, procesar_imagenes, procesar_sticker
-    )
-except Exception as e:
-    # Captura por si alguna librería/módulo no está disponible aún
-    pass
+# 1. Importaciones directas (sin try/except para asegurar que carguen los comandos)
+from menu import mostrar_menu
+from comandos.economia import procesar_trabajar, procesar_diario, procesar_cofre
+from comandos.museo import obtener_museo, comprar_reliquia
+from comandos.admin import procesar_admin_command
+from comandos.interaccion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
+from comandos.gestion import activar_desactivar_bienvenida, mostrar_reglas
+from comandos.descargar import (
+    descargar_mediafire, descargar_mega, descargar, descargar_facebook,
+    descargar_instagram, descargar_tiktok, descargar_youtube,
+    procesar_mp3, procesar_mp4, procesar_imagenes, procesar_sticker
+)
 
 # Variables de prueba
 monedas_usuario = 500
