@@ -38,7 +38,7 @@ async function iniciarBot() {
 
     sock.ev.on('messages.upsert', async (m) => {
         const msg = m.messages[0];
-        if (!msg.message) return; // Se remueve "fromMe" para que puedas probar con tu propio número
+        if (!msg.message) return;
 
         const texto = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
         const remitente = msg.key.remoteJid;
@@ -48,7 +48,6 @@ async function iniciarBot() {
             const comando = partes[0];
             const parametro = partes.slice(1).join(' ') || '';
 
-            // Usamos python3 y forzamos utf-8 para Termux
             const comandoPython = `python3 bot.py "${comando}" "${parametro}"`;
             
             exec(comandoPython, { encoding: 'utf-8' }, async (error, stdout) => {
@@ -58,8 +57,23 @@ async function iniciarBot() {
                 }
                 
                 const respuesta = stdout.trim();
+                
                 if (respuesta) {
-                    await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
+                    // Si Python devuelve el formato de GIF
+                    if (respuesta.startsWith("GIF|")) {
+                        const partesGif = respuesta.split("|");
+                        const urlGif = partesGif[1];
+                        const mensajeTexto = partesGif[2] || "";
+
+                        await sock.sendMessage(remitente, {
+                            video: { url: urlGif },
+                            caption: mensajeTexto,
+                            gifPlayback: true // Reproduce el video como GIF animado
+                        }, { quoted: msg });
+                    } else {
+                        // Si es texto normal
+                        await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
+                    }
                 }
             });
         }
