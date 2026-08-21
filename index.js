@@ -45,9 +45,29 @@ async function iniciarBot() {
 
         if (texto.startsWith('.')) {
             const partes = texto.trim().split(' ');
-            const comando = partes[0];
+            const comando = partes[0].toLowerCase();
             const parametro = partes.slice(1).join(' ') || '';
 
+            // COMANDOS DE ADMINISTRACIÓN REAL DE GRUPOS EN WHATSAPP
+            if (remitente.endsWith('@g.us')) {
+                try {
+                    if (comando === '.close') {
+                        await sock.groupSettingUpdate(remitente, 'announcement');
+                        await sock.sendMessage(remitente, { text: '🔒 El grupo ha sido cerrado. Solo administradores pueden enviar mensajes.' }, { quoted: msg });
+                        return;
+                    } 
+                    if (comando === '.open') {
+                        await sock.groupSettingUpdate(remitente, 'not_announcement');
+                        await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto. Todos pueden enviar mensajes.' }, { quoted: msg });
+                        return;
+                    }
+                } catch (err) {
+                    await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador del grupo.' }, { quoted: msg });
+                    return;
+                }
+            }
+
+            // COMANDOS PROCESADOS DESDE PYTHON
             const comandoPython = `python3 bot.py "${comando}" "${parametro}"`;
             
             exec(comandoPython, { encoding: 'utf-8' }, async (error, stdout) => {
@@ -59,7 +79,7 @@ async function iniciarBot() {
                 const respuesta = stdout.trim();
                 
                 if (respuesta) {
-                    // Si Python devuelve el formato de GIF
+                    // Si Python responde con formato de GIF
                     if (respuesta.startsWith("GIF|")) {
                         const partesGif = respuesta.split("|");
                         const urlGif = partesGif[1];
@@ -68,10 +88,10 @@ async function iniciarBot() {
                         await sock.sendMessage(remitente, {
                             video: { url: urlGif },
                             caption: mensajeTexto,
-                            gifPlayback: true // Reproduce el video como GIF animado
+                            gifPlayback: true
                         }, { quoted: msg });
                     } else {
-                        // Si es texto normal
+                        // Respuesta en texto normal
                         await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
                     }
                 }
