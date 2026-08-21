@@ -11,7 +11,11 @@ except ImportError:
     def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
 
 try:
-    from admin import procesar_adminmenu
+    # Intenta importar desde Adminmenu.py o admin.py según el nombre que tengas
+    try:
+        from Adminmenu import mostrar_Adminmenu as procesar_adminmenu
+    except ImportError:
+        from admin import procesar_adminmenu
 except ImportError:
     def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*\nUsa .help para ayuda."
 
@@ -62,7 +66,7 @@ def ejecutar_bot():
     if mensaje_recibido in [".menu", ".help"]:
         return mostrar_menu()
 
-    if mensaje_recibido == ".adminmenu":
+    elif mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
 
     # Economía
