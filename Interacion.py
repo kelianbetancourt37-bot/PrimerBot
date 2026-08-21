@@ -1,108 +1,60 @@
 import random
 
-def procesar_saludar(usuario):
-    salodar = random.choice([
-        mostrar_gif_saludo(),
-        f"¡Hola {usuario}! 👋",
-    ])
-    return salodar
-
-def mostrar_gif_saludo():
-    gifs_saludo = [
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
-        "https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif",
-        "https://media.giphy.com/media/26BRv0ThflsHCqDrG/giphy.gif",
+def saludar(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.mp4",
+        "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.mp4",
+        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.mp4"
     ]
-    return random.choice(gifs_saludo)
+    gif = random.choice(gifs)
+    texto = f"👋 ¡Hola {usuario}!" if usuario else "👋 ¡Hola a todos!"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_beso(usuario):
-    beso = random.choice([
-        mostrar_gif_beso(),
-        f"¡{usuario}, te envío un beso! 😘",
-    ])
-    return beso
-
-def mostrar_gif_beso():
-    gifs_beso = [
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
-        "https://media.giphy.com/media/13HgwGsXF0ai24/giphy.gif",
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
+def beso(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.mp4",
+        "https://media.giphy.com/media/13HgwGsXF0ai24/giphy.mp4"
     ]
-    return random.choice(gifs_beso)
+    gif = random.choice(gifs)
+    texto = f"😘 ¡Un beso para {usuario}!" if usuario else "😘 ¡Un beso al aire!"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_abrazo(usuario):
-    abrazo = random.choice([
-        mostrar_gif_abrazo(),
-        f"¡{usuario}, te envío un abrazo! 🤗",
-    ])
-    return abrazo
-
-def mostrar_gif_abrazo():
-    gifs_abrazo = [
-        "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.gif",
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
+def abrazo(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.mp4"
     ]
-    return random.choice(gifs_abrazo)
+    gif = random.choice(gifs)
+    texto = f"🤗 ¡Un fuerte abrazo para {usuario}!" if usuario else "🤗 ¡Un abrazo para todos!"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_golpe(usuario):
-    golpe = random.choice([
-        mostrar_gif_golpe(),
-        f"¡{usuario}, te he dado un golpe! 👊",
-    ])
-    return golpe
-
-def mostrar_gif_golpe():
-    gifs_golpe = [
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
+def golpe(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.mp4"
     ]
-    return random.choice(gifs_golpe)
+    gif = random.choice(gifs)
+    texto = f"👊 ¡Un golpe para {usuario}!" if usuario else "👊 ¡Un golpe al aire!"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_caricia(usuario):
-    caricia = random.choice([
-        mostrar_gif_caricia(),
-        f"¡{usuario}, te envío una caricia! 🥰",
-    ])
-    return caricia
-
-def mostrar_gif_caricia():
-    gifs_caricia = [
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
+def caricia(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.mp4"
     ]
-    return random.choice(gifs_caricia)
+    gif = random.choice(gifs)
+    texto = f"🥰 Una caricia para {usuario}" if usuario else "🥰 Una caricia"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_kill(usuario):
-    kill = random.choice([
-        mostrar_gif_kill(),
-        f"¡{usuario}, has sido eliminado! 💀",
-    ])
-    return kill
-
-def mostrar_gif_kill():
-    gifs_kill = [
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
+def eliminar(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.mp4"
     ]
-    return random.choice(gifs_kill)
+    gif = random.choice(gifs)
+    texto = f"💀 ¡{usuario} ha sido eliminado!" if usuario else "💀 ¡Eliminado!"
+    return f"GIF|{gif}|{texto}"
 
-def procesar_correr(usuario):
-    correr = random.choice([
-        mostrar_gif_correr(),
-        f"¡{usuario}, estás corriendo! 🏃‍♂️",
-    ])
-    return correr
-
-def mostrar_gif_correr():
-    gifs_correr = [
-        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
-        "https://media.giphy.com/media/xT9IgG50Fb7Mi0prBC/giphy.gif",
-        "https://media.giphy.com/media/3o7TKsZr9aJ6f0k5QY/giphy.gif",
+def correr(usuario=""):
+    gifs = [
+        "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.mp4"
     ]
-    return random.choice(gifs_correr)
+    gif = random.choice(gifs)
+    texto = f"🏃‍♂️ ¡Corriendo de {usuario}!" if usuario else "🏃‍♂️ ¡Corriendo!"
+    return f"GIF|{gif}|{texto}"
