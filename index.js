@@ -11,9 +11,8 @@ async function iniciarBot() {
 
     sock.ev.on('creds.update', saveCreds);
 
-    // Si aún no estás registrado, solicita el código automáticamente
     if (!sock.authState.creds.registered) {
-        const numeroLimpio = "5595981068631"; // Tu número de Brasil asignado directamente
+        const numeroLimpio = "5595981068631";
         
         console.log('Generando código de vinculación para +55 95 98106-8631...');
         setTimeout(async () => {
@@ -39,22 +38,28 @@ async function iniciarBot() {
 
     sock.ev.on('messages.upsert', async (m) => {
         const msg = m.messages[0];
-        if (!msg.message || msg.key.fromMe) return;
+        if (!msg.message) return; // Se remueve "fromMe" para que puedas probar con tu propio número
 
         const texto = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
         const remitente = msg.key.remoteJid;
 
         if (texto.startsWith('.')) {
-            const partes = texto.split(' ');
+            const partes = texto.trim().split(' ');
             const comando = partes[0];
             const parametro = partes.slice(1).join(' ') || '';
 
-            const comandoPython = `python bot.py "${comando}" "${parametro}"`;
+            // Usamos python3 y forzamos utf-8 para Termux
+            const comandoPython = `python3 bot.py "${comando}" "${parametro}"`;
             
-            exec(comandoPython, async (error, stdout) => {
-                if (error) return console.error(`Error: ${error.message}`);
-                if (stdout.trim()) {
-                    await sock.sendMessage(remitente, { text: stdout.trim() });
+            exec(comandoPython, { encoding: 'utf-8' }, async (error, stdout) => {
+                if (error) {
+                    console.error(`Error ejecutando Python: ${error.message}`);
+                    return;
+                }
+                
+                const respuesta = stdout.trim();
+                if (respuesta) {
+                    await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
                 }
             });
         }
