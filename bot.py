@@ -1,60 +1,38 @@
 import sys
 import os
 
-# Forzar salida en UTF-8
 sys.stdout.reconfigure(encoding='utf-8')
 
-# Importaciones seguras con Try/Except individual
+# --- IMPORTACIONES SEGURAS ---
 try:
     from menu import mostrar_menu
 except ImportError:
     def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
 
 try:
-    # Intenta importar desde Adminmenu.py o admin.py según el nombre que tengas
-    try:
-        from Adminmenu import mostrar_Adminmenu as procesar_adminmenu
-    except ImportError:
-        from admin import procesar_adminmenu
+    from admin import procesar_adminmenu, procesar_admin_command
 except ImportError:
-    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*\nUsa .help para ayuda."
+    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*"
+    def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
 
 try:
-    from economia import procesar_trabajar, procesar_diario, procesar_cofre
+    from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_depositar, procesar_crimen
+except ImportError:
+    def procesar_depositar(m, p): return m, f"🏦 Has depositado {p} monedas."
+    def procesar_crimen(m): return m + 50, "🥷 Cometiste un crimen exitoso y ganaste 50 monedas."
+
+try:
+    # Importar funciones de interacción
+    from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
 except ImportError:
     pass
 
-try:
-    from museo import obtener_museo, comprar_reliquia
-except ImportError:
-    pass
-
-try:
-    from admin import procesar_admin_command
-except ImportError:
-    pass
-
-try:
-    from Interacion import *
-except ImportError:
-    pass
-
-try:
-    from gestion import activar_desactivar_bienvenida, mostrar_reglas
-except ImportError:
-    pass
-
-try:
-    from descargar import *
-except ImportError:
-    pass
-
-# Variables de prueba
+# Variables de estado
 monedas_usuario = 500
 racha_usuario = 0
 coleccion_museo = []
 
-# Lee los argumentos enviados desde Node.js
+# Argumentos de Node.js
 args = sys.argv[1:]
 mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
 parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
@@ -69,7 +47,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
 
-    # Economía
+    # Economía / Gacha
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, respuesta = procesar_trabajar(monedas_usuario)
         return respuesta
@@ -82,11 +60,12 @@ def ejecutar_bot():
         monedas_usuario, racha_usuario, respuesta = procesar_cofre(monedas_usuario, racha_usuario)
         return respuesta
 
-    elif mensaje_recibido == ".museo":
-        return obtener_museo(coleccion_museo)
+    elif mensaje_recibido in [".depositar", ".dep"]:
+        monedas_usuario, respuesta = procesar_depositar(monedas_usuario, parametro)
+        return respuesta
 
-    elif mensaje_recibido == ".comprarmuseo":
-        monedas_usuario, coleccion_museo, respuesta = comprar_reliquia(monedas_usuario, coleccion_museo)
+    elif mensaje_recibido in [".crimen", ".crime"]:
+        monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
         return respuesta
 
     # Comandos de Administración
@@ -123,49 +102,8 @@ def ejecutar_bot():
     elif mensaje_recibido == ".correr":
         return correr(parametro)
 
-    # Gestión de Grupos
-    elif mensaje_recibido == ".welcome":
-        return activar_desactivar_bienvenida(parametro)
-
-    elif mensaje_recibido == ".reglas":
-        return mostrar_reglas()
-
-    # Descargas de medios
-    elif mensaje_recibido == ".mediafire":
-        return descargar_mediafire(parametro)
-
-    elif mensaje_recibido == ".mega":
-        return descargar_mega(parametro)
-
-    elif mensaje_recibido == ".descargar":
-        return descargar(parametro)
-
-    elif mensaje_recibido == ".facebook":
-        return descargar_facebook(parametro)
-
-    elif mensaje_recibido == ".instagram":
-        return descargar_instagram(parametro)
-
-    elif mensaje_recibido == ".tiktok":
-        return descargar_tiktok(parametro)
-
-    elif mensaje_recibido == ".youtube":
-        return descargar_youtube(parametro)
-
-    elif mensaje_recibido == ".mp3":
-        return procesar_mp3(parametro)
-
-    elif mensaje_recibido == ".mp4":
-        return procesar_mp4(parametro)
-
-    elif mensaje_recibido == ".imagen":
-        return procesar_imagenes(parametro)
-
-    elif mensaje_recibido == ".sticker":
-        return procesar_sticker(parametro)
-
     else:
-        return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista de comandos disponibles."
+        return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
 
 if __name__ == "__main__":
     try:
