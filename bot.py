@@ -22,10 +22,38 @@ except ImportError:
     def procesar_crimen(m): return m + 50, "🥷 Cometiste un crimen exitoso y ganaste 50 monedas."
 
 try:
-    # Importar funciones de interacción
     from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
 except ImportError:
     pass
+
+try:
+    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+except ImportError:
+    def procesar_perfil(u=""): return f"👤 Perfil de {u or 'Usuario'}"
+    def procesar_setname(p=""): return f"✅ Nombre actualizado a: {p}"
+    def procesar_setdesc(p=""): return f"📝 Descripción actualizada."
+    def procesar_setage(p=""): return f"🎂 Edad configurada a: {p}"
+    def procesar_setbirth(p=""): return f"📅 Nacimiento guardado: {p}"
+    def procesar_setgene(p=""): return f"🚻 Género actualizado: {p}"
+    def procesar_level(u=""): return f"📊 Nivel del usuario."
+    def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
+
+# Importación de las funciones de descarga que creaste
+try:
+    from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
+                           descargar_tiktok, descargar_youtube, procesar_mp3, 
+                           procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest)
+except ImportError:
+    def procesar_descargar(l): return f"🔗 Descarga: {l}"
+    def descargar_facebook(l): return f"🔗 FB: {l}"
+    def descargar_instagram(l): return f"🔗 IG: {l}"
+    def descargar_tiktok(l): return f"🔗 TT: {l}"
+    def descargar_youtube(l): return f"🔗 YT: {l}"
+    def procesar_mp3(l): return f"🎵 MP3: {l}"
+    def procesar_mp4(l): return f"🎥 MP4: {l}"
+    def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
+    def procesar_sticker(u): return f"🖼️ Sticker: {u}"
+    def procesar_pinterest(b): return f"📌 Pinterest: {b}"
 
 # Variables de estado
 monedas_usuario = 500
@@ -67,6 +95,62 @@ def ejecutar_bot():
     elif mensaje_recibido in [".crimen", ".crime"]:
         monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
         return respuesta
+
+    # Comandos de Perfil y Usuario
+    elif mensaje_recibido == ".perfil":
+        return procesar_perfil(parametro)
+
+    elif mensaje_recibido == ".setname":
+        return procesar_setname(parametro)
+
+    elif mensaje_recibido == ".setdesc":
+        return procesar_setdesc(parametro)
+
+    elif mensaje_recibido == ".setage":
+        return procesar_setage(parametro)
+
+    elif mensaje_recibido == ".setbirth":
+        return procesar_setbirth(parametro)
+
+    elif mensaje_recibido == ".setgene":
+        return procesar_setgene(parametro)
+
+    elif mensaje_recibido == ".level":
+        return procesar_level(parametro)
+
+    elif mensaje_recibido == ".levelup":
+        return procesar_levelup(parametro)
+
+    # Comandos de Descarga
+    elif mensaje_recibido in [".mediafire", ".mega"]:
+        return procesar_descargar(parametro)
+
+    elif mensaje_recibido == ".fb":
+        return descargar_facebook(parametro)
+
+    elif mensaje_recibido == ".ig":
+        return descargar_instagram(parametro)
+
+    elif mensaje_recibido == ".tt":
+        return descargar_tiktok(parametro)
+
+    elif mensaje_recibido == ".yt":
+        return descargar_youtube(parametro)
+
+    elif mensaje_recibido == ".mp3":
+        return procesar_mp3(parametro)
+
+    elif mensaje_recibido == ".mp4":
+        return procesar_mp4(parametro)
+
+    elif mensaje_recibido == ".imagen":
+        return procesar_imagenes(parametro)
+
+    elif mensaje_recibido == ".sticker":
+        return procesar_sticker(parametro)
+
+    elif mensaje_recibido == ".pin":
+        return procesar_pinterest(parametro)
 
     # Comandos de Administración
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
