@@ -97,6 +97,35 @@ def ejecutar_bot():
         monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
         return respuesta
 
+    # Interacción
+    elif mensaje_recibido == ".saludar":
+        return saludar(parametro)
+
+    elif mensaje_recibido == ".beso":
+        return beso(parametro)
+
+    elif mensaje_recibido == ".abrazo":
+        return abrazo(parametro)
+
+    elif mensaje_recibido == ".golpe":
+        return golpe(parametro)
+
+    elif mensaje_recibido == ".kill":
+        return eliminar(parametro)
+
+    elif mensaje_recibido == ".caricia":
+        return caricia(parametro)
+
+    elif mensaje_recibido == ".correr":
+        return correr(parametro)
+
+    # comandos de gestión de grupo
+    elif mensaje_recibido == ".welcome":
+        return procesar_welcome(parametro)
+
+    elif mensaje_recibido == ".reglas":
+        return procesar_reglas()
+
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(parametro)
