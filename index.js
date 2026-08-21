@@ -1,29 +1,28 @@
 const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
 const { exec } = require('child_process');
-const readline = require('readline');
 
-// Interfaz para leer el número en la consola
-const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-const question = (text) => new Promise((resolve) => rl.question(text, resolve));
-
-async function conectarWhatsApp() {
+async function iniciarBot() {
     const { state, saveCreds } = await useMultiFileAuthState('Qrcode_Sesion');
 
     const sock = makeWASocket({
         auth: state,
-        printQRInTerminal: false // Desactivamos el QR visual
+        printQRInTerminal: false
     });
 
     sock.ev.on('creds.update', saveCreds);
 
-    // Si la sesión no existe, solicitamos el código de vinculación
+    // Si aún no estás registrado, solicita el código automáticamente
     if (!sock.authState.creds.registered) {
-        const numeroTelefono = await question('\n Escribe tu número de WhatsApp con código de país (ej. 521234567890): ');
-        const numeroLimpio = numeroTelefono.replace(/[^0-9]/g, '');
+        const numeroLimpio = "5595981068631"; // Tu número de Brasil asignado directamente
         
+        console.log('Generando código de vinculación para +55 95 98106-8631...');
         setTimeout(async () => {
-            const code = await sock.requestPairingCode(numeroLimpio);
-            console.log(`\n TU CÓDIGO DE VINCULACIÓN ES: ${code}\n`);
+            try {
+                const code = await sock.requestPairingCode(numeroLimpio);
+                console.log(`\n TU CÓDIGO DE VINCULACIÓN ES: ${code}\n`);
+            } catch (err) {
+                console.error('Error al generar el código:', err.message);
+            }
         }, 3000);
     }
 
@@ -32,10 +31,9 @@ async function conectarWhatsApp() {
 
         if (connection === 'close') {
             const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
-            console.log(' Conexión cerrada. Reconectando...', shouldReconnect);
-            if (shouldReconnect) conectarWhatsApp();
+            if (shouldReconnect) iniciarBot();
         } else if (connection === 'open') {
-            console.log(' ¡Bot de WhatsApp conectado con éxito mediante código!');
+            console.log(' ¡Bot conectado con éxito!');
         }
     });
 
@@ -53,11 +51,8 @@ async function conectarWhatsApp() {
 
             const comandoPython = `python bot.py "${comando}" "${parametro}"`;
             
-            exec(comandoPython, async (error, stdout, stderr) => {
-                if (error) {
-                    console.error(`Error en Python: ${error.message}`);
-                    return;
-                }
+            exec(comandoPython, async (error, stdout) => {
+                if (error) return console.error(`Error: ${error.message}`);
                 if (stdout.trim()) {
                     await sock.sendMessage(remitente, { text: stdout.trim() });
                 }
@@ -66,4 +61,4 @@ async function conectarWhatsApp() {
     });
 }
 
-conectarWhatsApp();
+iniciarBot();
