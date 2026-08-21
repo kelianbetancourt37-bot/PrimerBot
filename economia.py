@@ -55,3 +55,21 @@ def procesar_depositar(monedas_actuales, banco_actual, cantidad):
     
     mensaje = f"💰 Has depositado {cantidad} monedas en el banco. Monedas actuales: {monedas_actuales}, Banco: {banco_actual}"
     return monedas_actuales, banco_actual, mensaje
+
+def procesar_banco(monedas_mano, monedas_banco):
+    if monedas_banco > 0:
+        mensaje = (
+            f"🏦 *ESTADO DE TU CUENTA BANCARIA*\n\n"
+            f"💵 Dinero en mano: *{monedas_mano}* monedas\n"
+            f"💰 Dinero en el banco: *{monedas_banco}* monedas\n"
+            f"💎 Total general: *{monedas_mano + monedas_banco}* monedas"
+        )
+    else:
+        mensaje = (
+            f"🏦 *ESTADO DE TU CUENTA BANCARIA*\n\n"
+            f"💵 Dinero en mano: *{monedas_mano}* monedas\n"
+            f"💰 Dinero en el banco: *0* monedas\n"
+            f"⚠️ *Tu cuenta bancaria está vacía.* Usa `.depositar [cantidad]` para guardar dinero."
+        )
+    
+    return monedas_mano, monedas_banco, mensaje
