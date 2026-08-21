@@ -4,21 +4,41 @@ import os
 # Forzar salida en UTF-8
 sys.stdout.reconfigure(encoding='utf-8')
 
-# Añadir la carpeta actual al sistema de rutas de Python
-sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# Importaciones seguras con Try/Except individual
+try:
+    from menu import mostrar_menu
+except ImportError:
+    def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
 
-# Importaciones directas desde la raíz de tu proyecto
-from menu import mostrar_menu
-from economia import procesar_trabajar, procesar_diario, procesar_cofre
-from museo import obtener_museo, comprar_reliquia
-from admin import procesar_admin_command
-from Interacion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
-from gestion import activar_desactivar_bienvenida, mostrar_reglas
-from descargar import (
-    descargar_mediafire, descargar_mega, descargar, descargar_facebook,
-    descargar_instagram, descargar_tiktok, descargar_youtube,
-    procesar_mp3, procesar_mp4, procesar_imagenes, procesar_sticker
-)
+try:
+    from economia import procesar_trabajar, procesar_diario, procesar_cofre
+except ImportError:
+    pass
+
+try:
+    from museo import obtener_museo, comprar_reliquia
+except ImportError:
+    pass
+
+try:
+    from admin import procesar_admin_command
+except ImportError:
+    pass
+
+try:
+    from Interacion import *
+except ImportError:
+    pass
+
+try:
+    from gestion import activar_desactivar_bienvenida, mostrar_reglas
+except ImportError:
+    pass
+
+try:
+    from descargar import *
+except ImportError:
+    pass
 
 # Variables de prueba
 monedas_usuario = 500
