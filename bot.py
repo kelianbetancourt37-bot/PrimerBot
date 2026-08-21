@@ -11,6 +11,11 @@ except ImportError:
     def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
 
 try:
+    from admin import procesar_adminmenu
+except ImportError:
+    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*\nUsa .help para ayuda."
+
+try:
     from economia import procesar_trabajar, procesar_diario, procesar_cofre
 except ImportError:
     pass
@@ -59,7 +64,7 @@ def ejecutar_bot():
 
     if mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
-        
+
     # Economía
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, respuesta = procesar_trabajar(monedas_usuario)
