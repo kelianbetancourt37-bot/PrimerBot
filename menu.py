@@ -35,6 +35,16 @@ def mostrar_menu():
  ├ 💟​ *.imganen / .img <palabra clave>* ➔ buscar imagenes
  └ 🏞️​ *.pin <texto>* ➔ Buscar en Pinterest
 
+ 😎​ *PROFILE*
+
+ ├ 🕵🏼‍♂️ *.perfil* ➔ Muestra tu perfil
+ ├ ✍🏾​ *.setname* ➔ Cambia el nombre de tu perfil
+ ├ ⚧️​ *.setgene* ➔ Cambia el genero
+ ├ ✍🏾​ *.setage* ➔ Cambia la edad
+ ├ 🎂​ *.setbirth* ➔ Cambia la fecha de nacimiento
+ ├ 📄​ *.setdesc* ➔ Cambia la descripción
+ └ 🔋 *.level* ➔ Muestra tu nivel
+
 🛡️ *ADMINISTRACIÓN*
  └ 👑 *.adminmenu* ➔ Menú exclusivo de administradores (solo para admins)
 
