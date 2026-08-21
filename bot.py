@@ -7,14 +7,14 @@ sys.stdout.reconfigure(encoding='utf-8')
 # Añadir la carpeta actual al sistema de rutas de Python
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-# 1. Importaciones directas
+# Importaciones directas desde la raíz de tu proyecto
 from menu import mostrar_menu
-from comandos.economia import procesar_trabajar, procesar_diario, procesar_cofre
-from comandos.museo import obtener_museo, comprar_reliquia
-from comandos.admin import procesar_admin_command
-from comandos.interaccion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
-from comandos.gestion import activar_desactivar_bienvenida, mostrar_reglas
-from comandos.descargar import (
+from economia import procesar_trabajar, procesar_diario, procesar_cofre
+from museo import obtener_museo, comprar_reliquia
+from admin import procesar_admin_command
+from interaccion import saludar, beso, abrazo, golpe, eliminar, caricia, correr
+from gestion import activar_desactivar_bienvenida, mostrar_reglas
+from descargar import (
     descargar_mediafire, descargar_mega, descargar, descargar_facebook,
     descargar_instagram, descargar_tiktok, descargar_youtube,
     procesar_mp3, procesar_mp4, procesar_imagenes, procesar_sticker
