@@ -11,6 +11,6 @@ def mostrar_Adminmenu():
     ├.desilenciar <usuario> -> Desilencia a un usuario en el servidor.
     ├.antilink -> Activar el sistema de antilink en el servidor.
     ├.antispam -> Activar el sistema de antispam en el servidor.
-    .tagall / .todos -> Menciona a todos los miembros del grupo.
+    └.tagall / .todos -> Menciona a todos los miembros del grupo.
     -----------------------------------
     """
