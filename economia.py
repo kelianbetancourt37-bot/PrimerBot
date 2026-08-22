@@ -111,7 +111,19 @@ def procesar_depositar(monedas_actuales, banco_actual, cantidad):
     
     mensaje = f"💰 Has depositado *{cantidad}* monedas en el banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
     return monedas_actuales, banco_actual, mensaje
-
+    
+def procesar_retirar(monedas_actuales, banco_actual, cantidad):
+    if cantidad <= 0:
+        return monedas_actuales, banco_actual, "❌ La cantidad a retirar debe ser mayor que cero."
+    
+    if cantidad > banco_actual:
+        return monedas_actuales, banco_actual, f"❌ No tienes suficientes dinero en el banco. Tienes: {banco_actual}."
+    
+    banco_actual -= cantidad
+    monedas_actuales += cantidad
+    
+    mensaje = f"💰 Has retirado *{cantidad}* monedas del banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
+    return monedas_actuales, banco_actual, mensaje
 
 def procesar_banco(monedas_mano, monedas_banco):
     if monedas_banco > 0:
