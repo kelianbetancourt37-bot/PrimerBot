@@ -2,6 +2,11 @@ import random
 
 # Lista de reliquias disponibles con su costo y rareza
 RELIQUIAS = [
+    {"nombre": "💎 Flor de la Luna", "precio": 10},
+    {"nombre": "⚔️ Hacha de la Muerte", "precio": 50},
+    {"nombre": "💉 Lágrima de la Muerte", "precio": 100},
+    {"nombre": "🔪 Hacha de la Tortura", "precio": 200},
+    {"nombre": "🗡️ Lágrima de la Tortura", "precio": 400},
     {"nombre": "🖼️ Monalisa de Hacendado", "precio": 150},
     {"nombre": "🗿 Estatua de Piedra Antigua", "precio": 300},
     {"nombre": "👑 Corona de Oro Perdida", "precio": 600},
