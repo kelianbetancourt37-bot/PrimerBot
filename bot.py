@@ -16,10 +16,11 @@ except ImportError:
     def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
 
 try:
-    from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_depositar, procesar_crimen
+    from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_depositar, procesar_crimen, procesar_banco
 except ImportError:
-    def procesar_depositar(m, p): return m, f"🏦 Has depositado {p} monedas."
+    def procesar_depositar(m, b, p): return m, b, f"🏦 Has depositado {p} monedas."
     def procesar_crimen(m): return m + 50, "🥷 Cometiste un crimen exitoso y ganaste 50 monedas."
+    def procesar_banco(m, b): return m, b, f"🏦 Dinero en mano: {m} | Banco: {b}"
 
 try:
     from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
@@ -67,7 +68,7 @@ mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
 parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
 
 def ejecutar_bot():
-    global monedas_usuario, racha_usuario, coleccion_museo
+    global monedas_usuario, banco_usuario, racha_usuario, coleccion_museo
 
     # Menú Principal
     if mensaje_recibido in [".menu", ".help"]:
@@ -90,41 +91,16 @@ def ejecutar_bot():
         return respuesta
 
     elif mensaje_recibido in [".depositar", ".dep"]:
-        monedas_usuario, respuesta = procesar_depositar(monedas_usuario, parametro)
+        monedas_usuario, banco_usuario, respuesta = procesar_depositar(monedas_usuario, banco_usuario, parametro)
         return respuesta
 
     elif mensaje_recibido in [".crimen", ".crime"]:
         monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
         return respuesta
 
-    # Interacción
-    elif mensaje_recibido == ".saludar":
-        return saludar(parametro)
-
-    elif mensaje_recibido == ".beso":
-        return beso(parametro)
-
-    elif mensaje_recibido == ".abrazo":
-        return abrazo(parametro)
-
-    elif mensaje_recibido == ".golpe":
-        return golpe(parametro)
-
-    elif mensaje_recibido == ".kill":
-        return eliminar(parametro)
-
-    elif mensaje_recibido == ".caricia":
-        return caricia(parametro)
-
-    elif mensaje_recibido == ".correr":
-        return correr(parametro)
-
-    # comandos de gestión de grupo
-    elif mensaje_recibido == ".welcome":
-        return procesar_welcome(parametro)
-
-    elif mensaje_recibido == ".reglas":
-        return procesar_reglas()
+    elif mensaje_recibido in [".banco", ".bank"]:
+        monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
+        return respuesta
 
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
@@ -152,7 +128,7 @@ def ejecutar_bot():
         return procesar_levelup(parametro)
 
     # Comandos de Descarga
-    elif mensaje_recibido in [".mediafire", ".mega"]:
+    elif mensaje_recibido in [".mediafire", ".mega", ".descargar"]:
         return procesar_descargar(parametro)
 
     elif mensaje_recibido == ".fb":
