@@ -97,6 +97,34 @@ def ejecutar_bot():
             monedas_usuario, racha_usuario, respuesta = procesar_cofre(usuario_id, monedas_usuario, racha_usuario)
         return respuesta
 
+    elif mensaje_recibido in [".depositar", ".dep", ".d"]:
+        # Aquí procesamos la cantidad a depositar (por ejemplo, si escriben ".depositar 100" o ".d all")
+        cantidad = parametro.lower()
+        if cantidad == "all" or cantidad == "todo":
+            cantidad_num = monedas_usuario
+        else:
+            try:
+                cantidad_num = int(cantidad)
+            except ValueError:
+                cantidad_num = 0
+        
+        monedas_usuario, banco_usuario, respuesta = procesar_depositar(monedas_usuario, banco_usuario, cantidad_num)
+        return respuesta
+
+    elif mensaje_recibido in [".retirar", ".ret", ".r"]:
+        # Aquí procesamos la cantidad a retirar (por ejemplo, si escriben ".retirar 100" o ".r all")
+        cantidad = parametro.lower()
+        if cantidad == "all" or cantidad == "todo":
+            cantidad_num = banco_usuario
+        else:
+            try:
+                cantidad_num = int(cantidad)
+            except ValueError:
+                cantidad_num = 0
+        
+        monedas_usuario, banco_usuario, respuesta = procesar_retirar(monedas_usuario, banco_usuario, cantidad_num)
+        return respuesta
+
     elif mensaje_recibido in [".banco", ".bank"]:
         monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
