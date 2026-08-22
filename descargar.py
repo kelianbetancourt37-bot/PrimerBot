@@ -66,21 +66,22 @@ def procesar_mp4(link):
 
 def procesar_imagenes(buscar):
     if buscar:
-        mensaje = f"buscando imagenes relacionadascon: *{buscar}*...\n"
+        # Aquí puedes agregar una URL de prueba o lógica de imagen si deseas que el bot mande una foto real
+        return f"🖼️ Buscando imágenes relacionadas con: *{buscar}*..."
     else:
-        mensaje = "por favor, proporciona un término de búsqueda. Ejemplo: `.imagen gatos`"
-        return mensaje
+        return "❌ Por favor, proporciona un término de búsqueda. Ejemplo: `.imagen gatos`"
 
 def procesar_sticker(url):
-    if url and (url.endswith(".webp") or url.endswith(".png") or url.endswith(".webp")):
-        mensaje = f"🖼 Descarga de sticker desde URL: {url}"
+    if url and (url.endswith(".webp") or url.endswith(".png") or url.endswith(".jpg") or url.endswith(".jpeg")):
+        mensaje = f"🖼️ Descarga de sticker desde URL: {url}"
     else:
-        mensaje = "❌ El enlace proporcionado no es de sticker."
+        mensaje = "❌ El enlace proporcionado no es válido para un sticker (debe ser .png, .jpg o .webp)."
     return mensaje
 
 def procesar_pinterest(buscar):
     if buscar:
-        mensaje = f"buscando en pinterest: *{buscar}*...\n"
+        # Si quieres que mande una imagen de ejemplo o texto de búsqueda:
+        return f"📌 Pinterest: Buscando resultados para *{buscar}*...\nhttps://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
     else:
-        mensaje = "por favor, proporciona un termino de búsqueda. Ejemplo. `.pin perros`"
+        return "❌ Por favor, proporciona un término de búsqueda. Ejemplo: `.pin gatos`"
         return mensaje
