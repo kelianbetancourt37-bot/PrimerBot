@@ -79,19 +79,22 @@ def ejecutar_bot():
 
     # Economía / Gacha
     elif mensaje_recibido in [".crimen", ".crime"]:
-        monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
+        # Pasamos un ID de usuario (puedes usar 'parametro' o una cadena fija por ahora)
+        usuario_id = "usuario_principal" 
+        monedas_usuario, respuesta = procesar_crimen(usuario_id, monedas_usuario)
         return respuesta
 
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
-        monedas_usuario, respuesta = procesar_trabajar(monedas_usuario)
+        usuario_id = "usuario_principal"
+        monedas_usuario, respuesta = procesar_trabajar(usuario_id, monedas_usuario)
         return respuesta
 
     elif mensaje_recibido in [".cofre", ".daily"]:
-        monedas_usuario, racha_usuario, respuesta = procesar_cofre(monedas_usuario, racha_usuario)
-        return respuesta
-
-    elif mensaje_recibido in [".banco", ".bank"]:
-        monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
+        usuario_id = "usuario_principal"
+        if mensaje_recibido == ".daily":
+            monedas_usuario, racha_usuario, respuesta = procesar_diario(usuario_id, monedas_usuario, racha_usuario)
+        else:
+            monedas_usuario, racha_usuario, respuesta = procesar_cofre(usuario_id, monedas_usuario, racha_usuario)
         return respuesta
 
     elif mensaje_recibido in [".banco", ".bank"]:
