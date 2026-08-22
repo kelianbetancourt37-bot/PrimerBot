@@ -78,24 +78,20 @@ def ejecutar_bot():
         return procesar_adminmenu()
 
     # Economía / Gacha
+    elif mensaje_recibido in [".crimen", ".crime"]:
+        monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
+        return respuesta
+
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, respuesta = procesar_trabajar(monedas_usuario)
         return respuesta
 
-    elif mensaje_recibido in [".daily", ".diario"]:
-        monedas_usuario, racha_usuario, respuesta = procesar_diario(monedas_usuario, racha_usuario)
-        return respuesta
-
-    elif mensaje_recibido == ".cofre":
+    elif mensaje_recibido in [".cofre", ".daily"]:
         monedas_usuario, racha_usuario, respuesta = procesar_cofre(monedas_usuario, racha_usuario)
         return respuesta
 
-    elif mensaje_recibido in [".depositar", ".dep"]:
-        monedas_usuario, banco_usuario, respuesta = procesar_depositar(monedas_usuario, banco_usuario, parametro)
-        return respuesta
-
-    elif mensaje_recibido in [".crimen", ".crime"]:
-        monedas_usuario, respuesta = procesar_crimen(monedas_usuario)
+    elif mensaje_recibido in [".banco", ".bank"]:
+        monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
 
     elif mensaje_recibido in [".banco", ".bank"]:
