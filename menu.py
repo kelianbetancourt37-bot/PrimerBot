@@ -15,6 +15,7 @@ nombre del bot: *Agnes Bot*
  ├ 🛍️ *.comprarmuseo* ➔ Compra una reliquia para el museo
  ├ 🕵️ *.crimen* ➔ Intenta un crimen (arriesga tus monedas)
  ├ 🏦 *.depositar <cant>* / *.d all* ➔ Deposita en el banco
+ ├ 💰 *.retirar <cant>* / *.r all* ➔ Retira dinero del banco
  └ 💰 *.banco* ➔ Mira el estado de tu cuenta bancaria
 
 🎭 *INTERACCIONES*
