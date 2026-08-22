@@ -4,29 +4,49 @@ import json
 
 sys.stdout.reconfigure(encoding='utf-8')
 
-# --- CONFIGURACIÓN DE BASE DE DATOS JSON ---
+# --- CONFIGURACIÓN DE BASE DE DATOS MULTIUSUARIO ---
 DB_FILE = "usuarios.json"
 
-def cargar_datos():
+def cargar_todos_los_datos():
     if os.path.exists(DB_FILE):
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
         except:
             pass
-    # Valores por defecto si el archivo no existe
-    return {"monedas": 500, "banco": 0, "racha": 0}
+    return {}
 
-def guardar_datos(datos):
+def guardar_todos_los_datos(datos):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
 
-# Cargamos los datos actuales al iniciar el script
-datos_usuario = cargar_datos()
+# Cargamos toda la base de datos de usuarios
+base_datos = cargar_todos_los_datos()
+
+# Argumentos de Node.js (aquí Node.js debe enviar el ID del usuario como argumento o lo simulamos)
+args = sys.argv[1:]
+mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
+parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
+
+# NOTA: Idealmente Node.js debería pasar el ID del remitente como argumento. 
+# Si por ahora no lo pasa, puedes usar un identificador temporal o extraerlo.
+# Digamos que recibimos el ID del usuario en un argumento extra o usamos uno por defecto:
+usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
+
+# Si el usuario no existe en la base de datos, lo registramos automáticamente con valores iniciales
+if usuario_id not in base_datos:
+    base_datos[usuario_id] = {
+        "monedas": 500,
+        "banco": 0,
+        "racha": 0
+    }
+    guardar_todos_los_datos(base_datos)
+
+# Obtenemos los datos específicos de este usuario
+datos_usuario = base_datos[usuario_id]
 monedas_usuario = datos_usuario.get("monedas", 500)
 banco_usuario = datos_usuario.get("banco", 0)
 racha_usuario = datos_usuario.get("racha", 0)
-coleccion_museo = []
 
 # --- IMPORTACIONES SEGURAS ---
 try:
@@ -35,83 +55,29 @@ except ImportError:
     def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
 
 try:
-    from admin import procesar_adminmenu, procesar_admin_command
-except ImportError:
-    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*"
-    def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
-
-try:
     from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_depositar, procesar_crimen, procesar_banco, procesar_retirar
-except ImportError:
-    def procesar_depositar(m, b, p): return m, b, f"🏦 Has depositado {p} monedas."
-    def procesar_retirar(m, b, p): return m, b, f"💵 Has retirado {p} monedas."
-    def procesar_crimen(u, m): return m + 50, "🥷 Cometiste un crimen exitoso y ganaste 50 monedas."
-    def procesar_trabajar(u, m): return m + 25, "👷‍♂️ Trabajaste y ganaste 25 monedas."
-    def procesar_diario(u, m, r): return m + 100, r + 1, "🎁 Recompensa diaria reclamada."
-    def procesar_cofre(u, m, r): return m + 200, r + 1, "📦 Abriste el cofre."
-    def procesar_banco(m, b): return m, b, f"🏦 Dinero en mano: {m} | Banco: {b}"
-
-try:
-    from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
 except ImportError:
     pass
 
 try:
-    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+    from descargas import procesar_pinterest, procesar_imagenes
 except ImportError:
-    def procesar_perfil(u=""): return f"👤 Perfil de {u or 'Usuario'}"
-    def procesar_setname(p=""): return f"✅ Nombre actualizado a: {p}"
-    def procesar_setdesc(p=""): return f"📝 Descripción actualizada."
-    def procesar_setage(p=""): return f"🎂 Edad configurada a: {p}"
-    def procesar_setbirth(p=""): return f"📅 Nacimiento guardado: {p}"
-    def procesar_setgene(p=""): return f"🚻 Género actualizado: {p}"
-    def procesar_level(u=""): return f"📊 Nivel del usuario."
-    def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
-
-# Importación de las funciones de descarga
-try:
-    from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
-                           descargar_tiktok, descargar_youtube, procesar_mp3, 
-                           procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest)
-except ImportError:
-    def procesar_descargar(l): return f"🔗 Descarga: {l}"
-    def descargar_facebook(l): return f"🔗 FB: {l}"
-    def descargar_instagram(l): return f"🔗 IG: {l}"
-    def descargar_tiktok(l): return f"🔗 TT: {l}"
-    def descargar_youtube(l): return f"🔗 YT: {l}"
-    def procesar_mp3(l): return f"🎵 MP3: {l}"
-    def procesar_mp4(l): return f"🎥 MP4: {l}"
-    def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
-    def procesar_sticker(u): return f"🖼️ Sticker: {u}"
-    def procesar_pinterest(b): return f"📌 Pinterest: {b}"
-
-# Argumentos de Node.js
-args = sys.argv[1:]
-mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
-parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
+    pass
 
 def ejecutar_bot():
-    global monedas_usuario, banco_usuario, racha_usuario, coleccion_museo
-    usuario_id = "usuario_principal"
-
-    # Menú Principal
-    if mensaje_recibido in [".menu", ".help"]:
-        return mostrar_menu()
-
-    elif mensaje_recibido == ".adminmenu":
-        return procesar_adminmenu()
+    global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario
 
     # Economía / Gacha
-    elif mensaje_recibido in [".crimen", ".crime"]:
+    if mensaje_recibido in [".crimen", ".crime"]:
         monedas_usuario, respuesta = procesar_crimen(usuario_id, monedas_usuario)
         datos_usuario["monedas"] = monedas_usuario
-        guardar_datos(datos_usuario)
+        guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, respuesta = procesar_trabajar(usuario_id, monedas_usuario)
         datos_usuario["monedas"] = monedas_usuario
-        guardar_datos(datos_usuario)
+        guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".cofre", ".daily"]:
@@ -121,7 +87,7 @@ def ejecutar_bot():
             monedas_usuario, racha_usuario, respuesta = procesar_cofre(usuario_id, monedas_usuario, racha_usuario)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["racha"] = racha_usuario
-        guardar_datos(datos_usuario)
+        guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".depositar", ".dep", ".d"]:
@@ -137,95 +103,12 @@ def ejecutar_bot():
         monedas_usuario, banco_usuario, respuesta = procesar_depositar(monedas_usuario, banco_usuario, cantidad_num)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["banco"] = banco_usuario
-        guardar_datos(datos_usuario)
-        return respuesta
-
-    elif mensaje_recibido in [".retirar", ".ret", ".r"]:
-        cantidad = parametro.lower()
-        if cantidad == "all" or cantidad == "todo":
-            cantidad_num = banco_usuario
-        else:
-            try:
-                cantidad_num = int(cantidad)
-            except ValueError:
-                cantidad_num = 0
-        
-        monedas_usuario, banco_usuario, respuesta = procesar_retirar(monedas_usuario, banco_usuario, cantidad_num)
-        datos_usuario["monedas"] = monedas_usuario
-        datos_usuario["banco"] = banco_usuario
-        guardar_datos(datos_usuario)
+        guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".banco", ".bank"]:
-        # Aquí pasamos las variables actualizadas desde el JSON
         monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
-
-    # Comandos de Perfil y Usuario
-    elif mensaje_recibido == ".perfil":
-        return procesar_perfil(parametro)
-    elif mensaje_recibido == ".setname":
-        return procesar_setname(parametro)
-    elif mensaje_recibido == ".setdesc":
-        return procesar_setdesc(parametro)
-    elif mensaje_recibido == ".setage":
-        return procesar_setage(parametro)
-    elif mensaje_recibido == ".setbirth":
-        return procesar_setbirth(parametro)
-    elif mensaje_recibido == ".setgene":
-        return procesar_setgene(parametro)
-    elif mensaje_recibido == ".level":
-        return procesar_level(parametro)
-    elif mensaje_recibido == ".levelup":
-        return procesar_levelup(parametro)
-
-    # Comandos de Descarga
-    elif mensaje_recibido in [".mediafire", ".mega", ".descargar"]:
-        return procesar_descargar(parametro)
-    elif mensaje_recibido == ".fb":
-        return descargar_facebook(parametro)
-    elif mensaje_recibido == ".ig":
-        return descargar_instagram(parametro)
-    elif mensaje_recibido == ".tt":
-        return descargar_tiktok(parametro)
-    elif mensaje_recibido == ".yt":
-        return descargar_youtube(parametro)
-    elif mensaje_recibido == ".mp3":
-        return procesar_mp3(parametro)
-    elif mensaje_recibido == ".mp4":
-        return procesar_mp4(parametro)
-    elif mensaje_recibido == ".imagen":
-        return procesar_imagenes(parametro)
-    elif mensaje_recibido == ".sticker":
-        return procesar_sticker(parametro)
-    elif mensaje_recibido == ".pin":
-        return procesar_pinterest(parametro)
-
-    # Comandos de Administración
-    elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
-        comando_limpio = mensaje_recibido.replace(".", "")
-        return procesar_admin_command(comando_limpio, user=parametro)
-    elif mensaje_recibido in [".close", ".open", ".antilink", ".antispam", ".tagall"]:
-        comando_limpio = mensaje_recibido.replace(".", "")
-        return procesar_admin_command(comando_limpio)
-    elif mensaje_recibido == ".delete":
-        return procesar_admin_command("delete", mensaje_id=parametro)
-
-    # Interacción
-    elif mensaje_recibido == ".saludar":
-        return saludar(parametro)
-    elif mensaje_recibido == ".beso":
-        return beso(parametro)
-    elif mensaje_recibido == ".abrazo":
-        return abrazo(parametro)
-    elif mensaje_recibido == ".golpe":
-        return golpe(parametro)
-    elif mensaje_recibido == ".kill":
-        return eliminar(parametro)
-    elif mensaje_recibido == ".caricia":
-        return caricia(parametro)
-    elif mensaje_recibido == ".correr":
-        return correr(parametro)
 
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
