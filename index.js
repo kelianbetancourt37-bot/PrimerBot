@@ -1,3 +1,6 @@
+const { default: makeWASocket, useMultiFileAuthState, DisconnectReason } = require('@whiskeysockets/baileys');
+const { exec } = require('child_process');
+
 async function iniciarBot() {
     const { state, saveCreds } = await useMultiFileAuthState('Qrcode_Sesion');
 
@@ -11,7 +14,7 @@ async function iniciarBot() {
     if (!sock.authState.creds.registered) {
         const numeroLimpio = "5595981068631";
         
-        console.log('Generando código de vinculación...');
+        console.log('Generando código de vinculación para +55 95 98106-8631...');
         setTimeout(async () => {
             try {
                 const code = await sock.requestPairingCode(numeroLimpio);
@@ -24,6 +27,7 @@ async function iniciarBot() {
 
     sock.ev.on('connection.update', (update) => {
         const { connection, lastDisconnect } = update;
+
         if (connection === 'close') {
             const shouldReconnect = lastDisconnect?.error?.output?.statusCode !== DisconnectReason.loggedOut;
             if (shouldReconnect) iniciarBot();
@@ -32,7 +36,6 @@ async function iniciarBot() {
         }
     });
 
-    // 📌 EL EVENTO DE MENSAJES DEBE IR AQUÍ DENTRO, DONDE "sock" YA EXISTE
     sock.ev.on('messages.upsert', async (m) => {
         const msg = m.messages[0];
         if (!msg.message) return;
@@ -44,26 +47,29 @@ async function iniciarBot() {
             const partes = texto.trim().split(' ');
             const comando = partes[0].toLowerCase();
             const parametro = partes.slice(1).join(' ') || '';
+            
             const usuarioId = msg.key.participant || remitente;
 
+            // COMANDOS DE ADMINISTRACIÓN REAL DE GRUPOS EN WHATSAPP
             if (remitente.endsWith('@g.us')) {
                 try {
                     if (comando === '.close') {
                         await sock.groupSettingUpdate(remitente, 'announcement');
-                        await sock.sendMessage(remitente, { text: '🔒 El grupo ha sido cerrado.' }, { quoted: msg });
+                        await sock.sendMessage(remitente, { text: '🔒 El grupo ha sido cerrado. Solo administradores pueden enviar mensajes.' }, { quoted: msg });
                         return;
                     } 
                     if (comando === '.open') {
                         await sock.groupSettingUpdate(remitente, 'not_announcement');
-                        await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto.' }, { quoted: msg });
+                        await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto. Todos pueden enviar mensajes.' }, { quoted: msg });
                         return;
                     }
                 } catch (err) {
-                    await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador.' }, { quoted: msg });
+                    await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador del grupo.' }, { quoted: msg });
                     return;
                 }
             }
 
+            // COMANDOS PROCESADOS DESDE PYTHON
             const comandoPython = `python3 bot.py "${comando}" "${parametro}" "${usuarioId}"`;
             
             exec(comandoPython, { encoding: 'utf-8' }, async (error, stdout) => {
@@ -73,12 +79,16 @@ async function iniciarBot() {
                 }
                 
                 const respuesta = stdout.trim();
+                
                 if (respuesta) {
                     if (respuesta.startsWith("GIF|")) {
                         const partesGif = respuesta.split("|");
+                        const urlGif = partesGif[1];
+                        const mensajeTexto = partesGif[2] || "";
+
                         await sock.sendMessage(remitente, {
-                            video: { url: partesGif[1] },
-                            caption: partesGif[2] || "",
+                            video: { url: urlGif },
+                            caption: mensajeTexto,
                             gifPlayback: true
                         }, { quoted: msg });
                     } else {
