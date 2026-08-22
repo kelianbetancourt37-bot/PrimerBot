@@ -1,6 +1,11 @@
 def mostrar_menu():
     return """
-╭━━━〔 🤖 *BOT RPG MULTIFUNCIÓN* 🤖 〕━━━╮
+╭━━━〔 🤖 *Agnes bot* 🤖 〕━━━╮
+
+proxi: *Jasper*
+creado por: *Jasper*
+creditos: *La Vecindad*
+nombre del bot: *Agnes Bot*
 
 🎮 *ECONOMÍA Y RPG*
  ├ 🪙 *.trabajar* / *.work* / *.w* ➔ Trabaja y gana monedas
@@ -9,7 +14,8 @@ def mostrar_menu():
  ├ 🏛️ *.museo* ➔ Mira tu colección de reliquias
  ├ 🛍️ *.comprarmuseo* ➔ Compra una reliquia para el museo
  ├ 🕵️ *.crimen* ➔ Intenta un crimen (arriesga tus monedas)
- └ 🏦 *.depositar <cant>* / *.d all* ➔ Deposita en el banco
+ ├ 🏦 *.depositar <cant>* / *.d all* ➔ Deposita en el banco
+ └ 💰 *.banco* ➔ Mira el estado de tu cuenta bancaria
 
 🎭 *INTERACCIONES*
  ├ 👋 *.saludar @user* ➔ Saluda a alguien
