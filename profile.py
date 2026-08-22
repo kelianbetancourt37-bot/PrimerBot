@@ -1,42 +1,53 @@
 import random
 
 def procesar_perfil(usuario=""):
-    destino = usuario if usuario else "Usuario"
-    opciones = [
-        f"👤 *Perfil de {destino}*\n✨ Nivel: 5\n⭐ Experiencia: 450/1000\n💼 Estado: Activo",
-        f"👤 *Perfil de {destino}*\n🛡️ Nivel: 12\n⭐ Experiencia: 1200/2000\n💼 Estado: Legendario"
-    ]
-    return random.choice(opciones)
+    destino = usuario if usuario else "Vecino"
+    
+    # Lista de frases o apodos divertidos estilo la vecindad
+    apodos = ["El Chavo del Ocho", "La Chilindrina", "Don Ramón", "Kiko", "Doña Florinda", "El Profesor Jirafales", "El Señor Barriga", "La Bruja del 71"]
+    apodo_aleatorio = random.choice(apodos)
+    
+    mensaje = (
+        f"🏘️ *LA VECINDAD DEL BOT* 🏠\n\n"
+        f"👤 *Inquilino:* *{destino}*\n"
+        f"🏷️ *Apodo en la vecindad:* _{apodo_aleatorio}_\n"
+        f"🏠 *Vivienda:* Casa número {random.randint(1, 74)}\n"
+        f"📝 *Frase célebre:* \"¡Eso, eso, eso!\" o \"¡No te doy otra patada porque...\"\n"
+        f"🎂 *Edad:* {random.randint(8, 60)} años (¡crujiendo los huesos!)\n"
+        f"💰 *Deuda de la renta:* ${random.randint(0, 14)} meses con el Señor Barriga 💸\n"
+        f"📊 *Nivel en la vecindad:* *Nivel 5* (Vecino honorable)"
+    )
+    return mensaje
 
 def procesar_setname(nuevo_nombre=""):
     if not nuevo_nombre:
-        return "⚠️ Debes escribir un nuevo nombre. Ejemplo: .setname Juan"
-    return f"✅ El nombre ha sido actualizado correctamente a: *{nuevo_nombre}*"
+        return "⚠️ Vecino, ¿cómo se va a llamar? Escriba bien. Ejemplo: .setname Don Ramón"
+    return f"✅ ¡Vaya! Su nuevo nombre en la vecindad es: *{nuevo_nombre}*"
 
 def procesar_setdesc(nueva_desc=""):
     if not nueva_desc:
-        return "⚠️ Debes escribir una descripción. Ejemplo: .setdesc Hola a todos"
-    return f"📝 Descripción actualizada con éxito:\n_{nueva_desc}_"
+        return "⚠️ Escriba su descripción o chisme de la vecindad. Ejemplo: .setdesc Vendiendo churros"
+    return f"📝 Su recado o descripción quedó registrado en la pared de la vecindad:\n_{nueva_desc}_"
 
 def procesar_setage(edad=""):
     if not edad.isdigit():
-        return "⚠️ Por favor, ingresa una edad válida en números. Ejemplo: .setage 18"
-    return f"🎂 Tu edad ha sido configurada a: *{edad} años*"
+        return "⚠️ Ponga una edad en números, no invente. Ejemplo: .setage 30"
+    return f"🎂 Con que tiene *{edad} años*... ¡Ya está grande para andar jugando con la resortera!"
 
 def procesar_setbirth(fecha=""):
     if not fecha:
-        return "⚠️ Especifica tu fecha de nacimiento. Ejemplo: .setbirth 01/01/2000"
-    return f"📅 Fecha de nacimiento guardada: *{fecha}*"
+        return "⚠️ Indique su fecha de nacimiento. Ejemplo: .setbirth 01/01/2000"
+    return f"📅 Fecha anotada en el calendario de la vecindad: *{fecha}*"
 
 def procesar_setgene(genero=""):
     if not genero:
-        return "⚠️ Especifica tu género. Ejemplo: .setgene Masculino"
-    return f"🚻 Género actualizado a: *{genero}*"
+        return "⚠️ Especifique su género. Ejemplo: .setgene Masculino"
+    return f"🚻 Género registrado correctamente: *{genero}*"
 
 def procesar_level(usuario=""):
-    destino = usuario if usuario else "Tu"
-    return f"📊 *{destino}* se encuentra en el **Nivel 5** (Experiencia: 450/1000)."
+    destino = usuario if usuario else "Usted"
+    return f"📊 *{destino}* se encuentra en el **Nivel 5** de la vecindad (¡Con experiencia barriendo el patio!)."
 
 def procesar_levelup(usuario=""):
-    destino = usuario if usuario else "Usuario"
-    return f"🎉 ¡Felicidades {destino}! Has subido al **Nivel 6** con éxito. 🚀"
+    destino = usuario if usuario else "Vecino"
+    return f"🎉 ¡Felicidades {destino}! Ha ascendido al **Nivel 6** de la vecindad. ¡Se ganó una torta de jamón! 🥪🚀"
