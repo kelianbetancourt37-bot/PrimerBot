@@ -211,10 +211,10 @@ def ejecutar_bot():
         return procesar_mp4(parametro)
     elif mensaje_recibido == ".imagen":
         return procesar_imagenes(parametro)
-   elif mensaje_recibido == ".sticker":
-    return procesar_sticker(crear_sticker(imagen or parametro))
-elif mensaje_recibido == ".pin":
-    return procesar_pin(dar_resultado=imagen)
+    elif mensaje_recibido == ".sticker":
+        return procesar_sticker(crear_sticker(imagen or parametro))
+    elif mensaje_recibido == ".pin":
+        return procesar_pin(dar_resultado=imagen)
 
     # Comandos de Administración
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
