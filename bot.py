@@ -212,9 +212,9 @@ def ejecutar_bot():
     elif mensaje_recibido == ".imagen":
         return procesar_imagenes(parametro)
     elif mensaje_recibido == ".sticker":
-        return procesar_sticker(parametro)
+        return procesar_sticker(crear_sticker(imagen or parametro))
     elif mensaje_recibido == ".pin":
-        return procesar_pinterest(parametro)
+        return procesar_pin(dar_resultado=imagen)
 
     # Comandos de Administración
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
