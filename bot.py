@@ -212,7 +212,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".imagen":
         return procesar_imagenes(parametro)
     elif mensaje_recibido == ".sticker":
-        return procesar_sticker(crear_sticker(imagen or parametro))
+        return procesar_sticker(parametro)
     elif mensaje_recibido == ".pin":
         return procesar_pinterest(parametro)
 
