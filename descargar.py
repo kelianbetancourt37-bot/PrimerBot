@@ -80,8 +80,7 @@ def procesar_sticker(url):
 
 def procesar_pinterest(buscar):
     if buscar:
-        # Si quieres que mande una imagen de ejemplo o texto de búsqueda:
-        return f"📌 Pinterest: Buscando resultados para *{buscar}*...\nhttps://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
+        # Retorna el texto junto con el link de la imagen para que WhatsApp la muestre como miniatura
+        return f"📌 Pinterest: Resultados para *{buscar}*:\nhttps://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
     else:
         return "❌ Por favor, proporciona un término de búsqueda. Ejemplo: `.pin gatos`"
-        return mensaje
