@@ -66,8 +66,8 @@ def procesar_mp4(link):
 
 def procesar_imagenes(buscar):
     if buscar:
-        # Aquí puedes agregar una URL de prueba o lógica de imagen si deseas que el bot mande una foto real
-        return f"🖼️ Buscando imágenes relacionadas con: *{buscar}*..."
+        # Retorna el texto junto con el link de la imagen para que WhatsApp la muestre como miniatura
+        return f"🖼️ Imágenes: Resultados para *{buscar}*:\nhttps://images.unsplash.com/photo-1514888286974-6c03e2ca1dba"
     else:
         return "❌ Por favor, proporciona un término de búsqueda. Ejemplo: `.imagen gatos`"
 
