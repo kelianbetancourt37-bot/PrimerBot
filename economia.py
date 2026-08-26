@@ -1,42 +1,36 @@
 import random
 import time
 
-# Diccionarios para almacenar los tiempos de la última ejecución por usuario
-cooldowns_trabajar = {}
-cooldowns_diario = {}
-cooldowns_cofre = {}
-cooldowns_crimen = {}
-
-def procesar_trabajar(usuario_id, monedas_actuales):
+def procesar_trabajar(usuario_id, monedas_actuales, ultimo_trabajo):
     tiempo_actual = time.time()
-    tiempo_espera = 60  # Cooldown de 60 segundos (1 minuto)
+    tiempo_espera = 300  # 5 minutos exactos de cooldown para trabajar / .w
     
-    if usuario_id in cooldowns_trabajar:
-        tiempo_transcurrido = tiempo_actual - cooldowns_trabajar[usuario_id]
+    if ultimo_trabajo > 0:
+        tiempo_transcurrido = tiempo_actual - ultimo_trabajo
         if tiempo_transcurrido < tiempo_espera:
             tiempo_restante = int(tiempo_espera - tiempo_transcurrido)
-            return monedas_actuales, f"⏳ Estás cansado. Debes esperar *{tiempo_restante} segundos* para volver a trabajar."
+            minutos = tiempo_restante // 60
+            segundos = tiempo_restante % 60
+            return monedas_actuales, ultimo_trabajo, f"⏳ Estás cansado. Debes esperar *{minutos} min y {segundos} seg* para volver a trabajar."
 
-    cooldowns_trabajar[usuario_id] = tiempo_actual
     ganancia = random.randint(10, 50)
     total = monedas_actuales + ganancia
     mensaje = f"👷‍♂️ ¡Trabajaste duro y ganaste {ganancia} monedas! Total: {total}"
-    return total, mensaje
+    return total, tiempo_actual, mensaje
 
 
-def procesar_diario(usuario_id, monedas_actuales, racha_actual):
+def procesar_diario(usuario_id, monedas_actuales, racha_actual, ultimo_diario):
     tiempo_actual = time.time()
-    tiempo_espera = 86400  # Cooldown de 24 horas (86400 segundos)
+    tiempo_espera = 86400  # 24 horas exactas
     
-    if usuario_id in cooldowns_diario:
-        tiempo_transcurrido = tiempo_actual - cooldowns_diario[usuario_id]
+    if ultimo_diario > 0:
+        tiempo_transcurrido = tiempo_actual - ultimo_diario
         if tiempo_transcurrido < tiempo_espera:
             tiempo_restante = int(tiempo_espera - tiempo_transcurrido)
             horas = tiempo_restante // 3600
             minutos = (tiempo_restante % 3600) // 60
-            return monedas_actuales, racha_actual, f"⏳ ¡Ya reclamaste tu recompensa diaria! Vuelve en *{horas} horas y {minutos} minutos*."
+            return monedas_actuales, racha_actual, ultimo_diario, f"⏳ ¡Ya reclamaste tu recompensa diaria! Vuelve en *{horas} horas y {minutos} minutos*."
 
-    cooldowns_diario[usuario_id] = tiempo_actual
     racha_actual += 1
     recompensa = 100 + (racha_actual * 20)
     total = monedas_actuales + recompensa
@@ -45,22 +39,21 @@ def procesar_diario(usuario_id, monedas_actuales, racha_actual):
         f"🔥 Llevas una racha de {racha_actual} día(s).\n"
         f"💵 Ganaste {recompensa} monedas. Total: {total}"
     )
-    return total, racha_actual, mensaje
+    return total, racha_actual, tiempo_actual, mensaje
 
 
-def procesar_cofre(usuario_id, monedas_actuales, racha_actual):
+def procesar_cofre(usuario_id, monedas_actuales, racha_actual, ultimo_cofre):
     tiempo_actual = time.time()
-    tiempo_espera = 43200  # Cooldown de 12 horas (43200 segundos)
+    tiempo_espera = 86400  # 24 horas exactas
     
-    if usuario_id in cooldowns_cofre:
-        tiempo_transcurrido = tiempo_actual - cooldowns_cofre[usuario_id]
+    if ultimo_cofre > 0:
+        tiempo_transcurrido = tiempo_actual - ultimo_cofre
         if tiempo_transcurrido < tiempo_espera:
             tiempo_restante = int(tiempo_espera - tiempo_transcurrido)
             horas = tiempo_restante // 3600
             minutos = (tiempo_restante % 3600) // 60
-            return monedas_actuales, racha_actual, f"⏳ ¡El cofre aún está cerrado con cerrojo! Espera *{horas} horas y {minutos} minutos*."
+            return monedas_actuales, racha_actual, ultimo_cofre, f"⏳ ¡El cofre aún está cerrado! Espera *{horas} horas y {minutos} minutos*."
 
-    cooldowns_cofre[usuario_id] = tiempo_actual
     racha_actual += 1
     recompensa = 200 + (racha_actual * 50)
     total = monedas_actuales + recompensa
@@ -69,61 +62,57 @@ def procesar_cofre(usuario_id, monedas_actuales, racha_actual):
         f"🔥 Racha actual: {racha_actual} día(s).\n"
         f"💎 Ganaste {recompensa} monedas. Total: {total}"
     )
-    return total, racha_actual, mensaje
+    return total, racha_actual, tiempo_actual, mensaje
     
 
-def procesar_crimen(usuario_id, monedas_actuales):
+def procesar_crimen(usuario_id, monedas_actuales, ultimo_crimen):
     tiempo_actual = time.time()
-    tiempo_espera = 300  # Cooldown de 5 minutos (300 segundos)
+    tiempo_espera = 300  # 5 minutos
     
-    if usuario_id in cooldowns_crimen:
-        tiempo_transcurrido = tiempo_actual - cooldowns_crimen[usuario_id]
+    if ultimo_crimen > 0:
+        tiempo_transcurrido = tiempo_actual - ultimo_crimen
         if tiempo_transcurrido < tiempo_espera:
             tiempo_restante = int(tiempo_espera - tiempo_transcurrido)
             minutos = tiempo_restante // 60
             segundos = tiempo_restante % 60
-            return monedas_actuales, f"⏳ La policía sigue patrullando la zona. Esconde tu rastro y espera *{minutos} min y {segundos} seg*."
+            return monedas_actuales, ultimo_crimen, f"⏳ La policía sigue patrullando. Espera *{minutos} min y {segundos} seg*."
 
-    cooldowns_crimen[usuario_id] = tiempo_actual
     exito = random.choice([True, False])
-    
     if exito:
         ganancia = random.randint(50, 150)
         total = monedas_actuales + ganancia
-        mensaje = f"🥷 ¡Cometiste un crimen exitoso y ganaste {ganancia} monedas! Total: {total}"
-        return total, mensaje
+        mensaje = f"🥷 ¡Crimen exitoso! Ganaste {ganancia} monedas. Total: {total}"
+        return total, tiempo_actual, mensaje
     else:
         multa = random.randint(30, 80)
         total = max(0, monedas_actuales - multa)
-        mensaje = f"👮‍♂️ ¡Te atrapó la policía intentando cometer el crimen y perdiste {multa} monedas en multas! Total: {total}"
-        return total, mensaje
+        mensaje = f"👮‍♂️ ¡Te atrapó la policía! Perdiste {multa} monedas. Total: {total}"
+        return total, tiempo_actual, mensaje
 
 
 def procesar_depositar(monedas_actuales, banco_actual, cantidad):
     if cantidad <= 0:
         return monedas_actuales, banco_actual, "❌ La cantidad a depositar debe ser mayor que cero."
-    
     if cantidad > monedas_actuales:
         return monedas_actuales, banco_actual, f"❌ No tienes suficientes monedas en mano. Tienes: {monedas_actuales}."
     
     monedas_actuales -= cantidad
     banco_actual += cantidad
-    
     mensaje = f"💰 Has depositado *{cantidad}* monedas en el banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
     return monedas_actuales, banco_actual, mensaje
-    
+
+
 def procesar_retirar(monedas_actuales, banco_actual, cantidad):
     if cantidad <= 0:
         return monedas_actuales, banco_actual, "❌ La cantidad a retirar debe ser mayor que cero."
-    
     if cantidad > banco_actual:
-        return monedas_actuales, banco_actual, f"❌ No tienes suficientes dinero en el banco. Tienes: {banco_actual}."
+        return monedas_actuales, banco_actual, f"❌ No tienes suficiente dinero en el banco. Tienes: {banco_actual}."
     
     banco_actual -= cantidad
     monedas_actuales += cantidad
-    
     mensaje = f"💰 Has retirado *{cantidad}* monedas del banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
     return monedas_actuales, banco_actual, mensaje
+
 
 def procesar_banco(monedas_mano, monedas_banco):
     if monedas_banco > 0:
@@ -140,5 +129,15 @@ def procesar_banco(monedas_mano, monedas_banco):
             f"💰 Dinero en el banco: *0* monedas\n"
             f"⚠️ *Tu cuenta bancaria está vacía.* Usa `.depositar [cantidad]` para guardar dinero."
         )
-    
     return monedas_mano, monedas_banco, mensaje
+
+def procesar_retirar(monedas_actuales, banco_actual, cantidad):
+    if cantidad <= 0:
+        return monedas_actuales, banco_actual, "❌ La cantidad a retirar debe ser mayor que cero."
+    if cantidad > banco_actual:
+        return monedas_actuales, banco_actual, f"❌ No tienes suficiente dinero en el banco. Tienes: {banco_actual}."
+    
+    banco_actual -= cantidad
+    monedas_actuales += cantidad
+    mensaje = f"💰 Has retirado *{cantidad}* monedas del banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
+    return monedas_actuales, banco_actual, mensaje
