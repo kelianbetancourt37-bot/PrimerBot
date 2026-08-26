@@ -18,7 +18,7 @@ nombre del bot: *Agnes Bot*
  ├ 💰 *.retirar <cant>* / *.r all* ➔ Retira dinero del banco
  └ 💰 *.banco* ➔ Mira el estado de tu cuenta bancaria
 
-🎭 *INTERACCIONES*
+🎭 *INTERACCIONES*-EN-MANTENIMIENTO-NO-USAR-SI-NO-QUIERES-QUE-EL-SE-APAGUE.
  ├ 👋 *.saludar @user* ➔ Saluda a alguien
  ├ 💋 *.beso @user* ➔ Dale un beso a alguien
  ├ 🫂 *.abrazo @user* ➔ Abraza a un usuario
