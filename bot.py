@@ -115,6 +115,15 @@ except ImportError:
     def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
 
+try:
+    from pokemon import procesar_Mispokemon, procesar_mochila, procesar_topokemon, procesar_tienda, procesar_capturar
+except ImportError:
+    def procesar_Mispokemon(v): return "⚠️ Módulo pokémon no disponible."
+    def procesar_mochila(v): return "⚠️ Módulo pokémon no disponible."
+    def procesar_topokemon(v, u=""): return "⚠️ Módulo pokémon no disponible."
+    def procesar_tienda(): return "⚠️ Módulo pokémon no disponible."
+    def procesar_capturar(p=None): return "⚠️ Módulo pokémon no disponible."
+
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
 
