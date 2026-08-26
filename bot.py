@@ -259,13 +259,15 @@ def ejecutar_bot():
         # Puedes pasarle los pokémon que tenga guardados el usuario en el JSON, o la lista general
         mis_pokemones = datos_usuario.get("pokemons", [])
         return procesar_Mispokemon(mis_pokemones)
-
     elif mensaje_recibido == ".mochila":
         return procesar_mochila([])
-
     elif mensaje_recibido == ".tienda":
         return procesar_tienda()
-
+    elif mensaje_recibido == ".topokemon":
+        return procesar_topokemon([])
+    elif mensaje_recibido == ".comprar":
+        return procesar_comprar_pokeballs([])
+        
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
 
