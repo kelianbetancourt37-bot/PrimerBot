@@ -1,7 +1,18 @@
 import random
 
 # Listas de Pokémon disponibles para encontrar o regalar
-LISTA_POKEMON_GENERAL = ["Pikachu", "Charmander", "Squirtle", "Bulbasaur", "Jigglypuff", "Snorlax", "Eevee", "Gengar", "Lucario", "Psyduck",]
+LISTA_POKEMON_GENERAL = [
+    "Pikachu", "Charmander", "Squirtle", "Bulbasaur", "Jigglypuff", 
+    "Gengar", "Snorlax", "Eevee", "Lucario", "Mewtwo", 
+    "Charizard", "Blastoise", "Venusaur", "Psyduck", "Machop", 
+    "Abra", "Gastly", "Onix", "Cubone", "Rhydon", 
+    "Chansey", "Kangaskhan", "Scyther", "Electabuzz", "Magmar", 
+    "Magikarp", "Gyarados", "Lapras", "Ditto", "Vaporeon", 
+    "Jolteon", "Flareon", "Porygon", "Aerodactyl", "Articuno", 
+    "Zapdos", "Moltres", "Dratini", "Dragonite", "Mew", 
+    "Chikorita", "Cyndaquil", "Totodile", "Togepi", "Ampharos", 
+    "Marill", "Espeon", "Umbreon", "Tyranitar", "Celebi"
+]
 LISTA_MOCHILAS = ["Mochila básica", "Mochila escolar", "Mochila de aventurero", "Mochila espacial"]
 LISTA_TIENDA = ["¡Bienvenido a la PokéTienda!", "Has entrado a la tienda general."]
 IMAGENES_POKEMON = {
