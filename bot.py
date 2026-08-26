@@ -29,33 +29,7 @@ mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
 parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
 usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
 
-# Registrar usuario si es nuevo
-if usuario_id not in base_datos:
-    base_datos[usuario_id] = {
-        "monedas": 500,
-        "banco": 0,
-        "racha": 0
-    }
-    guardar_todos_los_datos(base_datos)
-
-datos_usuario = base_datos[usuario_id]
-monedas_usuario = datos_usuario.get("monedas", 500)
-banco_usuario = datos_usuario.get("banco", 0)
-racha_usuario = datos_usuario.get("racha", 0)
-coleccion_museo = []
-
-# --- IMPORTACIONES SEGURAS ---
-try:
-    from menu import mostrar_menu
-except ImportError:
-    def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
-
-try:
-    from admin import procesar_adminmenu, procesar_admin_command
-except ImportError:
-    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*"
-    def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
-
+# Registrar usuario si es nuevo con todos sus campos de tiempo
 if usuario_id not in base_datos:
     base_datos[usuario_id] = {
         "monedas": 500,
@@ -76,6 +50,19 @@ ultimo_trabajo = datos_usuario.get("ultimo_trabajo", 0)
 ultimo_diario = datos_usuario.get("ultimo_diario", 0)
 ultimo_cofre = datos_usuario.get("ultimo_cofre", 0)
 ultimo_crimen = datos_usuario.get("ultimo_crimen", 0)
+coleccion_museo = []
+
+# --- IMPORTACIONES SEGURAS ---
+try:
+    from menu import mostrar_menu
+except ImportError:
+    def mostrar_menu(): return "📜 *MENÚ PRINCIPAL*\nUsa .help para ayuda."
+
+try:
+    from admin import procesar_adminmenu, procesar_admin_command
+except ImportError:
+    def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*"
+    def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
 
 try:
     from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
@@ -100,7 +87,7 @@ except ImportError:
     def procesar_level(u=""): return f"📊 Nivel del usuario."
     def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
 
-# Importación de las funciones de descarga
+# Importación de las funciones de descarga y economía
 try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
                            descargar_tiktok, descargar_youtube, procesar_mp3, 
@@ -117,8 +104,19 @@ except ImportError:
     def procesar_sticker(u): return f"🖼️ Sticker: {u}"
     def procesar_pinterest(b): return f"📌 Pinterest: {b}"
 
+try:
+    from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_crimen, procesar_depositar, procesar_retirar, procesar_banco
+except ImportError:
+    def procesar_trabajar(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
+    def procesar_diario(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
+    def procesar_cofre(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
+    def procesar_crimen(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
+    def procesar_depositar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
+    def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
+    def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
+
 def ejecutar_bot():
-    global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, coleccion_museo
+    global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
 
     # Menú Principal
     if mensaje_recibido in [".menu", ".help"]:
@@ -127,24 +125,28 @@ def ejecutar_bot():
     elif mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
 
-    # Economía / Gacha
+    # Economía / Gacha (Con sus tiempos correctos)
     elif mensaje_recibido in [".crimen", ".crime"]:
-        monedas_usuario, respuesta = procesar_crimen(usuario_id, monedas_usuario)
+        monedas_usuario, ultimo_crimen, respuesta = procesar_crimen(usuario_id, monedas_usuario, ultimo_crimen)
         datos_usuario["monedas"] = monedas_usuario
+        datos_usuario["ultimo_crimen"] = ultimo_crimen
         guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
-        monedas_usuario, respuesta = procesar_trabajar(usuario_id, monedas_usuario)
+        monedas_usuario, ultimo_trabajo, respuesta = procesar_trabajar(usuario_id, monedas_usuario, ultimo_trabajo)
         datos_usuario["monedas"] = monedas_usuario
+        datos_usuario["ultimo_trabajo"] = ultimo_trabajo
         guardar_todos_los_datos(base_datos)
         return respuesta
 
     elif mensaje_recibido in [".cofre", ".daily"]:
         if mensaje_recibido == ".daily":
-            monedas_usuario, racha_usuario, respuesta = procesar_diario(usuario_id, monedas_usuario, racha_usuario)
+            monedas_usuario, racha_usuario, ultimo_diario, respuesta = procesar_diario(usuario_id, monedas_usuario, racha_usuario, ultimo_diario)
+            datos_usuario["ultimo_diario"] = ultimo_diario
         else:
-            monedas_usuario, racha_usuario, respuesta = procesar_cofre(usuario_id, monedas_usuario, racha_usuario)
+            monedas_usuario, racha_usuario, ultimo_cofre, respuesta = procesar_cofre(usuario_id, monedas_usuario, racha_usuario, ultimo_cofre)
+            datos_usuario["ultimo_cofre"] = ultimo_cofre
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["racha"] = racha_usuario
         guardar_todos_los_datos(base_datos)
@@ -222,7 +224,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".imagen":
         return procesar_imagenes(parametro)
     elif mensaje_recibido == ".sticker":
-        return procesar_sticker(crear_sticker(imagen or parametro))
+        return procesar_sticker(parametro)
     elif mensaje_recibido == ".pin":
         return procesar_pinterest(parametro)
 
