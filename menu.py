@@ -57,6 +57,7 @@ nombre del bot: *Agnes Bot*
  ├ 🐱‍💻 *.mispokemon* ➔ Muestra tus pokemones
  ├ 👜 *.mochila* ➔ Muestra tus mochilas
  ├ 🛒 *.tienda* ➔ Muestra la tienda de pokemones
+ ├ 🧪 *.capturar* / *.cap* ➔ Captura un pokemon
  └ 🏆 *.topokemon* ➔ Muestra el pokemon más usado 
 
 🛡️ *ADMINISTRACIÓN*
