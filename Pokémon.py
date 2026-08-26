@@ -34,5 +34,7 @@ def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_exp
         f"🔵 Superpokeballs: {superpokeball}\n"
         f"🟡 Ultrapokeballs: {ultrapokeball}\n"
         f"🧪 Pociones de experiencia: {pocion_de_experiencia}"
+        f"\n\n¡Bienvenido a la tienda de pokémones!"
+        f"\n Usa `.comprar <Pokeballs>` para comprar Pokéballs."
     )
     return mensaje
