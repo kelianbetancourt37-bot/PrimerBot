@@ -56,16 +56,26 @@ except ImportError:
     def procesar_adminmenu(): return "📜 *MENÚ DE ADMINISTRACIÓN*"
     def procesar_admin_command(cmd, user=None, mensaje_id=None): return "⚠️ Error en módulo admin."
 
-try:
-    from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_depositar, procesar_crimen, procesar_banco, procesar_retirar
-except ImportError:
-    def procesar_depositar(m, b, p): return m, b, f"🏦 Has depositado {p} monedas."
-    def procesar_retirar(m, b, p): return m, b, f"💵 Has retirado {p} monedas."
-    def procesar_crimen(u, m): return m + 50, "🥷 Cometiste un crimen exitoso y ganaste 50 monedas."
-    def procesar_trabajar(u, m): return m + 25, "👷‍♂️ Trabajaste y ganaste 25 monedas."
-    def procesar_diario(u, m, r): return m + 100, r + 1, "🎁 Recompensa diaria reclamada."
-    def procesar_cofre(u, m, r): return m + 200, r + 1, "📦 Abriste el cofre."
-    def procesar_banco(m, b): return m, b, f"🏦 Dinero en mano: {m} | Banco: {b}"
+if usuario_id not in base_datos:
+    base_datos[usuario_id] = {
+        "monedas": 500,
+        "banco": 0,
+        "racha": 0,
+        "ultimo_trabajo": 0,
+        "ultimo_diario": 0,
+        "ultimo_cofre": 0,
+        "ultimo_crimen": 0
+    }
+    guardar_todos_los_datos(base_datos)
+
+datos_usuario = base_datos[usuario_id]
+monedas_usuario = datos_usuario.get("monedas", 500)
+banco_usuario = datos_usuario.get("banco", 0)
+racha_usuario = datos_usuario.get("racha", 0)
+ultimo_trabajo = datos_usuario.get("ultimo_trabajo", 0)
+ultimo_diario = datos_usuario.get("ultimo_diario", 0)
+ultimo_cofre = datos_usuario.get("ultimo_cofre", 0)
+ultimo_crimen = datos_usuario.get("ultimo_crimen", 0)
 
 try:
     from Interacion import saludar, beso, abrazo, golpe, caricia, eliminar, correr
@@ -212,7 +222,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".imagen":
         return procesar_imagenes(parametro)
     elif mensaje_recibido == ".sticker":
-        return procesar_sticker(parametro)
+        return procesar_sticker(crear_sticker(imagen or parametro))
     elif mensaje_recibido == ".pin":
         return procesar_pinterest(parametro)
 
