@@ -52,6 +52,13 @@ nombre del bot: *Agnes Bot*
  ├ 📄​ *.setdesc* ➔ Cambia la descripción
  └ 🔋 *.level* ➔ Muestra tu nivel
 
+🧢 *POKÉMON*
+
+ ├ 🐱‍💻 *.mispokemon* ➔ Muestra tus pokemones
+ ├ 👜 *.mochila* ➔ Muestra tus mochilas
+ ├ 🛒 *.tienda* ➔ Muestra la tienda de pokemones
+ └ 🏆 *.topokemon* ➔ Muestra el pokemon más usado 
+
 🛡️ *ADMINISTRACIÓN*
  └ 👑 *.adminmenu* ➔ Menú exclusivo de administradores (solo para admins)
 
