@@ -267,6 +267,8 @@ def ejecutar_bot():
         return procesar_topokemon([])
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs([])
+    elif mensaje_recibido == [".capturar", ".cap"]:
+        return procesar_capturar()
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
