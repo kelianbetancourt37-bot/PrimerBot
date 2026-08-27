@@ -212,6 +212,8 @@ def ejecutar_bot():
         return procesar_setgene(parametro)
     elif mensaje_recibido == ".level":
         return procesar_level(parametro)
+    elif mensaje_recibido == ".sublevel":
+        return procesar_sublevel(parametro)
     elif mensaje_recibido == ".levelup":
         return procesar_levelup(parametro)
 
