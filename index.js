@@ -91,6 +91,18 @@ async function iniciarBot() {
                             caption: mensajeTexto,
                             gifPlayback: true
                         }, { quoted: msg });
+
+                    } else if (respuesta.includes("[IMAGEN:")) {
+                        // DETECTA Y ENVÍA LA IMAGEN DEL POKÉMON CORRECTAMENTE
+                        const partesImg = respuesta.split("\n[IMAGEN:");
+                        const mensajeTexto = partesImg[0];
+                        const urlImagen = partesImg[1].replace("]", "").trim();
+
+                        await sock.sendMessage(remitente, {
+                            image: { url: urlImagen },
+                            caption: mensajeTexto
+                        }, { quoted: msg });
+
                     } else {
                         await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
                     }
