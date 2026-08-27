@@ -99,6 +99,20 @@ def procesar_capturar(capturar=None):
     imagen_url = IMAGENES_POKEMON[capturar]
     return f"🐱‍💻 ¡Has capturado a un *{capturar}*!\n[IMAGEN:{imagen_url}]"
 
+def procesar_comprar_pokeballs(cantidad="1"):
+    try:
+        cant = int(cantidad)
+    except ValueError:
+        cant = 1
+    
+    precio_unitario = 100  # Puedes ajustar el precio como prefieras
+    total = cant * precio_unitario
+    
+    return (
+        f"🛒 *Compra exitosa*\n"
+        f"Has comprado *{cant}x* Pokéballs por un total de *{total} monedas*."
+    )
+
 def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
     return (
         f"🛒 *Tienda Pokémon*\n"
