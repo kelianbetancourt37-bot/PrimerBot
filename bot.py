@@ -116,7 +116,7 @@ except ImportError:
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
 
 try:
-    from pokémon import procesar_Mispokemon, procesar_mochila, procesar_topokemon, procesar_tienda, procesar_capturar
+    from pokemon import procesar_Mispokemon, procesar_mochila, procesar_topokemon, procesar_tienda, procesar_capturar
 except ImportError:
     def procesar_Mispokemon(v): return "⚠️ Módulo pokémon no disponible."
     def procesar_mochila(v): return "⚠️ Módulo pokémon no disponible."
