@@ -1,6 +1,5 @@
 import random
 
-# Listas de Pokémon disponibles para encontrar o regalar
 LISTA_POKEMON_GENERAL = [
     "Pikachu", "Charmander", "Squirtle", "Bulbasaur", "Jigglypuff", 
     "Gengar", "Snorlax", "Eevee", "Lucario", "Mewtwo", 
@@ -15,6 +14,7 @@ LISTA_POKEMON_GENERAL = [
 ]
 LISTA_MOCHILAS = ["Mochila básica", "Mochila escolar", "Mochila de aventurero", "Mochila espacial"]
 LISTA_TIENDA = ["¡Bienvenido a la PokéTienda!", "Has entrado a la tienda general."]
+
 IMAGENES_POKEMON = {
     "Pikachu": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
     "Charmander": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
@@ -69,47 +69,43 @@ IMAGENES_POKEMON = {
 }
 
 def procesar_Mispokemon(ver_pokemon):
-    # Si la lista está vacía, evitamos que falle
     if not ver_pokemon:
         ver_pokemon = LISTA_POKEMON_GENERAL
     pokemon = random.choice(ver_pokemon)
-    mensaje = f"🐱‍💻 Mis pokémon: {pokemon}"
-    return mensaje
+    if pokemon in IMAGENES_POKEMON:
+        return f"🐱‍💻 Mis pokémon: {pokemon}\n[IMAGEN:{IMAGENES_POKEMON[pokemon]}]"
+    return f"🐱‍💻 Mis pokémon: {pokemon}"
 
 def procesar_mochila(ver_mochila):
     if not ver_mochila:
         ver_mochila = LISTA_MOCHILAS
     mochila = random.choice(ver_mochila)
-    mensaje = f"👜 Mis mochilas: {mochila}"
-    return mensaje
+    return f"👜 Mis mochilas: {mochila}"
 
 def procesar_topokemon(ver_pokemon, usuario_nombre="Entrenador"):
     if not ver_pokemon:
         ver_pokemon = LISTA_POKEMON_GENERAL
     pokemon = random.choice(ver_pokemon)
-    mensaje = f"🐱‍💻 Top pokémon de {usuario_nombre}: {pokemon}"
-    return mensaje
+    if pokemon in IMAGENES_POKEMON:
+        return f"🐱‍💻 Top pokémon de {usuario_nombre}: {pokemon}\n[IMAGEN:{IMAGENES_POKEMON[pokemon]}]"
+    return f"🐱‍💻 Top pokémon de {usuario_nombre}: {pokemon}"
 
 def procesar_capturar(capturar=None):
-    # Si no se indica un nombre, elige uno al azar de los 50 disponibles
     if not capturar or capturar.capitalize() not in IMAGENES_POKEMON:
         capturar = random.choice(list(IMAGENES_POKEMON.keys()))
     else:
         capturar = capturar.capitalize()
     
     imagen_url = IMAGENES_POKEMON[capturar]
-    
-    mensaje = f"🐱‍💻 ¡Has capturado a un *{capturar}*!\n[IMAGEN:{imagen_url}]"
-    return mensaje
+    return f"🐱‍💻 ¡Has capturado a un *{capturar}*!\n[IMAGEN:{imagen_url}]"
 
 def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
-    mensaje = (
+    return (
         f"🛒 *Tienda Pokémon*\n"
         f"🔴 Pokéballs: {pokeball}\n"
         f"🔵 Superpokeballs: {superpokeball}\n"
         f"🟡 Ultrapokeballs: {ultrapokeball}\n"
-        f"🧪 Pociones de experiencia: {pocion_de_experiencia}"
-        f"\n\n¡Bienvenido a la tienda de pokémones!"
-        f"\n Usa `.comprar <Pokeballs>` para comprar Pokéballs."
+        f"🧪 Pociones de experiencia: {pocion_de_experiencia}\n\n"
+        f"¡Bienvenido a la tienda de pokémones!\n"
+        f"Usa `.comprar <Pokeballs>` para comprar Pokéballs."
     )
-    return mensaje
