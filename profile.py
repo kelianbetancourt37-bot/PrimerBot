@@ -29,6 +29,10 @@ def procesar_level(usuario=""):
     destino = usuario if usuario else "Usted"
     return f"📊 *{destino}* se encuentra en el **Nivel 5** de la vecindad (¡Con experiencia barriendo el patio!)."
 
+def procesar_sublevel(usuario=""):
+    destino = usuario if usuario else "Usted"
+    return f"🆙 ¡{destino} sube su nivel! ¡Ahora está en el **Nivel 6** de la vecindad!"
+
 def procesar_levelup(usuario=""):
     destino = usuario if usuario else "Vecino"
     return f"🎉 ¡Felicidades {destino}! Ha ascendido al **Nivel 6** de la vecindad. ¡Se ganó una torta de jamón! 🥪🚀"
