@@ -285,9 +285,9 @@ def ejecutar_bot():
         return procesar_Mispokemon(mis_pokemones)
     elif mensaje_recibido == ".mochila":
         return procesar_mochila([])
-    elif mensaje_recibido == ".tienda":
-        return procesar_tienda()
-    elif mensaje_recibido == ".topokemon":
+    elif mensaje_recibido == ".tiendapokemon":
+        return procesar_tiendapokemon()
+    elif mensaje_recibido == ".toppokemon":
         return procesar_topokemon([])
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs([])
