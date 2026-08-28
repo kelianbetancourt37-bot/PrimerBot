@@ -68,7 +68,7 @@ IMAGENES_POKEMON = {
     "Celebi": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png"
 }
 
-PRECIOS_TIENDAPOKEMON = {
+PRECIOS_TIENDA = {
     "pokeball": 100,
     "superpokeball": 500,
     "ultrapokeball": 2000,
@@ -120,7 +120,7 @@ def procesar_comprar_pokeballs(cantidad="1"):
         f"Has comprado *{cant}x* Pokéballs por un total de *{total} monedas*."
     )
 
-def procesar_tiendapokemon(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
+def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
     return (
         f"🛒 *Tienda Pokémon*\n"
         f"🔴 Pokéballs: {pokeball}\n"
