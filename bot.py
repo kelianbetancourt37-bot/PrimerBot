@@ -205,6 +205,9 @@ def ejecutar_bot():
         monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
 
+    elif mensaje_recibido == ".mercado":
+        return procesar_mercado(parametro)
+
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(parametro)
