@@ -76,7 +76,7 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-    from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
 except ImportError:
     def procesar_perfil(u=""): return f"👤 Perfil de {u or 'Usuario'}"
     def procesar_setname(p=""): return f"✅ Nombre actualizado a: {p}"
@@ -114,15 +114,6 @@ except ImportError:
     def procesar_depositar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
-
-try:
-    from Pokemon import procesar_Mispokemon, procesar_mochila, procesar_topokemon, procesar_tienda, procesar_capturar
-except ImportError:
-    def procesar_Mispokemon(v): return "⚠️ Módulo pokémon no disponible."
-    def procesar_mochila(v): return "⚠️ Módulo pokémon no disponible."
-    def procesar_topokemon(v, u=""): return "⚠️ Módulo pokémon no disponible."
-    def procesar_tienda(): return "⚠️ Módulo pokémon no disponible."
-    def procesar_capturar(p=None): return "⚠️ Módulo pokémon no disponible."
 
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
@@ -198,9 +189,9 @@ def ejecutar_bot():
         return respuesta
 
     elif mensaje_recibido == ".mercado":
-        return procesar_mercado(parametro)
+        return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido == ".comprar":
-        return procesar_comprar_Objectos(parametro)
+        return procesar_comprar_pokeballs(parametro)
 
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
@@ -270,22 +261,18 @@ def ejecutar_bot():
     elif mensaje_recibido == ".correr":
         return correr(parametro)
 
-    # pokemon
+    # Pokémon
     elif mensaje_recibido == ".mispokemon":
-        # Puedes pasarle los pokémon que tenga guardados el usuario en el JSON, o la lista general
         mis_pokemones = datos_usuario.get("pokemons", [])
         return procesar_Mispokemon(mis_pokemones)
     elif mensaje_recibido == ".mochila":
         return procesar_mochila([])
-    elif mensaje_recibido == ".tiendapokemon":
-        return procesar_tiendapokemon()
-    elif mensaje_recibido == ".toppokemon":
-        return procesar_toppokemon([])
-    elif mensaje_recibido == ".comprar":
-        return procesar_comprar_pokeballs([])
+    elif mensaje_recibido == ".tienda":
+        return procesar_tienda()
+    elif mensaje_recibido == ".topokemon":
+        return procesar_topokemon([])
     elif mensaje_recibido in [".capturar", ".cap"]:
-        pokemon_a_capturar = parametro.strip() if parametro else None
-        return procesar_capturar(pokemon_a_capturar)
+        return procesar_capturar(parametro)
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
