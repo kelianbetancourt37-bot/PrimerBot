@@ -1,6 +1,14 @@
 import random
 import time
 
+PRECIOS_MERCADO = {
+    "botellas_de_experiencia": 500,
+    "espada_de_la_lucha": 1000,
+    "espada_de_la_vitalidad": 2000,
+    "espada_de_la_salud": 3000,
+    "hacha_divina_escanor": 5000
+}
+
 def procesar_trabajar(usuario_id, monedas_actuales, ultimo_trabajo):
     tiempo_actual = time.time()
     tiempo_espera = 300  # 5 minutos exactos de cooldown para trabajar / .w
