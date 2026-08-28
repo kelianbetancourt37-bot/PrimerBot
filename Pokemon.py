@@ -120,7 +120,7 @@ def procesar_comprar_pokeballs(cantidad="1"):
         f"Has comprado *{cant}x* Pokéballs por un total de *{total} monedas*."
     )
 
-def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
+def procesar_tiendapokemon(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
     return (
         f"🛒 *Tienda Pokémon*\n"
         f"🔴 Pokéballs: {pokeball}\n"
