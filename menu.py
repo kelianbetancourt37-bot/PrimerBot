@@ -4,7 +4,6 @@ def mostrar_menu():
 
 proxi: *Jasper*
 creado por: *Jasper*
-creditos: *La Vecindad*
 nombre del bot: *Agnes Bot*
 
 🎮 *ECONOMÍA Y RPG*
