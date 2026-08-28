@@ -2,7 +2,6 @@ def mostrar_menu():
     return """
 ╭━━━〔 🤖 *Agnes bot* 🤖 〕━━━╮
 
-proxi: *Jasper*
 creado por: *Jasper*
 nombre del bot: *Agnes Bot*
 
