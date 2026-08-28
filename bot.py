@@ -207,6 +207,8 @@ def ejecutar_bot():
 
     elif mensaje_recibido == ".mercado":
         return procesar_mercado(parametro)
+    elif mensaje_recibido == ".comprar":
+        return procesar_comprar_Objectos(parametro)
 
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
