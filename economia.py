@@ -149,3 +149,21 @@ def procesar_retirar(monedas_actuales, banco_actual, cantidad):
     monedas_actuales += cantidad
     mensaje = f"💰 Has retirado *{cantidad}* monedas del banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
     return monedas_actuales, banco_actual, mensaje
+
+def procesar_Mercado(monedas_actuales, banco_actual, cantidad):
+    tienda_cantidad = 5  
+    
+    mensaje = (
+        f"🛒 *Mercado Jasper*\n\n"
+        f"Bienvenido a la tienda de pokémones de Jasper!\n\n"
+        f"Objetos en el mercado:\n"
+        f"- botellas de experiencia: {tienda_cantidad}\n\n"
+        f"Objetos de coleccion:\n"
+        f"- espada de la lucha: {tienda_cantidad}\n"
+        f"- espada de la vitalidad: {tienda_cantidad}\n"
+        f"- espada de la salud: {tienda_cantidad}\n"
+        f"- hacha divina escanor: {tienda_cantidad}"
+        f"Usa .comprar <Objeto> para adquirir algo."
+    )
+    
+    return mensaje
