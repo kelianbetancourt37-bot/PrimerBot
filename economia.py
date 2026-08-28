@@ -167,3 +167,18 @@ def procesar_Mercado(monedas_actuales, banco_actual, cantidad):
     )
     
     return mensaje
+
+def procesar_comprar_Objectos(objetos):
+    objetos = objetos.split(" ")
+    objetos_comprados = []
+    for objeto in objetos:
+        if objeto in OBJETOS:
+            objetos_comprados.append(objeto)
+        else:
+            return f"❌ No se reconocen los objetos: {objeto}"
+    
+    mensaje = f"🛒 *Tienda de objetos*\n"
+    for objeto in objetos_comprados:
+        mensaje += f"💎 Has comprado: *{objeto}*\n"
+    
+    return mensaje
