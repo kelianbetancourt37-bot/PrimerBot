@@ -68,6 +68,13 @@ IMAGENES_POKEMON = {
     "Celebi": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png"
 }
 
+PRECIOS_TIENDAPOKEMON = {
+    "pokeball": 100,
+    "superpokeball": 500,
+    "ultrapokeball": 2000,
+    "pocion_de_experiencia": 300
+}
+
 def procesar_Mispokemon(ver_pokemon):
     if not ver_pokemon:
         ver_pokemon = LISTA_POKEMON_GENERAL
