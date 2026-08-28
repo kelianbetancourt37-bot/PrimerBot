@@ -89,7 +89,7 @@ def procesar_mochila(ver_mochila):
     mochila = random.choice(ver_mochila)
     return f"👜 Mis mochilas: {mochila}"
 
-def procesar_topokemon(ver_pokemon, usuario_nombre="Entrenador"):
+def procesar_toppokemon(ver_pokemon, usuario_nombre="Entrenador"):
     if not ver_pokemon:
         ver_pokemon = LISTA_POKEMON_GENERAL
     pokemon = random.choice(ver_pokemon)
