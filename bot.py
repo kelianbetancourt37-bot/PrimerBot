@@ -193,25 +193,21 @@ def ejecutar_bot():
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs(parametro)
 
-    # Comandos de Perfil y Usuario
+  # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
-        return procesar_perfil(parametro)
+        return procesar_perfil(datos_usuario)
     elif mensaje_recibido == ".setname":
-        return procesar_setname(parametro)
+        return procesar_setname(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".setdesc":
-        return procesar_setdesc(parametro)
+        return procesar_setdesc(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".setage":
-        return procesar_setage(parametro)
+        return procesar_setage(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".setbirth":
-        return procesar_setbirth(parametro)
+        return procesar_setbirth(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".setgene":
-        return procesar_setgene(parametro)
+        return procesar_setgene(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".level":
-        return procesar_level(parametro)
-    elif mensaje_recibido == ".sublevel":
-        return procesar_sublevel(parametro)
-    elif mensaje_recibido == ".levelup":
-        return procesar_levelup(parametro)
+        return procesar_level(datos_usuario)
 
     # Comandos de Descarga
     elif mensaje_recibido in [".mediafire", ".mega", ".descargar"]:
