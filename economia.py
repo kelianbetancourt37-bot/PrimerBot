@@ -11,7 +11,7 @@ PRECIOS_MERCADO = {
 
 def procesar_trabajar(usuario_id, monedas_actuales, ultimo_trabajo):
     tiempo_actual = time.time()
-    tiempo_espera = 300  # 5 minutos exactos de cooldown para trabajar / .w
+    tiempo_espera = 300  # 5 minutos exactos de cooldown
     
     if ultimo_trabajo > 0:
         tiempo_transcurrido = tiempo_actual - ultimo_trabajo
@@ -139,46 +139,25 @@ def procesar_banco(monedas_mano, monedas_banco):
         )
     return monedas_mano, monedas_banco, mensaje
 
-def procesar_retirar(monedas_actuales, banco_actual, cantidad):
-    if cantidad <= 0:
-        return monedas_actuales, banco_actual, "❌ La cantidad a retirar debe ser mayor que cero."
-    if cantidad > banco_actual:
-        return monedas_actuales, banco_actual, f"❌ No tienes suficiente dinero en el banco. Tienes: {banco_actual}."
-    
-    banco_actual -= cantidad
-    monedas_actuales += cantidad
-    mensaje = f"💰 Has retirado *{cantidad}* monedas del banco.\n💵 En mano: {monedas_actuales} | 🏦 Banco: {banco_actual}"
-    return monedas_actuales, banco_actual, mensaje
 
-def procesar_Mercado(monedas_actuales, banco_actual, cantidad):
-    tienda_cantidad = 5  
-    
-    mensaje = (
-        f"🛒 *Mercado Jasper*\n\n"
-        f"Bienvenido a la tienda de pokémones de Jasper!\n\n"
-        f"Objetos en el mercado:\n"
-        f"- botellas de experiencia: {tienda_cantidad}\n\n"
-        f"Objetos de coleccion:\n"
-        f"- espada de la lucha: {tienda_cantidad}\n"
-        f"- espada de la vitalidad: {tienda_cantidad}\n"
-        f"- espada de la salud: {tienda_cantidad}\n"
-        f"- hacha divina escanor: {tienda_cantidad}"
-        f"Usa .comprar <Objeto> para adquirir algo."
+def procesar_Mercado(monedas_actuales, banco_actual, parametro=""):
+    return (
+        "🛒 *MERCADO DE JASPER* 🛒\n\n"
+        "┃  • *Botellas de experiencia:* 500 monedas (`.comprar botellas_de_experiencia`)\n"
+        "┃  • *Espada de la lucha:* 1,000 monedas (`.comprar espada_de_la_lucha`)\n"
+        "┃  • *Espada de la vitalidad:* 2,000 monedas (`.comprar espada_de_la_vitalidad`)\n"
+        "┃  • *Espada de la salud:* 3,000 monedas (`.comprar espada_de_la_salud`)\n"
+        "┃  • *Hacha divina Escanor:* 5,000 monedas (`.comprar hacha_divina_escanor`)\n\n"
+        "_Usa `.comprar <objeto>` para adquirir algo._"
     )
-    
-    return mensaje
 
-def procesar_comprar_Objectos(objetos):
-    objetos = objetos.split(" ")
-    objetos_comprados = []
-    for objeto in objetos:
-        if objeto in OBJETOS:
-            objetos_comprados.append(objeto)
-        else:
-            return f"❌ No se reconocen los objetos: {objeto}"
+def procesar_comprar_pokeballs(parametro=""):
+    if not parametro:
+        return "⚠️ Especifica qué objeto deseas comprar del mercado. Ejemplo: `.comprar espada_de_la_lucha`"
     
-    mensaje = f"🛒 *Tienda de objetos*\n"
-    for objeto in objetos_comprados:
-        mensaje += f"💎 Has comprado: *{objeto}*\n"
-    
-    return mensaje
+    parametro_limpio = parametro.lower().strip()
+    if parametro_limpio in PRECIOS_MERCADO:
+        precio = PRECIOS_MERCADO[parametro_limpio]
+        return f"✅ Has adquirido *{parametro}* por un costo de *{precio}* monedas."
+    else:
+        return f"❌ El objeto '{parametro}' no existe en el mercado. Revisa los nombres con `.mercado`."
