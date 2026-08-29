@@ -1,20 +1,34 @@
 import random.choice
 
-def procesar_perfil(usuario=""):
-    destino = usuario if usuario else "Vecino"
-    
-    # Lista de frases o apodos divertidos estilo la vecindad
-    apodos = ["El Chavo del Ocho", "La Chilindrina", "Don Ramón", "Kiko", "Doña Florinda", "El Profesor Jirafales", "El Señor Barriga", "La Bruja del 71"]    
-    apodo_aleatorio = random.choice(apodos)
-    
-    mensaje = (
-        f"🏘️ *LA VECINDAD DEL BOT* 🏠\n\n"
-        f"👤 *Inquilino:* *{destino}*\n"
-        f"🏷️ *Apodo en la vecindad:* _{apodo_aleatorio}_\n"
-        f"🏠 *Vivienda:* Casa número {random.randint(1, 74)}\n"
-        f"📝 *Frase célebre:* \"¡Eso, eso, eso!\" o \"¡No te doy otra patada porque...\"\n"
-        f"🎂 *Edad:* {random.randint(8, 60)} años (¡crujiendo los huesos!)\n"
-        f"💰 *Deuda de la renta:* ${random.randint(0, 14)} meses con el Señor Barriga 💸\n"
-        f"📊 *Nivel en la vecindad:* *Nivel 5* (Vecino honorable)"
+
+def procesar_perfil(usuario_id, datos_usuario):
+    nombre = datos_usuario.get("nombre", "Sin registrar")
+    genero = datos_usuario.get("genero", "No especificado")
+    edad = datos_usuario.get("edad", "Desconocida")
+    nacimiento = datos_usuario.get("nacimiento", "No registrada")
+    descripcion = datos_usuario.get("descripcion", "Sin biografía.")
+    nivel = datos_usuario.get("nivel", 1)
+    monedas = datos_usuario.get("monedas", 500)
+    banco = datos_usuario.get("banco", 0)
+    racha = datos_usuario.get("racha", 0)
+
+    return (
+        "╭━━━〔 👤 *TARJETA DE PERFIL* 👤 ━━━╮\n"
+        "┃\n"
+        f"┃  🏷️ *Nombre:* {nombre}\n"
+        f"┃  🚻 *Género:* {genero}\n"
+        f"┃  🎂 *Edad:* {edad} años\n"
+        f"┃  📅 *Nacimiento:* {nacimiento}\n"
+        f"┃  📊 *Nivel:* Nivel {nivel}\n"
+        "┃\n"
+        "┣━━ 💰 *ECONOMÍA & RACHA* ━━━\n"
+        f"┃  🪙 *Cartera:* {monedas} monedas\n"
+        f"┃  🏦 *Banco:* {banco} monedas\n"
+        f"┃  🔥 *Racha diaria:* {racha} días\n"
+        "┃\n"
+        "┣━━ 📝 *BIOGRAFÍA* ━━━\n"
+        f"┃  _{descripcion}_\n"
+        "┃\n"
+        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n"
+        "_💡 Usa `.setname`, `.setage`, etc., para editar tus datos._"
     )
-    return mensaje
