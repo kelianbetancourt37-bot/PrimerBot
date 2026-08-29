@@ -76,7 +76,7 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+    from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
 except ImportError:
     def procesar_perfil(u=""): return f"👤 Perfil de {u or 'Usuario'}"
     def procesar_setname(p=""): return f"✅ Nombre actualizado a: {p}"
