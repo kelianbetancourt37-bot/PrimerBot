@@ -1,12 +1,7 @@
 import random
 
-def procesar_perfil(usuario=""):
-    destino = usuario if usuario else "Vecino"
-    
-    apodos = ["El Chavo del Ocho", "La Chilindrina", "Don Ramón", "Kiko", "Doña Florinda", "El Profesor Jirafales", "El Señor Barriga", "La Bruja del 71"]
-    apodo_aleatorio = random.choice(apodos)
-    
-    mensaje =(
+def procesar_perfil(nombre="Sin registrar", genero="No especificado", edad="Desconocida", nacimiento="No registrada", nivel=1, monedas=500, banco=0, racha=0, descripcion="Sin biografía."):
+    return (
         "╭━━━〔 👤 *TARJETA DE PERFIL* 👤 ━━━╮\n"
         "┃\n"
         f"┃  🏷️ *Nombre:* {nombre}\n"
@@ -26,7 +21,6 @@ def procesar_perfil(usuario=""):
         "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n"
         "_💡 Usa `.setname`, `.setage`, etc., para editar tus datos._"
     )
-    return mensaje
 
 def procesar_setname(param=""):
     return f"✅ Nombre actualizado correctamente a: *{param}*" if param else "⚠️ Por favor escribe el nuevo nombre. Ejemplo: `.setname Juan`"
@@ -44,7 +38,7 @@ def procesar_setgene(param=""):
     return f"🚻 Género actualizado a: *{param}*." if param else "⚠️ Especifica tu género."
 
 def procesar_level(param=""):
-    return "📊 Tu nivel actual en el bot es: *Nivel 5*."
+    return "📊 Tu nivel actual en el bot es: *Nivel 1*."
 
 def procesar_sublevel(param=""):
     return "📈 Progreso de nivel actualizado."
