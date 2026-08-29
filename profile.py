@@ -1,5 +1,37 @@
 import random
 
+def procesar_perfil(usuario_id, datos_usuario):
+    nombre = datos_usuario.get("nombre", "Sin registrar")
+    genero = datos_usuario.get("genero", "No especificado")
+    edad = datos_usuario.get("edad", "Desconocida")
+    nacimiento = datos_usuario.get("nacimiento", "No registrada")
+    descripcion = datos_usuario.get("descripcion", "Sin biografía.")
+    nivel = datos_usuario.get("nivel", 1)
+    monedas = datos_usuario.get("monedas", 500)
+    banco = datos_usuario.get("banco", 0)
+    racha = datos_usuario.get("racha", 0)
+
+    return (
+        "╭━━━〔 👤 *TARJETA DE PERFIL* 👤 ━━━╮\n"
+        "┃\n"
+        f"┃  🏷️ *Nombre:* {nombre}\n"
+        f"┃  🚻 *Género:* {genero}\n"
+        f"┃  🎂 *Edad:* {edad} años\n"
+        f"┃  📅 *Nacimiento:* {nacimiento}\n"
+        f"┃  📊 *Nivel:* Nivel {nivel}\n"
+        "┃\n"
+        "┣━━ 💰 *ECONOMÍA & RACHA* ━━━\n"
+        f"┃  🪙 *Cartera:* {monedas} monedas\n"
+        f"┃  🏦 *Banco:* {banco} monedas\n"
+        f"┃  🔥 *Racha diaria:* {racha} días\n"
+        "┃\n"
+        "┣━━ 📝 *BIOGRAFÍA* ━━━\n"
+        f"┃  _{descripcion}_\n"
+        "┃\n"
+        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯\n"
+        "_💡 Usa `.setname`, `.setage`, etc., para editar tus datos._"
+    )
+
 def procesar_setname(nuevo_nombre=""):
     if not nuevo_nombre:
         return "⚠️ Vecino, ¿cómo se va a llamar? Escriba bien. Ejemplo: .setname Don Ramón"
@@ -25,13 +57,13 @@ def procesar_setgene(genero=""):
         return "⚠️ Especifique su género. Ejemplo: .setgene Masculino"
     return f"🚻 Género registrado correctamente: *{genero}*"
 
-def procesar_level(usuario=""):
-    destino = usuario if usuario else "Usted"
-    return f"📊 *{destino}* se encuentra en el **Nivel 5** de la vecindad (¡Con experiencia barriendo el patio!)."
-
 def procesar_sublevel(usuario=""):
     destino = usuario if usuario else "Usted"
     return f"🆙 ¡{destino} sube su nivel! ¡Ahora está en el **Nivel 6** de la vecindad!"
+
+def procesar_level(usuario=""):
+    destino = usuario if usuario else "Usted"
+    return f"📊 *{destino}* se encuentra en el **Nivel 5** de la vecindad (¡Con experiencia barriendo el patio!)."
 
 def procesar_levelup(usuario=""):
     destino = usuario if usuario else "Vecino"
