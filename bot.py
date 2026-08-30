@@ -197,7 +197,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs(parametro)
 
-  # Comandos de Perfil y Usuario
+    # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(datos_usuario)
     elif mensaje_recibido == ".setname":
@@ -239,15 +239,11 @@ def ejecutar_bot():
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
         comando_limpio = mensaje_recibido.replace(".", "")
         return procesar_admin_command(comando_limpio, user=parametro)
-    elif mensaje_recibido in [".close", ".open", ".antilink", ".antispam", ".tagall"]:
+    elif mensaje_recibido in [".close", ".open", ".antilink", ".antispam", ".tagall", ".boton", ".botoff"]:
         comando_limpio = mensaje_recibido.replace(".", "")
         return procesar_admin_command(comando_limpio)
     elif mensaje_recibido == ".delete":
         return procesar_admin_command("delete", mensaje_id=parametro)
-    elif mensaje_recibido == ".boton":
-        return procesar_admin_command("boton")
-    elif mensaje_recibido == ".botoff":
-        return procesar_admin_command("botoff")
 
     # Interacción
     elif mensaje_recibido == ".saludar":
