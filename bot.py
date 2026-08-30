@@ -244,7 +244,7 @@ def ejecutar_bot():
         return procesar_admin_command(comando_limpio)
     elif mensaje_recibido == ".delete":
         return procesar_admin_command("delete", mensaje_id=parametro)
-     elif mensaje_recibido == ".boton":
+    elif mensaje_recibido == ".boton":
         return procesar_admin_command("boton")
     elif mensaje_recibido == ".botoff":
         return procesar_admin_command("botoff")
