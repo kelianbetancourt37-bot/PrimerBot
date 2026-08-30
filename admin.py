@@ -66,6 +66,12 @@ def procesar_delete(mensaje_id):
     else:
         return "⚠️ Por favor responde al mensaje que deseas eliminar con `.delete`."
 
+def procesar_Bot_On():
+    return "✅ Bot encendido."
+
+def procesar_Bot_Off():
+    return "✅ Bot apagado."
+
 def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, guardar_fn=None):
     if cmd == "ban":
         return procesar_ban(user, base_datos, guardar_fn)
@@ -83,5 +89,9 @@ def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, gua
         return procesar_tagall()
     elif cmd == "delete":
         return procesar_delete(mensaje_id)
+    elif cmd == "boton":
+        return procesar_Bot_On()
+    elif cmd == "botoff":    
+        return procesar_Bot_Off()
     else:
         return "⚠️ Error en módulo admin."
