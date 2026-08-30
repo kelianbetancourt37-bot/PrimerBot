@@ -1,4 +1,4 @@
-import random
+import random, os
 
 def mostrar_Adminmenu():
     return """
@@ -14,7 +14,7 @@ def mostrar_Adminmenu():
 📌 *.antispam* - Activar/Desactivar Antispam
 📌 *.tagall* - Mencionar a todos
 📌 *.delete* [ID] - Eliminar un mensaje
-📌 *.boton* - Encender/Apagar el bot
+📌 *.boton* - Encender el bot
 📌 *.botoff* - Apagar el bot
 """.strip()
 
@@ -67,12 +67,10 @@ def procesar_delete(mensaje_id):
         return "⚠️ Por favor responde al mensaje que deseas eliminar con `.delete`."
         
 def procesar_bot_off():
-    if mensaje_recibido == ".botoff":
-        return "✅ Bot apagado correctamente. (Usa .boton para encenderlo)"
+    return "✅ Bot apagado correctamente. (Usa .boton para encenderlo)"
 
 def procesar_bot_on():
-    if mensaje_recibido == ".boton":
-        return "✅ ¡Bot encendido de nuevo!"
+    return "✅ ¡Bot encendido de nuevo!"
 
 def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, guardar_fn=None):
     if cmd == "ban":
@@ -92,8 +90,8 @@ def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, gua
     elif cmd == "delete":
         return procesar_delete(mensaje_id)
     elif cmd == "boton":
-        return procesar_Bot_On()
+        return procesar_bot_on()
     elif cmd == "botoff":    
-        return procesar_Bot_Off()
+        return procesar_bot_off()
     else:
         return "⚠️ Error en módulo admin."
