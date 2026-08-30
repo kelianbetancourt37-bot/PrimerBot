@@ -66,11 +66,11 @@ def procesar_delete(mensaje_id):
     else:
         return "⚠️ Por favor responde al mensaje que deseas eliminar con `.delete`."
         
-def procesar_Bot_off():
+def procesar_bot_off():
     if mensaje_recibido == ".botoff":
         return "✅ Bot apagado correctamente. (Usa .boton para encenderlo)"
 
-def procesar_Bot_On():
+def procesar_bot_on():
     if mensaje_recibido == ".boton":
         return "✅ ¡Bot encendido de nuevo!"
 
