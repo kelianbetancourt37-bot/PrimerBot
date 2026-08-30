@@ -19,56 +19,67 @@ def mostrar_Adminmenu():
 def procesar_adminmenu():
     return mostrar_Adminmenu()
 
-def procesar_ban(user):
-    return f"🚫 El usuario {user} ha sido baneado."
+def procesar_ban(user, base_datos, guardar_fn):
+    if user in base_datos:
+        base_datos.pop(user)
+        guardar_fn(base_datos)
+        return f"✅ Usuario {user} baneado."
+    else:
+        return f"❌ Usuario {user} no encontrado."
 
-def procesar_kick(user):
-    return f"🚪 El usuario {user} ha sido expulsado."
+def procesar_kick(user, base_datos, guardar_fn):
+    if user in base_datos:
+        base_datos.pop(user)
+        guardar_fn(base_datos)
+        return f"✅ Usuario {user} expulsado."
+    else:
+        return f"❌ Usuario {user} no encontrado."
 
 def procesar_close():
-    return "🔒 El grupo se ha cerrado correctamente."
+    return "✅ Grupo cerrado."
 
 def procesar_open():
-    return "🔓 El grupo se ha abierto correctamente."
-
-def procesar_delete(mensaje_id):
-    return f"🗑️ El mensaje con ID {mensaje_id} ha sido eliminado."
-
-def procesar_silenciar(user):
-    return f"🔇 El usuario {user} ha sido silenciado."
-
-def procesar_desilenciar(user):
-    return f"🔊 El usuario {user} ha sido desilenciado."
+    return "✅ Grupo abierto."
 
 def procesar_antilink():
-    return "🛡️ El sistema de Antilink ha sido activado en este grupo."
+    return "✅ Antilink activado."
 
 def procesar_antispam():
-    return "⚡ El sistema de Antispam ha sido activado."
+    return "✅ Antispam activado."
 
 def procesar_tagall():
-    return "📣 ¡Atención a todos los miembros del grupo!"
+    return (
+        "📢 *¡ATENCIÓN A TODOS LOS MIEMBROS!* 📢\n\n"
+        "╭━━━〔 👥 *MENCIÓN GENERAL* 👥 ━━━╮\n"
+        "┃\n"
+        "┃  💬 _Se requiere la presencia_ \n"
+        "┃  _de todos en el grupo._\n"
+        "┃\n"
+        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"
+    )
 
-def procesar_admin_command(command, user=None, mensaje_id=None):
-    if command == "ban" and user:
-        return procesar_ban(user)
-    elif command == "kick" and user:
-        return procesar_kick(user)
-    elif command == "close":
-        return procesar_close()
-    elif command == "open":
-        return procesar_open()
-    elif command == "delete" and mensaje_id:
-        return procesar_delete(mensaje_id)
-    elif command == "silenciar" and user:
-        return procesar_silenciar(user)
-    elif command == "desilenciar" and user:
-        return procesar_desilenciar(user)
-    elif command == "antilink":
-        return procesar_antilink()
-    elif command == "antispam":
-        return procesar_antispam()
-    elif command == "tagall":
-        return procesar_tagall()
+def procesar_delete(mensaje_id):
+    if mensaje_id:
+        return f"🗑️ Mensaje con ID `{mensaje_id}` eliminado."
     else:
-        return "⚠️ Comando de administración no reconocido o faltan parámetros."
+        return "⚠️ Por favor responde al mensaje que deseas eliminar con `.delete`."
+
+def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, guardar_fn=None):
+    if cmd == "ban":
+        return procesar_ban(user, base_datos, guardar_fn)
+    elif cmd == "kick":
+        return procesar_kick(user, base_datos, guardar_fn)
+    elif cmd == "close":
+        return procesar_close()
+    elif cmd == "open":
+        return procesar_open()
+    elif cmd == "antilink":
+        return procesar_antilink()
+    elif cmd == "antispam":
+        return procesar_antispam()
+    elif cmd == "tagall":
+        return procesar_tagall()
+    elif cmd == "delete":
+        return procesar_delete(mensaje_id)
+    else:
+        return "⚠️ Error en módulo admin."
