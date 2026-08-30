@@ -14,6 +14,8 @@ def mostrar_Adminmenu():
 📌 *.antispam* - Activar/Desactivar Antispam
 📌 *.tagall* - Mencionar a todos
 📌 *.delete* [ID] - Eliminar un mensaje
+📌 *.boton* - Encender/Apagar el bot
+📌 *.botoff* - Apagar el bot
 """.strip()
 
 def procesar_adminmenu():
