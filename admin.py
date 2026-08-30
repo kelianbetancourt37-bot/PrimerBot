@@ -65,12 +65,14 @@ def procesar_delete(mensaje_id):
         return f"🗑️ Mensaje con ID `{mensaje_id}` eliminado."
     else:
         return "⚠️ Por favor responde al mensaje que deseas eliminar con `.delete`."
+        
+def procesar_Bot_off():
+    if mensaje_recibido == ".botoff":
+        return "✅ Bot apagado correctamente. (Usa .boton para encenderlo)"
 
 def procesar_Bot_On():
-    return "✅ Bot encendido."
-
-def procesar_Bot_Off():
-    return "✅ Bot apagado."
+    if mensaje_recibido == ".boton":
+        return "✅ ¡Bot encendido de nuevo!"
 
 def procesar_admin_command(cmd, user=None, mensaje_id=None, base_datos=None, guardar_fn=None):
     if cmd == "ban":
