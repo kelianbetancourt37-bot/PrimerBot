@@ -14,6 +14,7 @@ def mostrar_menu():
         "┃  • `.crimen` - Arriésgate por dinero\n"
         "┃  • `.depositar` / `.retirar` - Banco\n"
         "┃  • `.banco` - Estado de cuenta\n"
+        "┃  • `.inventario` - Inventario\n"
         "┃\n"
         "┣━━ ⚡ *POKÉMON* ━━━\n"
         "┃  • `.mispokemon` - Tus pokémones\n"
