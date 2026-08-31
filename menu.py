@@ -30,6 +30,7 @@ def mostrar_menu():
         "┃  • `.setage` - Configurar edad\n"
         "┃  • `.setbirth` - Fecha de nacimiento\n"
         "┃  • `.setdesc` - Biografía del perfil\n"
+        "┃  • `.levelup` - Subir de nivel\n"
         "┃\n"
         "┣━━ 📥 *DESCARGAS MULTIMEDIA* ━━━\n"
         "┃  • `.descargar` - Enlace general\n"
