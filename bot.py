@@ -118,6 +118,7 @@ except ImportError:
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
     def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA POKÉMON*\n• `.comprar <item>` - Adquiere artículos."
+    def procesar_inventario(u): return "👜 *INVENTARIO*\n• `.inventario` - Ver tu inventario."
 
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
@@ -196,6 +197,8 @@ def ejecutar_bot():
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs(parametro)
+    elif mensaje_recibido == ".inventario":
+        return procesar_inventario(datos_usuario)
 
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
