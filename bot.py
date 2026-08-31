@@ -107,7 +107,7 @@ except ImportError:
 try:
     from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
                           procesar_crimen, procesar_depositar, procesar_retirar, 
-                          procesar_banco, procesar_Mercado, procesar_comprar_pokeballs)
+                          procesar_banco, procesar_Mercado, procesar_comprar_pokeballs, procesar_inventario)
 except ImportError:
     def procesar_trabajar(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
     def procesar_diario(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
@@ -118,7 +118,7 @@ except ImportError:
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
     def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA POKÉMON*\n• `.comprar <item>` - Adquiere artículos."
-    def procesar_inventario(u): return "👜 *INVENTARIO*\n• `.inventario` - Ver tu inventario."
+    def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
 
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
