@@ -268,11 +268,11 @@ def ejecutar_bot():
         mis_pokemones = datos_usuario.get("pokemons", [])
         return procesar_Mispokemon(mis_pokemones)
     elif mensaje_recibido == ".mochila":
-        return procesar_mochila([])
+        return procesar_mochila(parametro)
     elif mensaje_recibido == ".tienda":
-        return procesar_tienda()
+        return procesar_tienda(parametro)
     elif mensaje_recibido == ".topokemon":
-        return procesar_topokemon([])
+        return procesar_topokemon(parametro)
     elif mensaje_recibido in [".capturar", ".cap"]:
         return procesar_capturar(parametro)
         
