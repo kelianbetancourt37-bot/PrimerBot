@@ -68,7 +68,7 @@ IMAGENES_POKEMON = {
     "Celebi": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/251.png"
 }
 
-PRECIOS_TIENDA = {
+PRECIOS_TIENDAPOKEMON = {
     "pokeball": 100,
     "superpokeball": 500,
     "ultrapokeball": 2000,
@@ -83,19 +83,21 @@ def procesar_Mispokemon(ver_pokemon):
         return f"🐱‍💻 Mis pokémon: {pokemon}\n[IMAGEN:{IMAGENES_POKEMON[pokemon]}]"
     return f"🐱‍💻 Mis pokémon: {pokemon}"
 
-def procesar_mochila(ver_mochila):
-    if not ver_mochila:
-        ver_mochila = LISTA_MOCHILAS
-    mochila = random.choice(ver_mochila)
-    return f"👜 Mis mochilas: {mochila}"
+def procesar_mochila(usuario_nombre, items_usuario):
+    if not items_usuario:
+        items_usuario = LISTA_MOCHILAS  # Por defecto si no tiene nada
+    
+    mensaje = f"🎒 *MOCHILA DE {usuario_nombre.upper()}* 🎒\n\n"
+    for item in items_usuario:
+        mensaje += f"• {item}\n"
+        
+    return mensaje
 
-def procesar_toppokemon(ver_pokemon, usuario_nombre="Entrenador"):
-    if not ver_pokemon:
-        ver_pokemon = LISTA_POKEMON_GENERAL
-    pokemon = random.choice(ver_pokemon)
-    if pokemon in IMAGENES_POKEMON:
-        return f"🐱‍💻 Top pokémon de {usuario_nombre}: {pokemon}\n[IMAGEN:{IMAGENES_POKEMON[pokemon]}]"
-    return f"🐱‍💻 Top pokémon de {usuario_nombre}: {pokemon}"
+def procesar_topokemon(pokemon_favorito, usuario_nombre="Entrenador"):
+    if not pokemon_favorito:
+        return f"⚠️ {usuario_nombre}, aún no has configurado tu pokémon favorito. Usa el comando correspondiente para seleccionarlo."
+    
+    return f"⭐ Top pokémon de {usuario_nombre}: *{pokemon_favorito}*"
 
 def procesar_capturar(capturar=None):
     if not capturar or capturar.capitalize() not in IMAGENES_POKEMON:
@@ -112,7 +114,7 @@ def procesar_comprar_pokeballs(cantidad="1"):
     except ValueError:
         cant = 1
     
-    precio_unitario = 100  # Puedes ajustar el precio como prefieras
+    precio_unitario = 100
     total = cant * precio_unitario
     
     return (
@@ -120,7 +122,7 @@ def procesar_comprar_pokeballs(cantidad="1"):
         f"Has comprado *{cant}x* Pokéballs por un total de *{total} monedas*."
     )
 
-def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
+def procesar_tiendapokemon(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
     return (
         f"🛒 *Tienda Pokémon*\n"
         f"🔴 Pokéballs: {pokeball}\n"
@@ -128,5 +130,5 @@ def procesar_tienda(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_exp
         f"🟡 Ultrapokeballs: {ultrapokeball}\n"
         f"🧪 Pociones de experiencia: {pocion_de_experiencia}\n\n"
         f"¡Bienvenido a la tienda de pokémones!\n"
-        f"Usa `.comprar <Pokeballs>` para comprar Pokéballs."
+        f"Usa `.comprar <cantidad>` para adquirir artículos."
     )
