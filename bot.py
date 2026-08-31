@@ -212,6 +212,8 @@ def ejecutar_bot():
         return procesar_setgene(parametro, datos_usuario, guardar_todos_los_datos, base_datos)
     elif mensaje_recibido == ".level":
         return procesar_level(datos_usuario)
+    elif mensaje_recibido == ".levelup":
+        return procesar_levelup(datos_usuario)
 
     # Comandos de Descarga
     elif mensaje_recibido in [".mediafire", ".mega", ".descargar"]:
