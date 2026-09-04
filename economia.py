@@ -161,3 +161,20 @@ def procesar_comprar_pokeballs(parametro=""):
         return f"✅ Has adquirido *{parametro}* por un costo de *{precio}* monedas."
     else:
         return f"❌ El objeto '{parametro}' no existe en el mercado. Revisa los nombres con `.mercado`."
+
+def procesar_inventario(usuario_id, datos_usuario):
+    monedas = datos_usuario.get("monedas", 500)
+    banco = datos_usuario.get("banco", 0)
+    racha = datos_usuario.get("racha", 0)
+    inventario_items = datos_usuario.get("inventario", [])
+    
+    items_texto = ", ".join(inventario_items) if inventario_items else "Vacío"
+    
+    return (
+        f"🎒 *INVENTARIO DE USUARIO*\n\n"
+        f"👤 ID: `{usuario_id}`\n"
+        f"💵 Monedas en mano: *{monedas}*\n"
+        f"🏦 Monedas en banco: *{banco}*\n"
+        f"🔥 Racha: *{racha}*\n"
+        f"📦 Objetos: *{items_texto}*"
+    )
