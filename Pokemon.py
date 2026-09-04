@@ -75,29 +75,25 @@ PRECIOS_TIENDAPOKEMON = {
     "pocion_de_experiencia": 300
 }
 
-def procesar_Mispokemon(ver_pokemon):
-    if not ver_pokemon:
-        ver_pokemon = LISTA_POKEMON_GENERAL
-    pokemon = random.choice(ver_pokemon)
-    if pokemon in IMAGENES_POKEMON:
-        return f"🐱‍💻 Mis pokémon: {pokemon}\n[IMAGEN:{IMAGENES_POKEMON[pokemon]}]"
-    return f"🐱‍💻 Mis pokémon: {pokemon}"
-
-def procesar_mochila(usuario_nombre, items_usuario):
-    if not items_usuario:
-        items_usuario = LISTA_MOCHILAS  # Por defecto si no tiene nada
+def procesar_Mispokemon(mis_pokemones):
+    if not mis_pokemones:
+        return "📦 No tienes ningún Pokémon atrapado aún. Usa `.capturar` para conseguir uno."
     
-    mensaje = f"🎒 *MOCHILA DE {usuario_nombre.upper()}* 🎒\n\n"
-    for item in items_usuario:
-        mensaje += f"• {item}\n"
+    lista = "\n".join([f"• {p}" for p in mis_pokemones])
+    return f"🎒 *TUS POKÉMON CAPTURADOS*\n\n{lista}"
+
+def procesar_mochila(usuario_nombre, pokeballs_restantes=0):
+    return f"🎒 *MOCHILA*\n• Pokébolas: {pokeballs_restantes}"
+
+def procesar_topokemon(ranking_usuarios):
+    if not ranking_usuarios:
+        return "🏆 *TOP POKÉMON*\n\nAún no hay entrenadores en el ranking."
+    
+    mensaje = "🏆 *TOP ENTRENADORES (Más Pokémon)*\n\n"
+    for index, (nombre, cantidad) in enumerate(ranking_usuarios[:5], 1):
+        mensaje += f"{index}. {nombre} — *{cantidad}* Pokémon\n"
         
     return mensaje
-
-def procesar_topokemon(pokemon_favorito, usuario_nombre="Entrenador"):
-    if not pokemon_favorito:
-        return f"⚠️ {usuario_nombre}, aún no has configurado tu pokémon favorito. Usa el comando correspondiente para seleccionarlo."
-    
-    return f"⭐ Top pokémon de {usuario_nombre}: *{pokemon_favorito}*"
 
 def procesar_capturar(capturar=None):
     if not capturar or capturar.capitalize() not in IMAGENES_POKEMON:
