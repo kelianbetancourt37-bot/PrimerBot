@@ -302,7 +302,6 @@ def ejecutar_bot():
     elif mensaje_recibido in [".capturar", ".cap"]:
         resultado = procesar_capturar(parametro)
         
-        # Validación para evitar errores si el archivo viejo sigue cargado
         if isinstance(resultado, dict):
             pokemon_capturado = resultado["pokemon"]
             respuesta = resultado["mensaje"]
