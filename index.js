@@ -53,17 +53,35 @@ async function iniciarBot() {
             // COMANDOS DE ADMINISTRACIÓN REAL DE GRUPOS EN WHATSAPP
             if (remitente.endsWith('@g.us')) {
                 try {
-                    if (comando === '.close') {
-                        await sock.groupSettingUpdate(remitente, 'announcement');
-                        await sock.sendMessage(remitente, { text: '🔒 El grupo ha sido cerrado. Solo administradores pueden enviar mensajes.' }, { quoted: msg });
-                        return;
-                    } 
-                    if (comando === '.open') {
-                        await sock.groupSettingUpdate(remitente, 'not_announcement');
-                        await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto. Todos pueden enviar mensajes.' }, { quoted: msg });
-                        return;
+                    // Obtenemos los metadatos del grupo de forma segura
+                    const groupMetadata = await sock.groupMetadata(remitente);
+                    const participantes = groupMetadata.participants || [];
+                    
+                    // Verificamos quién es admin
+                    const esAdmin = participantes.some(p => 
+                        (p.id === usuarioId || p.id === msg.key.participant) && 
+                        (p.admin === 'admin' || p.admin === 'superadmin')
+                    );
+
+                    if (comando === '.close' || comando === '.open') {
+                        if (!esAdmin) {
+                            await sock.sendMessage(remitente, { text: '⚠️ Solo los administradores del grupo pueden usar este comando.' }, { quoted: msg });
+                            return;
+                        }
+
+                        if (comando === '.close') {
+                            await sock.groupSettingUpdate(remitente, 'announcement');
+                            await sock.sendMessage(remitente, { text: '🔒 El grupo ha sido cerrado. Solo administradores pueden enviar mensajes.' }, { quoted: msg });
+                            return;
+                        } 
+                        if (comando === '.open') {
+                            await sock.groupSettingUpdate(remitente, 'not_announcement');
+                            await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto. Todos pueden enviar mensajes.' }, { quoted: msg });
+                            return;
+                        }
                     }
                 } catch (err) {
+                    console.error('Error al gestionar metadatos del grupo:', err.message);
                     await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador del grupo.' }, { quoted: msg });
                     return;
                 }
@@ -81,30 +99,33 @@ async function iniciarBot() {
                 const respuesta = stdout.trim();
                 
                 if (respuesta) {
-                    if (respuesta.startsWith("GIF|")) {
-                        const partesGif = respuesta.split("|");
-                        const urlGif = partesGif[1];
-                        const mensajeTexto = partesGif[2] || "";
+                    try {
+                        if (respuesta.startsWith("GIF|")) {
+                            const partesGif = respuesta.split("|");
+                            const urlGif = partesGif[1];
+                            const mensajeTexto = partesGif[2] || "";
 
-                        await sock.sendMessage(remitente, {
-                            video: { url: urlGif },
-                            caption: mensajeTexto,
-                            gifPlayback: true
-                        }, { quoted: msg });
+                            await sock.sendMessage(remitente, {
+                                video: { url: urlGif },
+                                caption: mensajeTexto,
+                                gifPlayback: true
+                            }, { quoted: msg });
 
-                    } else if (respuesta.includes("[IMAGEN:")) {
-                        // DETECTA Y ENVÍA LA IMAGEN DEL POKÉMON CORRECTAMENTE
-                        const partesImg = respuesta.split("\n[IMAGEN:");
-                        const mensajeTexto = partesImg[0];
-                        const urlImagen = partesImg[1].replace("]", "").trim();
+                        } else if (respuesta.includes("[IMAGEN:")) {
+                            const partesImg = respuesta.split("\n[IMAGEN:");
+                            const mensajeTexto = partesImg[0];
+                            const urlImagen = partesImg[1].replace("]", "").trim();
 
-                        await sock.sendMessage(remitente, {
-                            image: { url: urlImagen },
-                            caption: mensajeTexto
-                        }, { quoted: msg });
+                            await sock.sendMessage(remitente, {
+                                image: { url: urlImagen },
+                                caption: mensajeTexto
+                            }, { quoted: msg });
 
-                    } else {
-                        await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
+                        } else {
+                            await sock.sendMessage(remitente, { text: respuesta }, { quoted: msg });
+                        }
+                    } catch (sendErr) {
+                        console.error('Error al enviar el mensaje por WhatsApp:', sendErr.message);
                     }
                 }
             });
