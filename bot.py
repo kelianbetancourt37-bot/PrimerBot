@@ -306,7 +306,7 @@ def ejecutar_bot():
         if pokemon_captureado:
             return f"🐰 ¡{pokemon_captureado} ha sido capturado! {respuesta}"
         else:
-            return "❌ No se encontró ningún pokémon."
+            return mensaje
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
