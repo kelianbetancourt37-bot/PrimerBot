@@ -197,9 +197,9 @@ def ejecutar_bot():
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido == ".comprar":
         return procesar_comprar_pokeballs(parametro)
-   elif mensaje_recibido == ".inventario":
-        return procesar_inventario(datos_usuario)
-
+    elif mensaje_recibido == ".inventario":
+        return procesar_inventario(usuario_id, datos_usuario)
+        
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(datos_usuario)
