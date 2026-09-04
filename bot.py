@@ -121,7 +121,7 @@ except ImportError:
     def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
 
 try:
-    from Pokemon import (
+    from pokemon import (
         procesar_Mispokemon, 
         procesar_mochila, 
         procesar_tiendapokemon, 
