@@ -120,23 +120,6 @@ except ImportError:
     def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA POKÉMON*\n• `.comprar <item>` - Adquiere artículos."
     def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
 
-try:
-    from pokemon import (
-        procesar_Mispokemon, 
-        procesar_mochila, 
-        procesar_tiendapokemon, 
-        procesar_topokemon, 
-        procesar_capturar, 
-        procesar_comprar_pokeballs
-    )
-except ImportError:
-    def procesar_Mispokemon(m): return "⚠️ Módulo Pokémon no disponible."
-    def procesar_mochila(u, i): return "⚠️ Módulo Pokémon no disponible."
-    def procesar_tiendapokemon(): return "⚠️ Módulo Pokémon no disponible."
-    def procesar_topokemon(p): return "⚠️ Módulo Pokémon no disponible."
-    def procesar_capturar(c): return "⚠️ Módulo Pokémon no disponible."
-    def procesar_comprar_pokeballs(cant): return "⚠️ Módulo Pokémon no disponible."
-
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
 
@@ -282,40 +265,6 @@ def ejecutar_bot():
         return caricia(parametro)
     elif mensaje_recibido == ".correr":
         return correr(parametro)
-
-    # Pokémon
-    elif mensaje_recibido == ".mispokemon":
-        mis_pokemones = datos_usuario.get("pokemons", [])
-        return procesar_Mispokemon(mis_pokemones)
-
-    elif mensaje_recibido == ".mochila":
-         items_usuario = datos_usuario.get("mochila", [])
-         return procesar_mochila(usuario_id, items_usuario)
-
-    elif mensaje_recibido in [".tienda", ".tiendapokemon"]:
-         return procesar_tiendapokemon()
-
-    elif mensaje_recibido in [".topokemon", ".top"]:
-         poke_fav = datos_usuario.get("pokemon_favorito", "")
-         return procesar_topokemon(poke_fav, usuario_id)
-
-    elif mensaje_recibido in [".capturar", ".cap"]:
-        resultado = procesar_capturar(parametro)
-        
-        if isinstance(resultado, dict):
-            pokemon_capturado = resultado["pokemon"]
-            respuesta = resultado["mensaje"]
-        else:
-            pokemon_capturado = "Pikachu"
-            respuesta = str(resultado)
-            
-        if "pokemons" not in datos_usuario:
-            datos_usuario["pokemons"] = []
-            
-        datos_usuario["pokemons"].append(pokemon_capturado)
-        guardar_todos_los_datos(base_datos)
-        
-        return respuesta
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
