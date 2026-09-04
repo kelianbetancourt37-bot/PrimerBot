@@ -300,13 +300,13 @@ def ejecutar_bot():
          return procesar_topokemon(poke_fav, usuario_id)
 
     elif mensaje_recibido in [".capturar", ".cap"]:
-        pokemon_capturado, respuesta = procesar_capturar(parametro)
+        resultado_captura = procesar_capturar(parametro)
+        pokemon_capturado = resultado_captura[0]
+        respuesta = resultado_captura[1]
         
-        # Si el usuario no tiene la lista creada, la inicializamos
         if "pokemons" not in datos_usuario:
             datos_usuario["pokemons"] = []
             
-        # Agregamos el Pokémon a su lista y guardamos la base de datos
         datos_usuario["pokemons"].append(pokemon_capturado)
         guardar_todos_los_datos(base_datos)
         
