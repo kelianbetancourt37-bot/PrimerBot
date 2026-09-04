@@ -303,10 +303,13 @@ def ejecutar_bot():
         resultado = procesar_capturar(parametro)
         pokemon_capturado = resultado["pokemon"]
         respuesta = resultado["mensaje"]
+        
         if "pokemons" not in datos_usuario:
             datos_usuario["pokemons"] = []
+            
         datos_usuario["pokemons"].append(pokemon_capturado)
         guardar_todos_los_datos(base_datos)
+        
         return respuesta
         
     else:
