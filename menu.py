@@ -9,7 +9,7 @@ def mostrar_menu():
         "┃  • `.trabajar` - Gana monedas\n"
         "┃  • `.daily` - Recompensa diaria\n"
         "┃  • `.cofre` - Abre un cofre sorpresa\n"
-        "┃  • `.comprarmuseo` - Adquiere reliquias\n"
+        "┃  • `.Mercado` - Ver mercado Jasper\n"
         "┃  • `.crimen` - Arriésgate por dinero\n"
         "┃  • `.depositar` / `.retirar` - Banco\n"
         "┃  • `.banco` - Estado de cuenta\n"
