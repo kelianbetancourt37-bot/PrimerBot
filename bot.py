@@ -299,14 +299,24 @@ def ejecutar_bot():
          poke_fav = datos_usuario.get("pokemon_favorito", "")
          return procesar_topokemon(poke_fav, usuario_id)
 
-    elif mensaje_recibido in [".capturar", ".cap"]:
-        resultado =procesar_capturar(parametro)
-        pokemon_captureado = resultado.get("pokemon", None)
-        respuesta = resultado.get("respuesta", None)
-        if pokemon_captureado:
-            return f"🐰 ¡{pokemon_captureado} ha sido capturado! {respuesta}"
+   elif mensaje_recibido in [".capturar", ".cap"]:
+        resultado = procesar_capturar(parametro)
+        
+        # Validación para evitar errores si el archivo viejo sigue cargado
+        if isinstance(resultado, dict):
+            pokemon_capturado = resultado["pokemon"]
+            respuesta = resultado["mensaje"]
         else:
-            return mensaje
+            pokemon_capturado = "Pikachu"
+            respuesta = str(resultado)
+            
+        if "pokemons" not in datos_usuario:
+            datos_usuario["pokemons"] = []
+            
+        datos_usuario["pokemons"].append(pokemon_capturado)
+        guardar_todos_los_datos(base_datos)
+        
+        return respuesta
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
