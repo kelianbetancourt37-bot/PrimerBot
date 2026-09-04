@@ -268,16 +268,22 @@ def ejecutar_bot():
 
     # Pokémon
     elif mensaje_recibido == ".mispokemon":
-        mis_pokemones = datos_usuario.get("pokemons", [])
-        return procesar_Mispokemon(mis_pokemones)
+    mis_pokemones = datos_usuario.get("pokemons", [])
+    return procesar_Mispokemon(mis_pokemones)
+
     elif mensaje_recibido == ".mochila":
-        return procesar_mochila(parametro)
-    elif mensaje_recibido == ".tienda":
-        return procesar_tienda(parametro)
-    elif mensaje_recibido == ".topokemon":
-        return procesar_topokemon(parametro)
+    items_usuario = datos_usuario.get("mochila", [])
+    return procesar_mochila(usuario_id, items_usuario)
+
+    elif mensaje_recibido in [".tienda", ".tiendapokemon"]:
+    return procesar_tiendapokemon()
+
+    elif mensaje_recibido in [".topokemon", ".top"]:
+    poke_fav = datos_usuario.get("pokemon_favorito", "")
+    return procesar_topokemon(poke_fav, usuario_id)
+
     elif mensaje_recibido in [".capturar", ".cap"]:
-        return procesar_capturar(parametro)
+    return procesar_capturar(parametro)
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
