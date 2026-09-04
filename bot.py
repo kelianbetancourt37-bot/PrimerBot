@@ -300,9 +300,9 @@ def ejecutar_bot():
          return procesar_topokemon(poke_fav, usuario_id)
 
     elif mensaje_recibido in [".capturar", ".cap"]:
-        resultado_captura = procesar_capturar(parametro)
-        pokemon_capturado = resultado_captura[0]
-        respuesta = resultado_captura[1]
+        resultado = procesar_capturar(parametro)
+        pokemon_capturado = resultado["pokemon"]
+        respuesta = resultado["mensaje"]
         
         if "pokemons" not in datos_usuario:
             datos_usuario["pokemons"] = []
