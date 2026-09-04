@@ -300,17 +300,13 @@ def ejecutar_bot():
          return procesar_topokemon(poke_fav, usuario_id)
 
     elif mensaje_recibido in [".capturar", ".cap"]:
-        resultado = procesar_capturar(parametro)
-        pokemon_capturado = resultado["pokemon"]
-        respuesta = resultado["mensaje"]
-        
-        if "pokemons" not in datos_usuario:
-            datos_usuario["pokemons"] = []
-            
-        datos_usuario["pokemons"].append(pokemon_capturado)
-        guardar_todos_los_datos(base_datos)
-        
-        return respuesta
+        resultado =procesar_capturar(parametro)
+        pokemon_captureado = resultado.get("pokemon", None)
+        respuesta = resultado.get("respuesta", None)
+        if pokemon_captureado:
+            return f"🐰 ¡{pokemon_captureado} ha sido capturado! {respuesta}"
+        else:
+            return "❌ No se encontró ningún pokémon."
         
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
