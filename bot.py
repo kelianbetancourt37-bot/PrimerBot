@@ -299,7 +299,7 @@ def ejecutar_bot():
          poke_fav = datos_usuario.get("pokemon_favorito", "")
          return procesar_topokemon(poke_fav, usuario_id)
 
-   elif mensaje_recibido in [".capturar", ".cap"]:
+    elif mensaje_recibido in [".capturar", ".cap"]:
         resultado = procesar_capturar(parametro)
         
         # Validación para evitar errores si el archivo viejo sigue cargado
