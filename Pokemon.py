@@ -103,11 +103,8 @@ def procesar_capturar(capturar=None):
     
     imagen_url = IMAGENES_POKEMON[capturar]
     mensaje = f"🐱‍💻 ¡Has capturado a un *{capturar}*!\n[IMAGEN:{imagen_url}]"
-    return capturar, mensaje
-    
-    imagen_url = IMAGENES_POKEMON[capturar]
-    mensaje = f"🐱‍💻 ¡Has capturado a un *{capturar}*!\n[IMAGEN:{imagen_url}]"
-    return capturar, mensaje
+    # Devolvemos una lista simple o tupla de 2 elementos exactos
+    return [capturar, mensaje]
     
 def procesar_tiendapokemon(pokeball=10, superpokeball=5, ultrapokeball=2, pocion_de_experiencia=3):
     return (
