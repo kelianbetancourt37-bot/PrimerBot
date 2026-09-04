@@ -301,20 +301,12 @@ def ejecutar_bot():
 
     elif mensaje_recibido in [".capturar", ".cap"]:
         resultado = procesar_capturar(parametro)
-        
-        if isinstance(resultado, dict):
-            pokemon_capturado = resultado["pokemon"]
-            respuesta = resultado["mensaje"]
-        else:
-            pokemon_capturado = "Pikachu"
-            respuesta = str(resultado)
-            
+        pokemon_capturado = resultado["pokemon"]
+        respuesta = resultado["mensaje"]
         if "pokemons" not in datos_usuario:
             datos_usuario["pokemons"] = []
-            
         datos_usuario["pokemons"].append(pokemon_capturado)
         guardar_todos_los_datos(base_datos)
-        
         return respuesta
         
     else:
