@@ -120,6 +120,23 @@ except ImportError:
     def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA POKÉMON*\n• `.comprar <item>` - Adquiere artículos."
     def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
 
+try:
+    from pokemon import (
+        procesar_Mispokemon, 
+        procesar_mochila, 
+        procesar_tiendapokemon, 
+        procesar_topokemon, 
+        procesar_capturar, 
+        procesar_comprar_pokeballs
+    )
+except ImportError:
+    def procesar_Mispokemon(m): return "⚠️ Módulo Pokémon no disponible."
+    def procesar_mochila(u, i): return "⚠️ Módulo Pokémon no disponible."
+    def procesar_tiendapokemon(): return "⚠️ Módulo Pokémon no disponible."
+    def procesar_topokemon(p, u): return "⚠️ Módulo Pokémon no disponible."
+    def procesar_capturar(c): return "⚠️ Módulo Pokémon no disponible."
+    def procesar_comprar_pokeballs(cant): return "⚠️ Módulo Pokémon no disponible."
+
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
 
