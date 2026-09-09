@@ -24,7 +24,7 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js (incluyendo el timestamp opcional en el cuarto argumento)
+# Argumentos que vienen desde Node.js (incluyendo el usuario y timestamp opcional)
 args = sys.argv[1:]
 if len(args) > 0:
     texto_completo = args[0].strip()
