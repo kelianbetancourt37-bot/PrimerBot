@@ -165,12 +165,9 @@ def procesar_comprar(datos_usuario, parametro=""):
     if monedas_actuales < precio:
         return f"❌ No tienes suficientes monedas. Te faltan {precio - monedas_actuales} monedas."
     
-    # Descontar el costo de las monedas del usuario
     datos_usuario["monedas"] = monedas_actuales - precio
     
-    # Si compra la botella de experiencia, aplicamos la XP de inmediato
     if parametro_limpio == "botellas_de_experiencia":
-        # Cada botella otorga 100 puntos de XP (puedes cambiarlo si prefieres)
         nivel_progreso, subio_nivel = agregar_experiencia(datos_usuario, 100)
         datos_usuario["nivel_progreso"] = nivel_progreso
         
@@ -184,7 +181,6 @@ def procesar_comprar(datos_usuario, parametro=""):
         return mensaje
     
     else:
-        # Para armas u otros objetos, los guardamos en el inventario
         if "inventario" not in datos_usuario:
             datos_usuario["inventario"] = []
         datos_usuario["inventario"].append(parametro)
