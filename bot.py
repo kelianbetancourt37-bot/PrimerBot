@@ -172,10 +172,10 @@ def ejecutar_bot():
 
     elif mensaje_recibido == ".mercado":
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
-   elif mensaje_recibido.startswith(".comprar"):
-    partes = mensaje_recibido.split(" ", 1)
-    parametro = partes[1] if len(partes) > 1 else ""
-    respuesta = procesar_comprar(datos_usuario, parametro)
+    elif mensaje_recibido.startswith(".comprar"):
+     partes = mensaje_recibido.split(" ", 1)
+     parametro = partes[1] if len(partes) > 1 else ""
+     respuesta = procesar_comprar(datos_usuario, parametro)
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
 
