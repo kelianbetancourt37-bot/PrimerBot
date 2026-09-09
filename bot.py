@@ -80,20 +80,32 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-    from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
-                          procesar_crimen, procesar_depositar, procesar_retirar, 
-                          procesar_banco, procesar_Mercado, procesar_comprar_pokeballs, procesar_inventario)
+    from economia import (
+        procesar_trabajar, procesar_diario, procesar_cofre, 
+        procesar_crimen, procesar_depositar, procesar_retirar, 
+        procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario
+    )
 except ImportError:
-    def procesar_trabajar(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
-    def procesar_diario(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
-    def procesar_cofre(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
-    def procesar_crimen(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
-    def procesar_depositar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
-    def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
-    def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
-    def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
-    def procesar_comprar_comprar(p): return "🛍️ *TIENDA*\n• `.comprar <item>` - Adquiere artículos."
-    def procesar_inventario(u): return "⚠️ Módulo de inventario no disponible."
+    # funciones de respaldo si hace falta...
+    pass
+
+try:
+    from descargas import (
+        procesar_descargar, descargar_facebook, descargar_instagram, 
+        descargar_tiktok, descargar_youtube, procesar_mp3, 
+        procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest
+    )
+except ImportError:
+    def procesar_descargar(l): return f"🔗 Descarga: {l}"
+    def descargar_facebook(l): return f"🔗 FB: {l}"
+    def descargar_instagram(l): return f"🔗 IG: {l}"
+    def descargar_tiktok(l): return f"🔗 TT: {l}"
+    def descargar_youtube(l): return f"🔗 YT: {l}"
+    def procesar_mp3(l): return f"🎵 MP3: {l}"
+    def procesar_mp4(l): return f"🎥 MP4: {l}"
+    def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
+    def procesar_sticker(u): return f"🖼️ Sticker: {u}"
+    def procesar_pinterest(b): return f"📌 Pinterest: {b}"
         
 try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
