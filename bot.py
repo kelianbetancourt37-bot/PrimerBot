@@ -80,10 +80,20 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-   from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_crimen, procesar_depositar, procesar_retirar, procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario
+    from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
+                          procesar_crimen, procesar_depositar, procesar_retirar, 
+                          procesar_banco, procesar_Mercado, procesar_comprar_pokeballs, procesar_inventario)
 except ImportError:
-    # funciones de respaldo si hace falta...
-    pass
+    def procesar_trabajar(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
+    def procesar_diario(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
+    def procesar_cofre(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
+    def procesar_crimen(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
+    def procesar_depositar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
+    def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
+    def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
+    def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
+    def procesar_comprar_comprar(p): return "🛍️ *TIENDA*\n• `.comprar <item>` - Adquiere artículos."
+    def procesar_inventario(u): return "⚠️ Módulo de inventario no disponible."
 
 try:
     from descargas import (
