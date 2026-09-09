@@ -24,21 +24,11 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js (incluyendo el timestamp opcional en el cuarto argumento)
+# Argumentos que vienen desde Node.js
 args = sys.argv[1:]
 mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
 parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
 usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
-
-# Validar antigüedad del mensaje (si Node.js envía el timestamp en args[3])
-tiempo_actual = time.time()
-if len(args) > 3 and args[3] != "None":
-    try:
-        tiempo_mensaje = float(args[3])
-        if (tiempo_actual - tiempo_mensaje) > 30:
-            sys.exit(0) # Ignorar mensaje antiguo sin hacer nada
-    except ValueError:
-        pass
 
 # Registrar usuario si es nuevo con todos sus campos de tiempo y nivel
 if usuario_id not in base_datos:
@@ -101,7 +91,6 @@ except ImportError:
     def procesar_level(u=""): return f"📊 Nivel del usuario."
     def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
 
-# Importación de las funciones de descarga y economía
 try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
                            descargar_tiktok, descargar_youtube, procesar_mp3, 
@@ -173,14 +162,7 @@ def ejecutar_bot():
 
     elif mensaje_recibido in [".depositar", ".dep", ".d"]:
         cantidad = parametro.lower()
-        if cantidad == "all" or cantidad == "todo":
-            cantidad_num = monedas_usuario
-        else:
-            try:
-                cantidad_num = int(cantidad)
-            except ValueError:
-                cantidad_num = 0
-        
+        cantidad_num = monedas_usuario if (cantidad == "all" or cantidad == "todo") else int(cantidad) if cantidad.isdigit() else 0
         monedas_usuario, banco_usuario, respuesta = procesar_depositar(monedas_usuario, banco_usuario, cantidad_num)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["banco"] = banco_usuario
@@ -189,14 +171,7 @@ def ejecutar_bot():
 
     elif mensaje_recibido in [".retirar", ".ret", ".r"]:
         cantidad = parametro.lower()
-        if cantidad == "all" or cantidad == "todo":
-            cantidad_num = banco_usuario
-        else:
-            try:
-                cantidad_num = int(cantidad)
-            except ValueError:
-                cantidad_num = 0
-        
+        cantidad_num = banco_usuario if (cantidad == "all" or cantidad == "todo") else int(cantidad) if cantidad.isdigit() else 0
         monedas_usuario, banco_usuario, respuesta = procesar_retirar(monedas_usuario, banco_usuario, cantidad_num)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["banco"] = banco_usuario
