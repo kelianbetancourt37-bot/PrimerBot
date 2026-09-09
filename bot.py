@@ -202,7 +202,7 @@ def ejecutar_bot():
      base_datos[usuario_id] = datos_usuario
      guardar_todos_los_datos(base_datos)
 
-    return respuesta
+     return respuesta
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
 
