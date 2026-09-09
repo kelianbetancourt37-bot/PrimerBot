@@ -202,3 +202,25 @@ def procesar_inventario(usuario_id, datos_usuario):
         f"🔥 Racha: *{racha}*\n"
         f"📦 Objetos: *{items_texto}*"
     )
+def agregar_experiencia(datos_usuario, cantidad_xp):
+    datos_usuario["experiencia"] = datos_usuario.get("experiencia", 0) + cantidad_xp
+    experiencia_actual = datos_usuario["experiencia"]
+    nivel_actual = datos_usuario.get("nivel", 1)
+    
+    # Cada nivel requiere 500 puntos por ejemplo
+    experiencia_necesaria = nivel_actual * 500
+    subio_nivel = False
+    
+    if experiencia_actual >= experiencia_necesaria:
+        datos_usuario["nivel"] = nivel_actual + 1
+        datos_usuario["experiencia"] = experiencia_actual - experiencia_necesaria
+        subio_nivel = True
+    
+    # Creamos una barrita visual simple de progreso
+    porcentaje = min(100, int((datos_usuario["experiencia"] / (nivel_actual * 500)) * 100))
+    bloques = porcentaje // 10
+    barra = "█" * bloques + "░" * (10 - bloques)
+    progreso_str = f"[{barra}] {porcentaje}%"
+    
+    return progreso_str, subio_nivel
+    
