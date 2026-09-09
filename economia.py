@@ -150,17 +150,45 @@ def procesar_Mercado(monedas_actuales, banco_actual, parametro=""):
         "┃  • *Hacha divina Escanor:* 5,000 monedas (`.comprar hacha divina escanor`)\n\n"
         "_Usa `.comprar <objeto>` para adquirir algo._"
     )
-    
-def procesar_comprar_pokeballs(parametro=""):
+
+def procesar_comprar(datos_usuario, parametro=""):
     if not parametro:
         return "⚠️ Especifica qué objeto deseas comprar del mercado. Ejemplo: `.comprar espada_de_la_lucha`"
     
     parametro_limpio = parametro.lower().strip()
-    if parametro_limpio in PRECIOS_MERCADO:
-        precio = PRECIOS_MERCADO[parametro_limpio]
-        return f"✅ Has adquirido *{parametro}* por un costo de *{precio}* monedas."
-    else:
+    if parametro_limpio not in PRECIOS_MERCADO:
         return f"❌ El objeto '{parametro}' no existe en el mercado. Revisa los nombres con `.mercado`."
+    
+    precio = PRECIOS_MERCADO[parametro_limpio]
+    monedas_actuales = datos_usuario.get("monedas", 0)
+    
+    if monedas_actuales < precio:
+        return f"❌ No tienes suficientes monedas. Te faltan {precio - monedas_actuales} monedas."
+    
+    # Descontar el costo de las monedas del usuario
+    datos_usuario["monedas"] = monedas_actuales - precio
+    
+    # Si compra la botella de experiencia, aplicamos la XP de inmediato
+    if parametro_limpio == "botellas_de_experiencia":
+        # Cada botella otorga 100 puntos de XP (puedes cambiarlo si prefieres)
+        nivel_progreso, subio_nivel = agregar_experiencia(datos_usuario, 100)
+        datos_usuario["nivel_progreso"] = nivel_progreso
+        
+        mensaje = (
+            f"✅ Has adquirido y consumido una *botella de experiencia* por *{precio}* monedas.\n"
+            f"┃  📈 *`Progreso de nivel:`* {nivel_progreso}\n"
+            f"┃  ⭐ *`Nivel actual:`* {datos_usuario['nivel']}"
+        )
+        if subio_nivel:
+            mensaje += "\n🎉 *¡Felicidades! Has subido de nivel.* 🚀"
+        return mensaje
+    
+    else:
+        # Para armas u otros objetos, los guardamos en el inventario
+        if "inventario" not in datos_usuario:
+            datos_usuario["inventario"] = []
+        datos_usuario["inventario"].append(parametro)
+        return f"✅ Has adquirido *{parametro}* por un costo de *{precio}* monedas y se añadió a tu inventario."
 
 def procesar_inventario(usuario_id, datos_usuario):
     monedas = datos_usuario.get("monedas", 500)
