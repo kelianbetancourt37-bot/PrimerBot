@@ -143,14 +143,14 @@ def procesar_banco(monedas_mano, monedas_banco):
 def procesar_Mercado(monedas_actuales, banco_actual, parametro=""):
     return (
         "🛒 *MERCADO DE JASPER* 🛒\n\n"
-        "┃  • *Botellas de experiencia:* 500 monedas (`.comprar botellas_de_experiencia`)\n"
-        "┃  • *Espada de la lucha:* 1,000 monedas (`.comprar espada_de_la_lucha`)\n"
-        "┃  • *Espada de la vitalidad:* 2,000 monedas (`.comprar espada_de_la_vitalidad`)\n"
-        "┃  • *Espada de la salud:* 3,000 monedas (`.comprar espada_de_la_salud`)\n"
-        "┃  • *Hacha divina Escanor:* 5,000 monedas (`.comprar hacha_divina_escanor`)\n\n"
+        "┃  • *Botellas de experiencia:* 500 monedas (`.comprar botellas de experiencia`)\n"
+        "┃  • *Espada de la lucha:* 1,000 monedas (`.comprar espada de la lucha`)\n"
+        "┃  • *Espada de la vitalidad:* 2,000 monedas (`.comprar espada de la vitalidad`)\n"
+        "┃  • *Espada de la salud:* 3,000 monedas (`.comprar espada de la salud`)\n"
+        "┃  • *Hacha divina Escanor:* 5,000 monedas (`.comprar hacha divina escanor`)\n\n"
         "_Usa `.comprar <objeto>` para adquirir algo._"
     )
-
+    
 def procesar_comprar_pokeballs(parametro=""):
     if not parametro:
         return "⚠️ Especifica qué objeto deseas comprar del mercado. Ejemplo: `.comprar espada_de_la_lucha`"
