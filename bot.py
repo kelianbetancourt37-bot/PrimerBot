@@ -26,9 +26,18 @@ base_datos = cargar_todos_los_datos()
 
 # Argumentos que vienen desde Node.js
 args = sys.argv[1:]
-mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
-parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
-usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
+if len(args) > 0:
+    texto_completo = args[0].strip()
+    partes_iniciales = texto_completo.split(" ", 1)
+    mensaje_recibido = partes_iniciales[0].lower()
+    
+    if len(partes_iniciales) > 1 and (len(args) < 2 or args[1] == "None"):
+        parametro = partes_iniciales[1].strip()
+    else:
+        parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
+else:
+    mensaje_recibido = ".menu"
+    parametro = ""
 
 # Registrar usuario si es nuevo con todos sus campos de tiempo y nivel
 if usuario_id not in base_datos:
