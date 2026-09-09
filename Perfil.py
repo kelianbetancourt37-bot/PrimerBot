@@ -9,14 +9,15 @@ def procesar_perfil(datos_usuario):
     racha = datos_usuario.get("racha", 0)
     descripcion = datos_usuario.get("descripcion", "Sin biografía.")
 
-    return (
+   return (
         "╭━━━〔 👤 *TARJETA DE PERFIL* 👤 ━━━╮\n"
         "┃\n"
         f"┃  🏷️ *`Nombre:`* {nombre}\n"
         f"┃  🚻 *`Género:`* {genero}\n"
         f"┃  🎂 *`Edad:`* {edad} años\n"
-        f"┃  📅 *`Nacimiento:`* {nacimiento}\n"
+        f"┃  📅 *`Nacimiento:`* {nacimiento}\n\n"
         f"┃  📊 *`Nivel:`* Nivel {nivel}\n"
+        f"┃  📈 *`Progreso de nivel:`* {datos_usuario[´nivel_progreso´]}\n"
         "┃\n"
         "┣━━ 💰 *ECONOMÍA & RACHA* ━━━\n"
         f"┃  🪙 *`Cartera:`* {monedas} monedas\n"
