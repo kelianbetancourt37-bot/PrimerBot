@@ -1,6 +1,10 @@
 import sys
 import os
 import json
+import time
+
+tiempo_actual = time.time()
+tiempo_mensaje = mensaje.get("timestamp", tiempo_actual)
 
 sys.stdout.reconfigure(encoding='utf-8')
 
