@@ -3,9 +3,6 @@ import os
 import json
 import time
 
-tiempo_actual = time.time()
-tiempo_mensaje = mensaje.get("timestamp", tiempo_actual)
-
 sys.stdout.reconfigure(encoding='utf-8')
 
 # --- CONFIGURACIÓN DE BASE DE DATOS JSON ---
@@ -27,18 +24,31 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos de Node.js
+# Argumentos que vienen desde Node.js (incluyendo el timestamp opcional en el cuarto argumento)
 args = sys.argv[1:]
 mensaje_recibido = args[0].lower().strip() if len(args) > 0 else ".menu"
 parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
 usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
 
-# Registrar usuario si es nuevo con todos sus campos de tiempo
+# Validar antigüedad del mensaje (si Node.js envía el timestamp en args[3])
+tiempo_actual = time.time()
+if len(args) > 3 and args[3] != "None":
+    try:
+        tiempo_mensaje = float(args[3])
+        if (tiempo_actual - tiempo_mensaje) > 30:
+            sys.exit(0) # Ignorar mensaje antiguo sin hacer nada
+    except ValueError:
+        pass
+
+# Registrar usuario si es nuevo con todos sus campos de tiempo y nivel
 if usuario_id not in base_datos:
     base_datos[usuario_id] = {
         "monedas": 500,
         "banco": 0,
         "racha": 0,
+        "nivel": 1,
+        "experiencia": 0,
+        "nivel_progreso": "[░░░░░░░░░░] 0%",
         "ultimo_trabajo": 0,
         "ultimo_diario": 0,
         "ultimo_cofre": 0,
@@ -82,12 +92,12 @@ except ImportError:
 try:
     from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
 except ImportError:
-    def procesar_perfil(u=""): return f"👤 Perfil de {u or 'Usuario'}"
-    def procesar_setname(p=""): return f"✅ Nombre actualizado a: {p}"
-    def procesar_setdesc(p=""): return f"📝 Descripción actualizada."
-    def procesar_setage(p=""): return f"🎂 Edad configurada a: {p}"
-    def procesar_setbirth(p=""): return f"📅 Nacimiento guardado: {p}"
-    def procesar_setgene(p=""): return f"🚻 Género actualizado: {p}"
+    def procesar_perfil(u=""): return f"👤 Perfil de usuario"
+    def procesar_setname(p="", d=None, g=None, b=None): return f"✅ Nombre actualizado a: {p}"
+    def procesar_setdesc(p="", d=None, g=None, b=None): return f"📝 Descripción actualizada."
+    def procesar_setage(p="", d=None, g=None, b=None): return f"🎂 Edad configurada a: {p}"
+    def procesar_setbirth(p="", d=None, g=None, b=None): return f"📅 Nacimiento guardado: {p}"
+    def procesar_setgene(p="", d=None, g=None, b=None): return f"🚻 Género actualizado: {p}"
     def procesar_level(u=""): return f"📊 Nivel del usuario."
     def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
 
@@ -121,8 +131,8 @@ except ImportError:
     def procesar_retirar(m, b, c): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_banco(m, b): return m, b, "⚠️ Módulo de economía no disponible."
     def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
-    def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA POKÉMON*\n• `.comprar <item>` - Adquiere artículos."
-    def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
+    def procesar_comprar_pokeballs(p): return "🛍️ *TIENDA*\n• `.comprar <item>` - Adquiere artículos."
+    def procesar_inventario(u): return "⚠️ Módulo de inventario no disponible."
 
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
@@ -134,7 +144,7 @@ def ejecutar_bot():
     elif mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
 
-    # Economía / Gacha (Con sus tiempos correctos)
+    # Economía / Gacha
     elif mensaje_recibido in [".crimen", ".crime"]:
         monedas_usuario, ultimo_crimen, respuesta = procesar_crimen(usuario_id, monedas_usuario, ultimo_crimen)
         datos_usuario["monedas"] = monedas_usuario
@@ -194,16 +204,18 @@ def ejecutar_bot():
         return respuesta
 
     elif mensaje_recibido in [".banco", ".bank"]:
-        monedas_usuario, banco_usuario, respuesta = procesar_banco(monedas_usuario, banco_usuario)
+        _, _, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
 
     elif mensaje_recibido == ".mercado":
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido == ".comprar":
-        return procesar_comprar_pokeballs(parametro)
+        respuesta = procesar_comprar_pokeballs(datos_usuario, parametro)
+        guardar_todos_los_datos(base_datos)
+        return respuesta
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
-        
+
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(datos_usuario)
@@ -248,11 +260,15 @@ def ejecutar_bot():
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
         comando_limpio = mensaje_recibido.replace(".", "")
         return procesar_admin_command(comando_limpio, user=parametro)
-    elif mensaje_recibido in [".close", ".open", ".antilink", ".antispam", ".tagall", ".boton", ".botoff"]:
+    elif mensaje_recibido in [".close", ".open", ".antilink", ".antispam", ".tagall"]:
         comando_limpio = mensaje_recibido.replace(".", "")
         return procesar_admin_command(comando_limpio)
     elif mensaje_recibido == ".delete":
         return procesar_admin_command("delete", mensaje_id=parametro)
+    elif mensaje_recibido == ".boton":
+        return procesar_admin_command("boton")
+    elif mensaje_recibido == ".botoff":
+        return procesar_admin_command("botoff")
 
     # Interacción
     elif mensaje_recibido == ".saludar":
@@ -269,7 +285,7 @@ def ejecutar_bot():
         return caricia(parametro)
     elif mensaje_recibido == ".correr":
         return correr(parametro)
-        
+
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
 
