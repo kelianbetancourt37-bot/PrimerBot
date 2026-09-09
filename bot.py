@@ -83,6 +83,7 @@ try:
     from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
                       procesar_crimen, procesar_depositar, procesar_retirar, 
                       procesar_banco, procesar_Mercado, procesar_comprar_comprar, procesar_inventario)
+    except ImportError:
 
 try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
