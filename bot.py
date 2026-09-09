@@ -94,17 +94,6 @@ except ImportError:
     def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
 
 try:
-
-    def procesar_perfil(u=""): return f"👤 Perfil de usuario"
-    def procesar_setname(p="", d=None, g=None, b=None): return f"✅ Nombre actualizado a: {p}"
-    def procesar_setdesc(p="", d=None, g=None, b=None): return f"📝 Descripción actualizada."
-    def procesar_setage(p="", d=None, g=None, b=None): return f"🎂 Edad configurada a: {p}"
-    def procesar_setbirth(p="", d=None, g=None, b=None): return f"📅 Nacimiento guardado: {p}"
-    def procesar_setgene(p="", d=None, g=None, b=None): return f"🚻 Género actualizado: {p}"
-    def procesar_level(u=""): return f"📊 Nivel del usuario."
-    def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
-
-try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
                            descargar_tiktok, descargar_youtube, procesar_mp3, 
                            procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest)
