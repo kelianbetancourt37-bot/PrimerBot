@@ -80,8 +80,9 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-    from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
-except ImportError:
+   from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
+                      procesar_crimen, procesar_depositar, procesar_retirar, 
+                      procesar_banco, procesar_Mercado, procesar_comprar_pokeballs, procesar_inventario)
     def procesar_perfil(u=""): return f"👤 Perfil de usuario"
     def procesar_setname(p="", d=None, g=None, b=None): return f"✅ Nombre actualizado a: {p}"
     def procesar_setdesc(p="", d=None, g=None, b=None): return f"📝 Descripción actualizada."
