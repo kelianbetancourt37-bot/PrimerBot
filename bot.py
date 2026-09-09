@@ -82,16 +82,7 @@ except ImportError:
 try:
     from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
                       procesar_crimen, procesar_depositar, procesar_retirar, 
-                      procesar_banco, procesar_Mercado, procesar_comprar_pokeballs, procesar_inventario)
-except ImportError:
-    def procesar_perfil(u=""): return f"👤 Perfil de usuario"
-    def procesar_setname(p="", d=None, g=None, b=None): return f"✅ Nombre actualizado a: {p}"
-    def procesar_setdesc(p="", d=None, g=None, b=None): return f"📝 Descripción actualizada."
-    def procesar_setage(p="", d=None, g=None, b=None): return f"🎂 Edad configurada a: {p}"
-    def procesar_setbirth(p="", d=None, g=None, b=None): return f"📅 Nacimiento guardado: {p}"
-    def procesar_setgene(p="", d=None, g=None, b=None): return f"🚻 Género actualizado: {p}"
-    def procesar_level(u=""): return f"📊 Nivel del usuario."
-    def procesar_levelup(u=""): return f"🎉 ¡Subiste de nivel!"
+                      procesar_banco, procesar_Mercado, procesar_comprar_comprar, procesar_inventario)
 
 try:
     from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
