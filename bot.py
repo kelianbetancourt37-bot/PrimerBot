@@ -80,11 +80,7 @@ except ImportError:
     def correr(u=""): return f"🏃 Corriendo..."
 
 try:
-    from economia import (
-        procesar_trabajar, procesar_diario, procesar_cofre, 
-        procesar_crimen, procesar_depositar, procesar_retirar, 
-        procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario
-    )
+   from economia import procesar_trabajar, procesar_diario, procesar_cofre, procesar_crimen, procesar_depositar, procesar_retirar, procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario
 except ImportError:
     # funciones de respaldo si hace falta...
     pass
