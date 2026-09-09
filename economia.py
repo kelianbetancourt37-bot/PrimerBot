@@ -151,17 +151,6 @@ def procesar_Mercado(monedas_actuales, banco_actual, parametro=""):
         "_Usa `.comprar <objeto>` para adquirir algo._"
     )
 
-def procesar_comprar_pokeballs(parametro=""):
-    if not parametro:
-        return "⚠️ Especifica qué objeto deseas comprar del mercado. Ejemplo: `.comprar espada_de_la_lucha`"
-    
-    parametro_limpio = parametro.lower().strip()
-    if parametro_limpio in PRECIOS_MERCADO:
-        precio = PRECIOS_MERCADO[parametro_limpio]
-        return f"✅ Has adquirido *{parametro}* por un costo de *{precio}* monedas."
-    else:
-        return f"❌ El objeto '{parametro}' no existe en el mercado. Revisa los nombres con `.mercado`."
-
 def procesar_comprar(datos_usuario, parametro=""):
     if not parametro:
         return "⚠️ Especifica qué objeto deseas comprar del mercado. Ejemplo: `.comprar espada_de_la_lucha`"
