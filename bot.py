@@ -193,9 +193,16 @@ def ejecutar_bot():
     elif mensaje_recibido == ".mercado":
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido.startswith(".comprar") or mensaje_recibido.startswith(".buy"):
-     partes = mensaje_recibido.split(" ", 1)
-     parametro = partes[1] if len(partes) > 1 else ""
-     respuesta = procesar_comprar(datos_usuario, parametro)
+    partes = mensaje_recibido.split(" ", 1)
+    parametro = partes[1].strip() if len(partes) > 1 else ""
+
+    respuesta = procesar_comprar(datos_usuario, parametro)
+
+    monedas_usuario = datos_usuario.get("monedas", monedas_usuario)
+    base_datos[usuario_id] = datos_usuario
+    guardar_todos_los_datos(base_datos)
+
+    return respuesta
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
 
