@@ -24,7 +24,7 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js
+# Argumentos que vienen desde Node.js (incluyendo el timestamp opcional en el cuarto argumento)
 args = sys.argv[1:]
 if len(args) > 0:
     texto_completo = args[0].strip()
@@ -38,6 +38,18 @@ if len(args) > 0:
 else:
     mensaje_recibido = ".menu"
     parametro = ""
+
+usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
+
+# Validar antigüedad del mensaje (si Node.js envía el timestamp en args[3])
+tiempo_actual = time.time()
+if len(args) > 3 and args[3] != "None":
+    try:
+        tiempo_mensaje = float(args[3])
+        if (tiempo_actual - tiempo_mensaje) > 30:
+            sys.exit(0) # Ignorar mensaje antiguo sin hacer nada
+    except ValueError:
+        pass
 
 # Registrar usuario si es nuevo con todos sus campos de tiempo y nivel
 if usuario_id not in base_datos:
@@ -121,24 +133,6 @@ except ImportError:
     def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
     def procesar_sticker(u): return f"🖼️ Sticker: {u}"
     def procesar_pinterest(b): return f"📌 Pinterest: {b}"
-        
-try:
-    from descargas import (procesar_descargar, descargar_facebook, descargar_instagram, 
-                           descargar_tiktok, descargar_youtube, procesar_mp3, 
-                           procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest)
-except ImportError:
-    def procesar_descargar(l): return f"🔗 Descarga: {l}"
-    def descargar_facebook(l): return f"🔗 FB: {l}"
-    def descargar_instagram(l): return f"🔗 IG: {l}"
-    def descargar_tiktok(l): return f"🔗 TT: {l}"
-    def descargar_youtube(l): return f"🔗 YT: {l}"
-    def procesar_mp3(l): return f"🎵 MP3: {l}"
-    def procesar_mp4(l): return f"🎥 MP4: {l}"
-    def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
-    def procesar_sticker(u): return f"🖼️ Sticker: {u}"
-    def procesar_pinterest(b): return f"📌 Pinterest: {b}"
-
-
 
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
