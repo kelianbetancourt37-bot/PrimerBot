@@ -172,10 +172,8 @@ def ejecutar_bot():
 
     elif mensaje_recibido == ".mercado":
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
-    elif mensaje_recibido == ".comprar":
-        respuesta = procesar_comprar_pokeballs(datos_usuario, parametro)
-        guardar_todos_los_datos(base_datos)
-        return respuesta
+    elif mensaje_recibido in [".comprar", ".buy"]:
+        respuesta = procesar_comprar(datos_usuario, parametro)
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
 
