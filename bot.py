@@ -304,3 +304,37 @@ if __name__ == "__main__":
             print(resultado)
     except Exception as error:
         print(f"⚠️ Error al ejecutar el comando en Python: {str(error)}")
+
+import sys
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        comando = sys.argv.lower()
+        parametro = sys.argv if len(sys.argv) > 2 else ""
+        
+        if comando in [".descargar", ".des"]:
+            print(procesar_descargar(parametro))
+        elif comando == ".mediafire":
+            print(procesar_Medifire(parametro))
+        elif comando == ".mega":
+            print(procesar_Mega(parametro))
+        elif comando == ".fb" or comando == ".facebook":
+            print(descargar_facebook(parametro))
+        elif comando == ".insta" or comando == ".instagram":
+            print(descargar_instagram(parametro))
+        elif comando == ".tiktok":
+            print(descargar_tiktok(parametro))
+        elif comando == ".youtube" or comando == ".yt":
+            print(descargar_youtube(parametro))
+        elif comando == ".mp3":
+            print(procesar_mp3(parametro))
+        elif comando == ".mp4":
+            print(procesar_mp4(parametro))
+        elif comando == ".imagen":
+            print(procesar_imagenes(parametro))
+        elif comando == ".pin" or comando == ".pinterest":
+            print(procesar_pinterest(parametro))
+        elif comando == ".sticker":
+            print(procesar_sticker(parametro))
+        else:
+            print("❌ Comando no reconocido.")
