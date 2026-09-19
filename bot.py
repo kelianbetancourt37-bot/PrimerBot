@@ -25,10 +25,6 @@ def guardar_todos_los_datos(datos):
 base_datos = cargar_todos_los_datos()
 
 # Argumentos que vienen desde Node.js:
-# sys.argv = texto del comando + parámetros iniciales
-# sys.argv = parámetro separado (si aplica)
-# sys.argv = usuario_id
-# sys.argv = timestamp (opcional)
 args = sys.argv[1:]
 
 mensaje_recibido = ".menu"
@@ -109,8 +105,8 @@ except ImportError:
 
 try:
     from economia import (procesar_trabajar, procesar_diario, procesar_cofre, 
-                          procesar_crimen, procesar_depositar, procesar_retirar, 
-                          procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario)
+                         procesar_crimen, procesar_depositar, procesar_retirar, 
+                         procesar_banco, procesar_Mercado, procesar_comprar, procesar_inventario, procesar_apostar)
 except ImportError:
     def procesar_trabajar(u, m, t): return m, t, "⚠️ Módulo de economía no disponible."
     def procesar_diario(u, m, r, t): return m, r, t, "⚠️ Módulo de economía no disponible."
@@ -122,6 +118,7 @@ except ImportError:
     def procesar_Mercado(m, b, p): return "🛒 *MERCADO GENERAL*\n• `.mercado` - Ver artículos disponibles."
     def procesar_comprar(datos_usuario, parametro=""): return "🛍️ *TIENDA*\n• `.comprar <item>` - Adquiere artículos."
     def procesar_inventario(u, d): return "⚠️ Módulo de inventario no disponible."
+    def procesar_apostar(d, p): return "⚠️ Módulo de apuesta no disponible."
 
 try:
     from descargas import (
@@ -141,7 +138,6 @@ except ImportError:
     def procesar_sticker(u): return f"🖼️ Sticker: {u}"
     def procesar_pinterest(b): return f"📌 Pinterest: {b}"
 
-# Fallback seguro para funciones de perfil si no existen en archivo externo
 try:
     from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
 except ImportError:
@@ -221,6 +217,12 @@ def ejecutar_bot():
         return respuesta
     elif mensaje_recibido == ".inventario":
         return procesar_inventario(usuario_id, datos_usuario)
+    elif mensaje_recibido.startswith(".apostar"):
+        partes = mensaje_recibido.split()
+        param = partes if len(partes) > 1 else parametro if parametro else "0"
+        respuesta = procesar_apostar(datos_usuario, param)
+        guardar_todos_los_datos(base_datos)
+        return respuesta
 
     # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
