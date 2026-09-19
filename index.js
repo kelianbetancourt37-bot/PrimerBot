@@ -13,7 +13,7 @@ async function iniciarBot() {
 
     if (!sock.authState.creds.registered) {
         const numeroLimpio = "5595984017858";
-        
+
         console.log('Generando código de vinculación para +55 95 98401-7858...');
         setTimeout(async () => {
             try {
@@ -47,23 +47,21 @@ async function iniciarBot() {
             const partes = texto.trim().split(' ');
             const comando = partes[0].toLowerCase();
             const parametro = partes.slice(1).join(' ') || '';
-            
+
             const usuarioId = msg.key.participant || remitente;
 
-            // COMANDOS DE ADMINISTRACIÓN REAL DE GRUPOS EN WHATSAPP
+            // COMANDOS DE ADMINISTRACIÓN (Solo se ejecutan si es un GRUPO de WhatsApp)
             if (remitente.endsWith('@g.us')) {
-                try {
-                    // Obtenemos los metadatos del grupo de forma segura
-                    const groupMetadata = await sock.groupMetadata(remitente);
-                    const participantes = groupMetadata.participants || [];
-                    
-                    // Verificamos quién es admin
-                    const esAdmin = participantes.some(p => 
-                        (p.id === usuarioId || p.id === msg.key.participant) && 
-                        (p.admin === 'admin' || p.admin === 'superadmin')
-                    );
+                if (comando === '.close' || comando === '.open') {
+                    try {
+                        const groupMetadata = await sock.groupMetadata(remitente);
+                        const participantes = groupMetadata.participants || [];
 
-                    if (comando === '.close' || comando === '.open') {
+                        const esAdmin = participantes.some(p => 
+                            (p.id === usuarioId) && 
+                            (p.admin === 'admin' || p.admin === 'superadmin')
+                        );
+
                         if (!esAdmin) {
                             await sock.sendMessage(remitente, { text: '⚠️ Solo los administradores del grupo pueden usar este comando.' }, { quoted: msg });
                             return;
@@ -79,25 +77,30 @@ async function iniciarBot() {
                             await sock.sendMessage(remitente, { text: '🔓 El grupo ha sido abierto. Todos pueden enviar mensajes.' }, { quoted: msg });
                             return;
                         }
+                    } catch (err) {
+                        console.error('Error al gestionar metadatos del grupo:', err.message);
+                        await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador del grupo.' }, { quoted: msg });
+                        return;
                     }
-                } catch (err) {
-                    console.error('Error al gestionar metadatos del grupo:', err.message);
-                    await sock.sendMessage(remitente, { text: '⚠️ Error: Asegúrate de que el bot sea Administrador del grupo.' }, { quoted: msg });
+                }
+            } else {
+                if (comando === '.close' || comando === '.open') {
+                    await sock.sendMessage(remitente, { text: '⚠️ Este comando de administración solo se puede usar dentro de grupos.' }, { quoted: msg });
                     return;
                 }
             }
 
             // COMANDOS PROCESADOS DESDE PYTHON
             const comandoPython = `python3 bot.py "${comando}" "${parametro}" "${usuarioId}"`;
-            
+
             exec(comandoPython, { encoding: 'utf-8' }, async (error, stdout) => {
                 if (error) {
                     console.error(`Error ejecutando Python: ${error.message}`);
                     return;
                 }
-                
+
                 const respuesta = stdout.trim();
-                
+
                 if (respuesta) {
                     try {
                         if (respuesta.startsWith("GIF|")) {
