@@ -49,13 +49,13 @@ def procesar_antilink():
 def procesar_antispam():
     return "✅ Antispam activado."
 
-def procesar_tagall():
+def procesar_tag(custom_msg=""):
+    texto_aviso = custom_msg if custom_msg else "Se requiere la presencia de todos en el grupo."
     return (
         "📢 *¡ATENCIÓN A TODOS LOS MIEMBROS!* 📢\n\n"
         "╭━━━〔 👥 *MENCIÓN GENERAL* 👥 ━━━╮\n"
         "┃\n"
-        "┃  💬 _Se requiere la presencia_ \n"
-        "┃  _de todos en el grupo._\n"
+        f"┃  💬 _{texto_aviso}_\n"
         "┃\n"
         "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯"
     )
