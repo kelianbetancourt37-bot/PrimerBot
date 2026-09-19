@@ -40,11 +40,11 @@ async function iniciarBot() {
         const msg = m.messages[0];
         if (!msg.message) return;
 
-        const texto = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
+        const body = msg.message.conversation || msg.message.extendedTextMessage?.text || '';
         const remitente = msg.key.remoteJid;
 
-        if (texto.startsWith('.')) {
-            const partes = texto.trim().split(' ');
+        if (body.startsWith('.')) {
+            const partes = body.trim().split(' ');
             const comando = partes[0].toLowerCase();
             const parametro = partes.slice(1).join(' ') || '';
 
@@ -90,27 +90,38 @@ async function iniciarBot() {
                 }
             }
 
-                       if (body.startsWith('.tag') || body.startsWith('.tagall')) {
-    const groupMetadata = await sock.groupMetadata(from);
-    const participants = groupMetadata.participants.map(p => p.id);
-    
-    const argsTag = body.replace(/^\.tag(all)?\s*/i, '').trim();
-    const mensajeFinal = argsTag ? argsTag : "Se requiere la presencia de todos en el grupo.";
-    
-    const textoPython = 
-        "📢 *¡ATENCIÓN A TODOS LOS MIEMBROS!* 📢\n\n" +
-        "╭━━━〔 👥 *MENCIÓN GENERAL* 👥 ━━━╮\n" +
-        "┃\n" +
-        `┃  💬 _${mensajeFinal}_\n` +
-        "┃\n" +
-        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯";
+            // COMANDO .tag / .tagall
+            if (comando === '.tag' || comando === '.tagall') {
+                if (!remitente.endsWith('@g.us')) {
+                    await sock.sendMessage(remitente, { text: '⚠️ Este comando solo se puede usar en grupos.' }, { quoted: msg });
+                    return;
+                }
 
-    await sock.sendMessage(from, { 
-        text: textoPython, 
-        mentions: participants 
-    }, { quoted: m });
-    return; // Importante para que no siga ejecutando y mande doble comando por Python
-}
+                try {
+                    const groupMetadata = await sock.groupMetadata(remitente);
+                    const participants = groupMetadata.participants.map(p => p.id);
+                    
+                    const argsTag = body.replace(/^\.tag(all)?\s*/i, '').trim();
+                    const mensajeFinal = argsTag ? argsTag : "Se requiere la presencia de todos en el grupo.";
+                    
+                    const textoPython = 
+                        "📢 *¡ATENCIÓN A TODOS LOS MIEMBROS!* 📢\n\n" +
+                        "╭━━━〔 👥 *MENCIÓN GENERAL* 👥 ━━━╮\n" +
+                        "┃\n" +
+                        `┃  💬 _${mensajeFinal}_\n` +
+                        "┃\n" +
+                        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯";
+
+                    await sock.sendMessage(remitente, { 
+                        text: textoPython, 
+                        mentions: participants 
+                    }, { quoted: msg });
+                    return;
+                } catch (tagErr) {
+                    console.error('Error al ejecutar tagall:', tagErr.message);
+                    return;
+                }
+            }
 
             // COMANDOS PROCESADOS DESDE PYTHON
             const comandoPython = `python3 bot.py "${comando}" "${parametro}" "${usuarioId}"`;
