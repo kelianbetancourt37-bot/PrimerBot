@@ -3,7 +3,11 @@ import os
 import json
 import time
 
-sys.stdout.reconfigure(encoding='utf-8')
+# Forzar codificación UTF-8 para evitar problemas de tildes o emojis
+try:
+    sys.stdout.reconfigure(encoding='utf-8')
+except AttributeError:
+    pass
 
 # --- CONFIGURACIÓN DE BASE DE DATOS JSON ---
 DB_FILE = "usuarios.json"
@@ -13,7 +17,7 @@ def cargar_todos_los_datos():
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
                 return json.load(f)
-        except:
+        except Exception:
             pass
     return {}
 
@@ -24,7 +28,7 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js:
+# Argumentos que vienen desde Node.js (ejemplo: python3 bot.py ".menu" "parametro" "usuario_id" "timestamp")
 args = sys.argv[1:]
 
 mensaje_recibido = ".menu"
@@ -124,7 +128,8 @@ try:
     from descargas import (
         procesar_descargar, descargar_facebook, descargar_instagram, 
         descargar_tiktok, descargar_youtube, procesar_mp3, 
-        procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest
+        procesar_mp4, procesar_imagenes, procesar_sticker, procesar_pinterest,
+        procesar_Medifire, procesar_Mega
     )
 except ImportError:
     def procesar_descargar(l): return f"🔗 Descarga: {l}"
@@ -137,6 +142,8 @@ except ImportError:
     def procesar_imagenes(b): return f"🖼️ Imágenes: {b}"
     def procesar_sticker(u): return f"🖼️ Sticker: {u}"
     def procesar_pinterest(b): return f"📌 Pinterest: {b}"
+    def procesar_Medifire(b): return f"🔥 Mediafire: {b}"
+    def procesar_Mega(b): return f"🟢 Mega: {b}"
 
 try:
     from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
@@ -243,15 +250,19 @@ def ejecutar_bot():
         return procesar_levelup(datos_usuario)
 
     # Comandos de Descarga
-    elif mensaje_recibido in [".mediafire", ".mega", ".descargar"]:
+    elif mensaje_recibido in [".descargar", ".des"]:
         return procesar_descargar(parametro)
-    elif mensaje_recibido == ".fb":
+    elif mensaje_recibido == ".mediafire":
+        return procesar_Medifire(parametro)
+    elif mensaje_recibido == ".mega":
+        return procesar_Mega(parametro)
+    elif mensaje_recibido in [".fb", ".facebook"]:
         return descargar_facebook(parametro)
-    elif mensaje_recibido == ".ig":
+    elif mensaje_recibido in [".ig", ".insta", ".instagram"]:
         return descargar_instagram(parametro)
-    elif mensaje_recibido == ".tt":
+    elif mensaje_recibido in [".tt", ".tiktok"]:
         return descargar_tiktok(parametro)
-    elif mensaje_recibido == ".yt":
+    elif mensaje_recibido in [".yt", ".youtube"]:
         return descargar_youtube(parametro)
     elif mensaje_recibido == ".mp3":
         return procesar_mp3(parametro)
@@ -261,7 +272,7 @@ def ejecutar_bot():
         return procesar_imagenes(parametro)
     elif mensaje_recibido == ".sticker":
         return procesar_sticker(parametro)
-    elif mensaje_recibido == ".pin":
+    elif mensaje_recibido in [".pin", ".pinterest"]:
         return procesar_pinterest(parametro)
 
     # Comandos de Administración
@@ -304,37 +315,3 @@ if __name__ == "__main__":
             print(resultado)
     except Exception as error:
         print(f"⚠️ Error al ejecutar el comando en Python: {str(error)}")
-
-import sys
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1:
-        comando = sys.argv.lower()
-        parametro = sys.argv if len(sys.argv) > 2 else ""
-        
-        if comando in [".descargar", ".des"]:
-            print(procesar_descargar(parametro))
-        elif comando == ".mediafire":
-            print(procesar_Medifire(parametro))
-        elif comando == ".mega":
-            print(procesar_Mega(parametro))
-        elif comando == ".fb" or comando == ".facebook":
-            print(descargar_facebook(parametro))
-        elif comando == ".insta" or comando == ".instagram":
-            print(descargar_instagram(parametro))
-        elif comando == ".tiktok":
-            print(descargar_tiktok(parametro))
-        elif comando == ".youtube" or comando == ".yt":
-            print(descargar_youtube(parametro))
-        elif comando == ".mp3":
-            print(procesar_mp3(parametro))
-        elif comando == ".mp4":
-            print(procesar_mp4(parametro))
-        elif comando == ".imagen":
-            print(procesar_imagenes(parametro))
-        elif comando == ".pin" or comando == ".pinterest":
-            print(procesar_pinterest(parametro))
-        elif comando == ".sticker":
-            print(procesar_sticker(parametro))
-        else:
-            print("❌ Comando no reconocido.")
