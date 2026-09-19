@@ -89,7 +89,30 @@ async function iniciarBot() {
                     return;
                 }
             }
+            // COMANDO .des / .descargar (Enlaces directos)
+if (comando === '.des' || comando === '.descargar') {
+    if (!parametro || !parametro.startsWith('http')) {
+        await sock.sendMessage(remitente, { text: '⚠️ Uso correcto: `.des https://ejemplo.com/archivo.pdf`' }, { quoted: msg });
+        return;
+    }
 
+    try {
+        await sock.sendMessage(remitente, { text: '⏳ Procesando y enviando archivo...' }, { quoted: msg });
+        
+        // Extraer nombre del archivo del enlace
+        const fileName = parametro.split('/').pop().split('?')[0] || 'archivo_descargado';
+
+        await sock.sendMessage(remitente, {
+            document: { url: parametro },
+            fileName: fileName,
+            mimetype: 'application/octet-stream'
+        }, { quoted: msg });
+    } catch (err) {
+        console.error('Error al enviar archivo:', err.message);
+        await sock.sendMessage(remitente, { text: '❌ No se pudo enviar el archivo (asegúrate de que el enlace sea directo).' }, { quoted: msg });
+    }
+    return;
+}
             // COMANDO .tag / .tagall
             if (comando === '.tag' || comando === '.tagall') {
                 if (!remitente.endsWith('@g.us')) {
