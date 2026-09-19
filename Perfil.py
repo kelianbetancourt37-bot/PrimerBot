@@ -31,7 +31,7 @@ def procesar_perfil(datos_usuario):
         f"╰──────────────────────────╯\n"
         f"💡 _Usa `.setname`, `.setage`, etc., para editar tus datos._"
     )
-    
+
 def procesar_setname(param, datos_usuario, guardar_fn, base_datos):
     if not param:
         return "⚠️ Por favor escribe el nuevo nombre. Ejemplo: `.setname Juan`"
@@ -69,7 +69,8 @@ def procesar_setgene(param, datos_usuario, guardar_fn, base_datos):
 
 def procesar_level(datos_usuario):
     nivel = datos_usuario.get("nivel", 1)
-    return f"📊 Tu nivel actual en el bot es: *Nivel {nivel}*."
+    progreso = datos_usuario.get("nivel_progreso", "[░░░░░░░░░░] 0%")
+    return f"📊 Tu nivel actual en el bot es: *Nivel {nivel}*.\n📈 Progreso: {progreso}"
 
 def procesar_sublevel(param=""):
     return "📈 Progreso de nivel actualizado."
@@ -80,22 +81,24 @@ def procesar_levelup(param=""):
 def agregar_experiencia(datos_usuario, cantidad):
     if "nivel" not in datos_usuario:
         datos_usuario["nivel"] = 1
-    if "expariencia" not in datos_usuario:
-        datos_usuario["expariencia"] = 0
+    if "experiencia" not in datos_usuario:
+        datos_usuario["experiencia"] = 0
 
     xp_necesaria = datos_usuario["nivel"] * 100
-    datos_usuario["expariencia"] += cantidad
+    datos_usuario["experiencia"] += cantidad
 
-    sub_nivel = false
-    while datos_usuario ["expariencia"] >= xp_necesaria:
-        datos_usuario["expariencia"] -= xp_necesaria
+    sub_nivel = False
+    while datos_usuario["experiencia"] >= xp_necesaria:
+        datos_usuario["experiencia"] -= xp_necesaria
         datos_usuario["nivel"] += 1
         xp_necesaria = datos_usuario["nivel"] * 100
-        sub_nivel = true
+        sub_nivel = True
 
-    porcentaje = min(datos_usuario["expariencia"] / xp_necesaria, 1.0)
+    porcentaje = min(datos_usuario["experiencia"] / xp_necesaria, 1.0)
     bloques_llenos = int(porcentaje * 10)
     barrita = "█" * bloques_llenos + "░" * (10 - bloques_llenos)
-    nivel_progreso = f"{datos_usuario['nivel']}/{datos_usuario['nivel_max']}"
+    porcentaje_num = int(porcentaje * 100)
+    nivel_progreso = f"[{barrita}] {porcentaje_num}%"
 
+    datos_usuario["nivel_progreso"] = nivel_progreso
     return nivel_progreso, sub_nivel
