@@ -143,7 +143,7 @@ except ImportError:
 
 # Fallback seguro para funciones de perfil si no existen en archivo externo
 try:
-    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+    from Perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
 except ImportError:
     def procesar_perfil(d): return f"👤 *PERFIL*\nNivel: {d.get('nivel',1)} | XP: {d.get('experiencia',0)}"
     def procesar_setname(p, d, g, b): return "✅ Nombre configurado."
