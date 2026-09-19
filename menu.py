@@ -14,6 +14,7 @@ def mostrar_menu():
         "┃  • `.depositar` / `.retirar` - Banco\n"
         "┃  • `.banco` - Estado de cuenta\n"
         "┃  • `.inventario` - Inventario\n"
+        "┃  • `.apostar` - apostar\n"
         "┃\n"
         "┣━━ 👤 *PERFIL DE USUARIO* ━━━\n"
         "┃  • `.perfil` - Tarjeta de presentación\n"
