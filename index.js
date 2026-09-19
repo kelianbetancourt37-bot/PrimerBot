@@ -90,6 +90,28 @@ async function iniciarBot() {
                 }
             }
 
+                       if (body.startsWith('.tag') || body.startsWith('.tagall')) {
+    const groupMetadata = await sock.groupMetadata(from);
+    const participants = groupMetadata.participants.map(p => p.id);
+    
+    const argsTag = body.replace(/^\.tag(all)?\s*/i, '').trim();
+    const mensajeFinal = argsTag ? argsTag : "Se requiere la presencia de todos en el grupo.";
+    
+    const textoPython = 
+        "📢 *¡ATENCIÓN A TODOS LOS MIEMBROS!* 📢\n\n" +
+        "╭━━━〔 👥 *MENCIÓN GENERAL* 👥 ━━━╮\n" +
+        "┃\n" +
+        `┃  💬 _${mensajeFinal}_\n` +
+        "┃\n" +
+        "╰━━━━━━━━━━━━━━━━━━━━━━━━━━━━╯";
+
+    await sock.sendMessage(from, { 
+        text: textoPython, 
+        mentions: participants 
+    }, { quoted: m });
+    return; // Importante para que no siga ejecutando y mande doble comando por Python
+}
+
             // COMANDOS PROCESADOS DESDE PYTHON
             const comandoPython = `python3 bot.py "${comando}" "${parametro}" "${usuarioId}"`;
 
