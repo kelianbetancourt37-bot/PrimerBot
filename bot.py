@@ -3,13 +3,11 @@ import os
 import json
 import time
 
-# Forzar codificación UTF-8 para evitar problemas de tildes o emojis
 try:
     sys.stdout.reconfigure(encoding='utf-8')
 except AttributeError:
     pass
 
-# --- CONFIGURACIÓN DE BASE DE DATOS JSON ---
 DB_FILE = "usuarios.json"
 
 def cargar_todos_los_datos():
@@ -25,53 +23,41 @@ def guardar_todos_los_datos(datos):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(datos, f, ensure_ascii=False, indent=4)
 
-# Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js (ejemplo: python3 bot.py ".menu" "parametro" "usuario_id" "timestamp")
+# Leer argumentos de Node.js de forma segura con índices numéricos (sys.argv, sys.argv, etc.)
 args = sys.argv[1:]
-
 mensaje_recibido = ".menu"
 parametro = ""
 usuario_id = "usuario_general"
 
-if len(args) > 0 and str(args[0]) != "None":
-    texto_completo = str(args[0]).strip()
+if len(sys.argv) > 1 and str(sys.argv) != "None":
+    texto_completo = str(sys.argv).strip()
     partes_iniciales = texto_completo.split(" ", 1)
-    mensaje_recibido = partes_iniciales[0].lower()
+    mensaje_recibido = partes_iniciales.lower()
     if len(partes_iniciales) > 1:
         parametro = partes_iniciales.strip()
 
-if len(args) > 1 and str(args) != "None" and str(args).strip() != "":
-    parametro = str(args).strip()
+if len(sys.argv) > 2 and str(sys.argv) != "None" and str(sys.argv).strip() != "":
+    parametro = str(sys.argv).strip()
 
-if len(args) > 2 and str(args) != "None":
-    usuario_id = str(args).strip()
+if len(sys.argv) > 3 and str(sys.argv) != "None":
+    usuario_id = str(sys.argv).strip()
 
-# Validar antigüedad del mensaje (si se envía timestamp en el índice 3)
 tiempo_actual = time.time()
-if len(args) > 3 and str(args) != "None":
+if len(sys.argv) > 4 and str(sys.argv) != "None":
     try:
-        tiempo_mensaje = float(args)
+        tiempo_mensaje = float(sys.argv)
         if (tiempo_actual - tiempo_mensaje) > 30:
-            sys.exit(0)  # Ignorar mensaje antiguo
+            sys.exit(0)
     except (ValueError, TypeError):
         pass
 
-# Registrar usuario si es nuevo
 if usuario_id not in base_datos:
     base_datos[usuario_id] = {
-        "monedas": 500,
-        "banco": 0,
-        "racha": 0,
-        "nivel": 1,
-        "experiencia": 0,
-        "nivel_progreso": "[░░░░░░░░░░] 0%",
-        "inventario": [],
-        "ultimo_trabajo": 0,
-        "ultimo_diario": 0,
-        "ultimo_cofre": 0,
-        "ultimo_crimen": 0
+        "monedas": 500, "banco": 0, "racha": 0, "nivel": 1, "experiencia": 0,
+        "nivel_progreso": "[░░░░░░░░░░] 0%", "inventario": [],
+        "ultimo_trabajo": 0, "ultimo_diario": 0, "ultimo_cofre": 0, "ultimo_crimen": 0
     }
     guardar_todos_los_datos(base_datos)
 
@@ -84,7 +70,6 @@ ultimo_diario = datos_usuario.get("ultimo_diario", 0)
 ultimo_cofre = datos_usuario.get("ultimo_cofre", 0)
 ultimo_crimen = datos_usuario.get("ultimo_crimen", 0)
 
-# --- IMPORTACIONES SEGURAS ---
 try:
     from menu import mostrar_menu
 except ImportError:
@@ -160,28 +145,22 @@ except ImportError:
 def ejecutar_bot():
     global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen
 
-    # Menú Principal
     if mensaje_recibido in [".menu", ".help"]:
         return mostrar_menu()
-
     elif mensaje_recibido == ".adminmenu":
         return procesar_adminmenu()
-
-    # Economía / Gacha
     elif mensaje_recibido in [".crimen", ".crime"]:
         monedas_usuario, ultimo_crimen, respuesta = procesar_crimen(usuario_id, monedas_usuario, ultimo_crimen)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["ultimo_crimen"] = ultimo_crimen
         guardar_todos_los_datos(base_datos)
         return respuesta
-
     elif mensaje_recibido in [".trabajar", ".work", ".w", ".wb"]:
         monedas_usuario, ultimo_trabajo, respuesta = procesar_trabajar(usuario_id, monedas_usuario, ultimo_trabajo)
         datos_usuario["monedas"] = monedas_usuario
         datos_usuario["ultimo_trabajo"] = ultimo_trabajo
         guardar_todos_los_datos(base_datos)
         return respuesta
-
     elif mensaje_recibido in [".cofre", ".daily"]:
         if mensaje_recibido == ".daily":
             monedas_usuario, racha_usuario, ultimo_diario, respuesta = procesar_diario(usuario_id, monedas_usuario, racha_usuario, ultimo_diario)
@@ -193,7 +172,6 @@ def ejecutar_bot():
         datos_usuario["racha"] = racha_usuario
         guardar_todos_los_datos(base_datos)
         return respuesta
-
     elif mensaje_recibido in [".depositar", ".dep", ".d"]:
         cantidad = parametro.lower()
         cantidad_num = monedas_usuario if (cantidad == "all" or cantidad == "todo") else int(cantidad) if cantidad.isdigit() else 0
@@ -202,7 +180,6 @@ def ejecutar_bot():
         datos_usuario["banco"] = banco_usuario
         guardar_todos_los_datos(base_datos)
         return respuesta
-
     elif mensaje_recibido in [".retirar", ".ret", ".r"]:
         cantidad = parametro.lower()
         cantidad_num = banco_usuario if (cantidad == "all" or cantidad == "todo") else int(cantidad) if cantidad.isdigit() else 0
@@ -211,11 +188,9 @@ def ejecutar_bot():
         datos_usuario["banco"] = banco_usuario
         guardar_todos_los_datos(base_datos)
         return respuesta
-
     elif mensaje_recibido in [".banco", ".bank"]:
         _, _, respuesta = procesar_banco(monedas_usuario, banco_usuario)
         return respuesta
-
     elif mensaje_recibido == ".mercado":
         return procesar_Mercado(monedas_usuario, banco_usuario, parametro)
     elif mensaje_recibido in [".comprar", ".buy"]:
@@ -230,8 +205,6 @@ def ejecutar_bot():
         respuesta = procesar_apostar(datos_usuario, param)
         guardar_todos_los_datos(base_datos)
         return respuesta
-
-    # Comandos de Perfil y Usuario
     elif mensaje_recibido == ".perfil":
         return procesar_perfil(datos_usuario)
     elif mensaje_recibido == ".setname":
@@ -248,8 +221,6 @@ def ejecutar_bot():
         return procesar_level(datos_usuario)
     elif mensaje_recibido == ".levelup":
         return procesar_levelup(datos_usuario)
-
-    # Comandos de Descarga
     elif mensaje_recibido in [".descargar", ".des"]:
         return procesar_descargar(parametro)
     elif mensaje_recibido == ".mediafire":
@@ -274,8 +245,6 @@ def ejecutar_bot():
         return procesar_sticker(parametro)
     elif mensaje_recibido in [".pin", ".pinterest"]:
         return procesar_pinterest(parametro)
-
-    # Comandos de Administración
     elif mensaje_recibido in [".ban", ".kick", ".silenciar", ".desilenciar"]:
         comando_limpio = mensaje_recibido.replace(".", "")
         return procesar_admin_command(comando_limpio, user=parametro)
@@ -288,8 +257,6 @@ def ejecutar_bot():
         return procesar_admin_command("boton")
     elif mensaje_recibido == ".botoff":
         return procesar_admin_command("botoff")
-
-    # Interacción
     elif mensaje_recibido == ".saludar":
         return saludar(parametro)
     elif mensaje_recibido == ".beso":
@@ -304,7 +271,6 @@ def ejecutar_bot():
         return caricia(parametro)
     elif mensaje_recibido == ".correr":
         return correr(parametro)
-
     else:
         return f"❓ Comando '{mensaje_recibido}' no reconocido. Usa *.menu* para ver la lista."
 
