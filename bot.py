@@ -24,34 +24,38 @@ def guardar_todos_los_datos(datos):
 # Cargamos toda la base de datos de usuarios
 base_datos = cargar_todos_los_datos()
 
-# Argumentos que vienen desde Node.js (incluyendo el usuario y timestamp opcional)
+# Argumentos que vienen desde Node.js:
+# sys.argv = texto del comando + parámetros iniciales
+# sys.argv = parámetro separado (si aplica)
+# sys.argv = usuario_id
+# sys.argv = timestamp (opcional)
 args = sys.argv[1:]
 if len(args) > 0:
     texto_completo = args[0].strip()
     partes_iniciales = texto_completo.split(" ", 1)
     mensaje_recibido = partes_iniciales[0].lower()
     
-    if len(partes_iniciales) > 1 and (len(args) < 2 or args[1] == "None"):
-        parametro = partes_iniciales[1].strip()
+    if len(partes_iniciales) > 1 and (len(args) < 2 or args == "None"):
+        parametro = partes_iniciales.strip()
     else:
-        parametro = args[1].strip() if (len(args) > 1 and args[1] != "None") else ""
+        parametro = args.strip() if (len(args) > 1 and args != "None") else ""
 else:
     mensaje_recibido = ".menu"
     parametro = ""
 
-usuario_id = args[2].strip() if (len(args) > 2 and args[2] != "None") else "usuario_general"
+usuario_id = args.strip() if (len(args) > 2 and args != "None") else "usuario_general"
 
-# Validar antigüedad del mensaje (si Node.js envía el timestamp en args[3])
+# Validar antigüedad del mensaje (si Node.js envía el timestamp en args)
 tiempo_actual = time.time()
-if len(args) > 3 and args[3] != "None":
+if len(args) > 3 and args != "None":
     try:
-        tiempo_mensaje = float(args[3])
+        tiempo_mensaje = float(args)
         if (tiempo_actual - tiempo_mensaje) > 30:
-            sys.exit(0) # Ignorar mensaje antiguo sin hacer nada
+            sys.exit(0)  # Ignorar mensaje antiguo
     except ValueError:
         pass
 
-# Registrar usuario si es nuevo con todos sus campos de tiempo y nivel
+# Registrar usuario si es nuevo
 if usuario_id not in base_datos:
     base_datos[usuario_id] = {
         "monedas": 500,
@@ -60,6 +64,7 @@ if usuario_id not in base_datos:
         "nivel": 1,
         "experiencia": 0,
         "nivel_progreso": "[░░░░░░░░░░] 0%",
+        "inventario": [],
         "ultimo_trabajo": 0,
         "ultimo_diario": 0,
         "ultimo_cofre": 0,
@@ -75,7 +80,6 @@ ultimo_trabajo = datos_usuario.get("ultimo_trabajo", 0)
 ultimo_diario = datos_usuario.get("ultimo_diario", 0)
 ultimo_cofre = datos_usuario.get("ultimo_cofre", 0)
 ultimo_crimen = datos_usuario.get("ultimo_crimen", 0)
-coleccion_museo = []
 
 # --- IMPORTACIONES SEGURAS ---
 try:
@@ -134,8 +138,21 @@ except ImportError:
     def procesar_sticker(u): return f"🖼️ Sticker: {u}"
     def procesar_pinterest(b): return f"📌 Pinterest: {b}"
 
+# Fallback seguro para funciones de perfil si no existen en archivo externo
+try:
+    from perfil import procesar_perfil, procesar_setname, procesar_setdesc, procesar_setage, procesar_setbirth, procesar_setgene, procesar_level, procesar_levelup
+except ImportError:
+    def procesar_perfil(d): return f"👤 *PERFIL*\nNivel: {d.get('nivel',1)} | XP: {d.get('experiencia',0)}"
+    def procesar_setname(p, d, g, b): return "✅ Nombre configurado."
+    def procesar_setdesc(p, d, g, b): return "✅ Descripción configurada."
+    def procesar_setage(p, d, g, b): return "✅ Edad configurada."
+    def procesar_setbirth(p, d, g, b): return "✅ Cumpleaños configurado."
+    def procesar_setgene(p, d, g, b): return "✅ Género configurado."
+    def procesar_level(d): return f"⭐ Nivel actual: {d.get('nivel', 1)}"
+    def procesar_levelup(d): return "🚀 Revisa tu nivel."
+
 def ejecutar_bot():
-    global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen, coleccion_museo
+    global base_datos, datos_usuario, monedas_usuario, banco_usuario, racha_usuario, ultimo_trabajo, ultimo_diario, ultimo_cofre, ultimo_crimen
 
     # Menú Principal
     if mensaje_recibido in [".menu", ".help"]:
