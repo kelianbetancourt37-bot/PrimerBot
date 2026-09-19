@@ -12,9 +12,9 @@ async function iniciarBot() {
     sock.ev.on('creds.update', saveCreds);
 
     if (!sock.authState.creds.registered) {
-        const numeroLimpio = "5595981068631";
+        const numeroLimpio = "5595984017858";
         
-        console.log('Generando código de vinculación para +55 95 98106-8631...');
+        console.log('Generando código de vinculación para +55 95 98401-7858...');
         setTimeout(async () => {
             try {
                 const code = await sock.requestPairingCode(numeroLimpio);
