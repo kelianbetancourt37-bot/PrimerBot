@@ -30,29 +30,32 @@ base_datos = cargar_todos_los_datos()
 # sys.argv = usuario_id
 # sys.argv = timestamp (opcional)
 args = sys.argv[1:]
-if len(args) > 0:
-    texto_completo = args[0].strip()
+
+mensaje_recibido = ".menu"
+parametro = ""
+usuario_id = "usuario_general"
+
+if len(args) > 0 and str(args[0]) != "None":
+    texto_completo = str(args[0]).strip()
     partes_iniciales = texto_completo.split(" ", 1)
     mensaje_recibido = partes_iniciales[0].lower()
-    
-    if len(partes_iniciales) > 1 and (len(args) < 2 or args == "None"):
+    if len(partes_iniciales) > 1:
         parametro = partes_iniciales.strip()
-    else:
-        parametro = args.strip() if (len(args) > 1 and args != "None") else ""
-else:
-    mensaje_recibido = ".menu"
-    parametro = ""
 
-usuario_id = args.strip() if (len(args) > 2 and args != "None") else "usuario_general"
+if len(args) > 1 and str(args) != "None" and str(args).strip() != "":
+    parametro = str(args).strip()
 
-# Validar antigüedad del mensaje (si Node.js envía el timestamp en args)
+if len(args) > 2 and str(args) != "None":
+    usuario_id = str(args).strip()
+
+# Validar antigüedad del mensaje (si se envía timestamp en el índice 3)
 tiempo_actual = time.time()
-if len(args) > 3 and args != "None":
+if len(args) > 3 and str(args) != "None":
     try:
         tiempo_mensaje = float(args)
         if (tiempo_actual - tiempo_mensaje) > 30:
             sys.exit(0)  # Ignorar mensaje antiguo
-    except ValueError:
+    except (ValueError, TypeError):
         pass
 
 # Registrar usuario si es nuevo
