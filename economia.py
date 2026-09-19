@@ -202,6 +202,21 @@ def procesar_inventario(usuario_id, datos_usuario):
         f"🔥 Racha: *{racha}*\n"
         f"📦 Objetos: *{items_texto}*"
     )
+
+def procesar_apostar(datos_usuario, param):
+    datos_usuario.setdefault("monedas", 100)
+    if not str(param).isdigit():
+        return "⚠️ Usa un número válido. Ejemplo: `.apostar 50`"
+    apuesta = int(param)
+    if apuesta > datos_usuario["monedas"]:
+        return "⚠️ No tienes tantas monedas en mano."
+    if random.choice([True, False]):
+        datos_usuario["monedas"] += apuesta
+        return f"🎉 ¡Ganaste **+{apuesta}** 🪙! Tienes {datos_usuario['monedas']}"
+    else:
+        datos_usuario["monedas"] -= apuesta
+        return f"😢 Perdiste **-{apuesta}** 🪙. Te quedan {datos_usuario['monedas']}"
+        
 def agregar_experiencia(datos_usuario, cantidad_xp):
     datos_usuario["experiencia"] = datos_usuario.get("experiencia", 0) + cantidad_xp
     experiencia_actual = datos_usuario["experiencia"]
